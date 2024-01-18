@@ -7,23 +7,24 @@ OTM helps create tabular views of CPU opcodes, starting with a standard tex-deli
 For example: 
 
 ```
-Group , Opcode , Mnemonic , Operand , Address Mode , Bytes , Time , Flags    , Comments
-LOAD  , $01    , LOAD     , A,Addr  , Memory       , 3     , 7    , N------Z , "Load a register from memory
-Sets N flag to bit 7
-Sets Z flag if loaded data is zero, Clears Z flag if data is non-zero"
+Group , Opcode , Mnemonic , Operand , Address Mode , Bytes , Time , Flags    
+LOAD  , $01    , LOAD     , A,Addr  , Memory       , 3     , 7    , N------Z 
       , $02    , LOAD     , B,Addr  , Memory       , 3     , 7    , N------Z
-      , $11    , LOAD     , A,HL    , Indirect     , 3     , 7    , N------Z , "HL performs an indirect read/write
-from the address in HL.
-H is the high byte of the address.
-L is the low byte of the address."
+      , $11    , LOAD     , A,HL    , Indirect     , 3     , 7    , N------Z
+#Load a register from memory
+#Sets N flag to bit 7
+#Sets Z flag if loaded data is zero, Clears Z flag if data is non-zero
+#
+# HL performs an indirect read/write from the address in HL.
+# H is the high byte of the address.
+# L is the low byte of the address.
 ```
 
 The above example is a standard CSV file, with quotes wrapping a multi-line field. 
 
-The Group and Commendts fields should only be entered once per opcode group (ie: LOAD, STORE, etc) unless certain opcodes have special meaning.
+Only populate Group once per opcode group. 
 
-For example: `LOAD A,HL` reads from the _pointer_ HL, rather than the data values HL. So if you add a comment on that line, that 
-case will be called out in the list.
+Comments (lines starting with #) will be placed after the opcode details in the listing, as shown below.
 
 This will be converted to a Markdown table, like this:
 
@@ -43,9 +44,9 @@ $01  N------Z  LOAD A,Addr
 $02  N------Z  LOAD B,Addr
 ```
 
-Load a register from memory.<br/>
+Load a register from memory<br/>
 Sets N flag to bit 7<br/>
-Sets Z flag if loaded data is zero. Clears Z flag if loaded data is non-zero.<br/>
+Sets Z flag if loaded data is zero, Clears Z flag if data is non-zero<br/>
 
 HL performs an indirect read/write from the address in HL.<br/>
 H is the high byte of the address.<br/>
