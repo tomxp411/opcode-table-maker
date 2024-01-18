@@ -7,12 +7,12 @@ OTM helps create tabular views of CPU opcodes, starting with a standard tex-deli
 For example: 
 
 ```
-Opcode , Mnemonic , Target , Address Mode , Bytes , Time , Flags    , Comments
-$01    , LOAD     , A      , Addr         , 3     , 7    , N------Z , \
+Group , Opcode , Mnemonic , Target , Address Mode , Bytes , Time , Flags    , Comments
+LOAD  , $01    , LOAD     , A      , Addr         , 3     , 7    , N------Z , \
 \Load a register from memory
 \Sets N flag to bit 7
 \Sets Z flag if loaded data is zero, Clears Z flag if data is non-zero
-$02    , LOAD     , B      , Addr         , 3     , 7    , N------Z
+      , $02    , LOAD     , B      , Addr         , 3     , 7    , N------Z
 ```
 
 This will be converted to a Markdown table, like this:
