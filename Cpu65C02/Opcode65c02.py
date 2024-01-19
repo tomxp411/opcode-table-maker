@@ -55,7 +55,7 @@ class Opcode65C02:
         
         s = ""
         for c in self.flags:
-            if c>'a' and c<'z':
+            if c == c.lower():
                 s += "-"
             else:
                 s += c

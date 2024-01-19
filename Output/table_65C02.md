@@ -23,24 +23,70 @@
 [AND](#logical-and)
 [ASL](#arithmetic-shift)
 [LSR](#logical-shift)
-[ROL ROR](#rotate-bits)
-[BBRx BBSx](#branch-on-bit)
-[BCC BCS BEQ BMI BNE BPL BVC BVS BRA](#branch)
+[ROL](#rotate-bits)
+[ROR](#rotate-bits)
+[BBRx](#branch-on-bit)
+[BBSx](#branch-on-bit)
+[BCC](#branch)
+[BCS](#branch)
+[BEQ](#branch)
+[BMI](#branch)
+[BNE](#branch)
+[BPL](#branch)
+[BVC](#branch)
+[BVS](#branch)
+[BRA](#branch)
 [BIT](#test-bit)
-[BRK NOP STP WAI](#misc)
-[CLC CLD CLI CLV SEC SED SEI](#clearset-flags)
-[PHA PLA PHP PLP PHX PHY PLX PLY RTI RTS](#stack)
-[TAX TXA TAY TYA TSX TXS](#transfer)
-[CMP CPX CPY](#compare)
-[DEC DEX DEY INX INY INC](#incdec)
+[BRK](#misc)
+[NOP](#misc)
+[STP](#misc)
+[WAI](#misc)
+[CLC](#clearset-flags)
+[CLD](#clearset-flags)
+[CLI](#clearset-flags)
+[CLV](#clearset-flags)
+[SEC](#clearset-flags)
+[SED](#clearset-flags)
+[SEI](#clearset-flags)
+[PHA](#stack)
+[PLA](#stack)
+[PHP](#stack)
+[PLP](#stack)
+[PHX](#stack)
+[PHY](#stack)
+[PLX](#stack)
+[PLY](#stack)
+[RTI](#stack)
+[RTS](#stack)
+[TAX](#transfer)
+[TXA](#transfer)
+[TAY](#transfer)
+[TYA](#transfer)
+[TSX](#transfer)
+[TXS](#transfer)
+[CMP](#compare)
+[CPX](#compare)
+[CPY](#compare)
+[DEC](#incdec)
+[DEX](#incdec)
+[DEY](#incdec)
+[INX](#incdec)
+[INY](#incdec)
+[INC](#incdec)
 [EOR](#exclusive-or)
-[JMP JSR](#jump)
-[LDA LDX LDY](#load)
+[JMP](#jump)
+[JSR](#jump)
+[LDA](#load)
+[LDX](#load)
+[LDY](#load)
 [ORA](#or)
 [RMBx](#rmb)
 [SMBx](#smb)
 [SBC](#subtract)
-[STA STX STY STZ](#store)
+[STA](#store)
+[STX](#store)
+[STY](#store)
+[STZ](#store)
 [TRB](#test-reset-bit)
 
 ### Add
@@ -149,22 +195,22 @@ ROR $1234,X  $6E  3     6/7    CZ----N
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-BBR0 $1234   $0F  3       5    -z-----
-BBR1 $1234   $1F  3       5    -z-----
-BBR2 $1234   $2F  3       5    -z-----
-BBR3 $1234   $3F  3       5    -z-----
-BBR4 $1234   $4F  3       5    -z-----
-BBR5 $1234   $5F  3       5    -z-----
-BBR6 $1234   $6F  3       5    -z-----
-BBR7 $1234   $7F  3       5    -z-----
-BBS0 $1234   $8F  3       5    -z-----
-BBS1 $1234   $9F  3       5    -z-----
-BBS2 $1234   $AF  3       5    -z-----
-BBS3 $1234   $BF  3       5    -z-----
-BBS4 $1234   $CF  3       5    -z-----
-BBS5 $1234   $DF  3       5    -z-----
-BBS6 $1234   $EF  3       5    -z-----
-BBS7 $1234   $FF  3       5    -z-----
+BBR0 $1234   $0F  3       5    -------
+BBR1 $1234   $1F  3       5    -------
+BBR2 $1234   $2F  3       5    -------
+BBR3 $1234   $3F  3       5    -------
+BBR4 $1234   $4F  3       5    -------
+BBR5 $1234   $5F  3       5    -------
+BBR6 $1234   $6F  3       5    -------
+BBR7 $1234   $7F  3       5    -------
+BBS0 $1234   $8F  3       5    -------
+BBS1 $1234   $9F  3       5    -------
+BBS2 $1234   $AF  3       5    -------
+BBS3 $1234   $BF  3       5    -------
+BBS4 $1234   $CF  3       5    -------
+BBS5 $1234   $DF  3       5    -------
+BBS6 $1234   $EF  3       5    -------
+BBS7 $1234   $FF  3       5    -------
 ```
 
 
@@ -176,15 +222,15 @@ BBS7 $1234   $FF  3       5    -z-----
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-BCC $1234    $90  2     2/3    -z-----
-BCS $1234    $B0  2     2/3    -z-----
-BEQ $1234    $F0  2     2/3    -z-----
-BMI $1234    $30  2     2/3    -z-----
-BNE $1234    $D0  2     2/3    -z-----
-BPL $1234    $10  2     2/3    -z-----
-BVC $1234    $50  2     2/3    -z-----
-BVS $1234    $70  2     2/3    -z-----
-BRA $1234    $80  2     3/4    -z-----
+BCC $1234    $90  2     2/3    -------
+BCS $1234    $B0  2     2/3    -------
+BEQ $1234    $F0  2     2/3    -------
+BMI $1234    $30  2     2/3    -------
+BNE $1234    $D0  2     2/3    -------
+BPL $1234    $10  2     2/3    -------
+BVC $1234    $50  2     2/3    -------
+BVS $1234    $70  2     2/3    -------
+BRA $1234    $80  2     3/4    -------
 ```
 
 
@@ -212,10 +258,10 @@ BIT $1234,X  $3C  3       4    -Z---VN
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-BRK          $00  1       7    -z-DB--
-NOP          $EA  1       2    -z-----
-STP          $DB  1       3    -z-----
-WAI          $CB  1       3    -z-----
+BRK          $00  1       7    ---DB--
+NOP          $EA  1       2    -------
+STP          $DB  1       3    -------
+WAI          $CB  1       3    -------
 ```
 
 
@@ -227,13 +273,13 @@ WAI          $CB  1       3    -z-----
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-CLC          $18  1       2    Cz-----
-CLD          $D8  1       2    -z-D---
-CLI          $58  1       2    -zI----
-CLV          $B8  1       2    -z---V-
-SEC          $38  1       2    Cz-----
-SED          $F8  1       2    -z-D---
-SEI          $78  1       2    -zI----
+CLC          $18  1       2    C------
+CLD          $D8  1       2    ---D---
+CLI          $58  1       2    --I----
+CLV          $B8  1       2    -----V-
+SEC          $38  1       2    C------
+SED          $F8  1       2    ---D---
+SEI          $78  1       2    --I----
 ```
 
 
@@ -245,16 +291,16 @@ SEI          $78  1       2    -zI----
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-PHA          $48  1       3    -z-----
+PHA          $48  1       3    -------
 PLA          $68  1       4    -Z----N
-PHP          $08  1       3    -z-----
+PHP          $08  1       3    -------
 PLP          $28  1       4    CZIDBVN
-PHX          $DA  1       3    -z-----
-PHY          $5A  1       3    -z-----
+PHX          $DA  1       3    -------
+PHY          $5A  1       3    -------
 PLX          $FA  1       4    -Z----N
 PLY          $7A  1       4    -Z----N
-RTI          $40  1       6    -z-----
-RTS          $60  1       6    -z-----
+RTI          $40  1       6    -------
+RTS          $60  1       6    -------
 ```
 
 
@@ -271,7 +317,7 @@ TXA          $8A  1       2    -Z----N
 TAY          $A8  1       2    -Z----N
 TYA          $98  1       2    -Z----N
 TSX          $BA  1       2    -Z----N
-TXS          $9A  1       2    -z-----
+TXS          $9A  1       2    -------
 ```
 
 
@@ -354,10 +400,10 @@ EOR ($12)    $52  2       5    -Z----N
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-JMP $1234    $4C  3       3    -z-----
-JMP ($1234)  $6C  3       5    -z-----
-JMP $1234,X  $7C  3       6    -z-----
-JSR $1234    $20  3       6    -z-----
+JMP $1234    $4C  3       3    -------
+JMP ($1234)  $6C  3       5    -------
+JMP $1234,X  $7C  3       6    -------
+JSR $1234    $20  3       6    -------
 ```
 
 
@@ -419,14 +465,14 @@ ORA ($12)    $12  2       5    -Z----N
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-RMB0 $12     $07  2       5    -z-----
-RMB1 $12     $17  2       5    -z-----
-RMB2 $12     $27  2       5    -z-----
-RMB3 $12     $37  2       5    -z-----
-RMB4 $12     $47  2       5    -z-----
-RMB5 $12     $57  2       5    -z-----
-RMB6 $12     $67  2       5    -z-----
-RMB7 $12     $77  2       5    -z-----
+RMB0 $12     $07  2       5    -------
+RMB1 $12     $17  2       5    -------
+RMB2 $12     $27  2       5    -------
+RMB3 $12     $37  2       5    -------
+RMB4 $12     $47  2       5    -------
+RMB5 $12     $57  2       5    -------
+RMB6 $12     $67  2       5    -------
+RMB7 $12     $77  2       5    -------
 ```
 
 
@@ -438,14 +484,14 @@ RMB7 $12     $77  2       5    -z-----
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-SMB0 $12     $87  2       5    -z-----
-SMB1 $12     $97  2       5    -z-----
-SMB2 $12     $A7  2       5    -z-----
-SMB3 $12     $B7  2       5    -z-----
-SMB4 $12     $C7  2       5    -z-----
-SMB5 $12     $D7  2       5    -z-----
-SMB6 $12     $E7  2       5    -z-----
-SMB7 $12     $F7  2       5    -z-----
+SMB0 $12     $87  2       5    -------
+SMB1 $12     $97  2       5    -------
+SMB2 $12     $A7  2       5    -------
+SMB3 $12     $B7  2       5    -------
+SMB4 $12     $C7  2       5    -------
+SMB5 $12     $D7  2       5    -------
+SMB6 $12     $E7  2       5    -------
+SMB7 $12     $F7  2       5    -------
 ```
 
 
@@ -477,24 +523,24 @@ SBC ($12)    $F2  2       5    CZ---VN
 
 ```text
 SYNTAX       HEX  LEN  CYCLES  FLAGS    
-STA $12      $85  2       3    -z-----
-STA $12,X    $95  2       4    -z-----
-STA $1234    $8D  3       4    -z-----
-STA $1234,X  $9D  3       5    -z-----
-STA $1234,Y  $99  3       5    -z-----
-STA ($12,X)  $81  2       6    -z-----
-STA ($12),Y  $91  2       6    -z-----
-STA ($12)    $92  2       5    -z-----
-STX $12      $86  2       3    -z-----
-STX $12,Y    $96  2       4    -z-----
-STX $1234    $8E  3       4    -z-----
-STY $12      $84  2       3    -z-----
-STY $12,X    $94  2       4    -z-----
-STY $1234    $8C  3       4    -z-----
-STZ $12      $64  2       3    -z-----
-STZ $12,X    $74  2       4    -z-----
-STZ $1234    $9C  3       4    -z-----
-STZ $1234,X  $9E  3       5    -z-----
+STA $12      $85  2       3    -------
+STA $12,X    $95  2       4    -------
+STA $1234    $8D  3       4    -------
+STA $1234,X  $9D  3       5    -------
+STA $1234,Y  $99  3       5    -------
+STA ($12,X)  $81  2       6    -------
+STA ($12),Y  $91  2       6    -------
+STA ($12)    $92  2       5    -------
+STX $12      $86  2       3    -------
+STX $12,Y    $96  2       4    -------
+STX $1234    $8E  3       4    -------
+STY $12      $84  2       3    -------
+STY $12,X    $94  2       4    -------
+STY $1234    $8C  3       4    -------
+STZ $12      $64  2       3    -------
+STZ $12,X    $74  2       4    -------
+STZ $1234    $9C  3       4    -------
+STZ $1234,X  $9E  3       5    -------
 ```
 
 

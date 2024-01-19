@@ -107,9 +107,21 @@ class Cpu65c02:
 
         print("## Opcodes By name",file=f)
         print(file=f)
-        for grp in self.groups.values():
-            print("[" + grp.mnemonics.strip() + "](#" + grp.anchor + ")",
-                  file=f)
+        last = "" 
+        for oc in self.opcodes.values():
+            t = oc.mnemonic.strip()
+            skip = False
+
+            if len(t) == 4:
+                t=t[0:3]+"x"                
+
+            if t == last:
+                skip = True
+
+            if not skip:
+                print("[" + t + "](#" + self.groups[oc.group_name].anchor + ")",
+                    file=f)
+            last=t
 
         for grp in self.groups.values():
             print(file=f)
