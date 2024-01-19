@@ -1,250 +1,318 @@
-,opcode,mnemonic,addressing mode,bytes,cycles,flags
-Add,0x69,ADC,IMM,2,2,CZidbVN
-,0x65,ADC,ZP,2,3,CZidbVN
-,0x75,ADC,ZPX,2,4,CZidbVN
-,0x6d,ADC,ABS,3,4,CZidbVN
-,0x7d,ADC,ABSX,3,4,CZidbVN
-,0x79,ADC,ABSY,3,4,CZidbVN
-,0x61,ADC,INDX,2,6,CZidbVN
-,0x71,ADC,INDY,2,5,CZidbVN
-,0x72,ADC,ZPI,2,5,CZidbVN
-# Add a number to the accumulator
-# This is an 8-bit add. Use the Carry (C) or Overflow (V) flags to determine
-# whether the result was too large for an 8 bit number
-# 
-# Result is stored in A 
-# C is set when result is more than 255 ($FF)
-# Z is set when result is zero
-# V is set when signed result exceeds -128 to 127
-# N is set when result is negative (bit 7=1)
+h,Opcode,Mnemonic,Addr Mode,Len,Time,Flags
+c,Arithmetic,ADC,Add with Carry
+o,0x69,ADC,IMM,2,2,CZidbVN
+o,0x65,ADC,ZP,2,3,CZidbVN
+o,0x75,ADC,ZPX,2,4,CZidbVN
+o,0x6d,ADC,ABS,3,4,CZidbVN
+o,0x7d,ADC,ABSX,3,4,CZidbVN
+o,0x79,ADC,ABSY,3,4,CZidbVN
+o,0x61,ADC,INDX,2,6,CZidbVN
+o,0x71,ADC,INDY,2,5,CZidbVN
+o,0x72,ADC,ZPI,2,5,CZidbVN
+t,Add a number to the accumulator. 
+t,Result is stored in A 
+t,
+t,This is an 8-bit add. Use the Carry (C) or Overflow (V) flags to determine
+t,whether the result was too large for an 8 bit number. 
+t,
+t,"If C is set before operation, then 1 will be added to the result."
+t, 
+t,C is set when result is more than 255 ($FF)
+t,Z is set when result is zero
+t,V is set when signed result crosses -128/+127
+t,N is set when result is negative (bit 7=1)
 
-Logical AND,0x29,AND,IMM,2,2,cZidbvN
-,0x25,AND,ZP,2,3,cZidbvN
-,0x35,AND,ZPX,2,4,cZidbvN
-,0x2d,AND,ABS,3,4,cZidbvN
-,0x3d,AND,ABSX,3,4,cZidbvN
-,0x39,AND,ABSY,3,4,cZidbvN
-,0x21,AND,INDX,2,6,cZidbvN
-,0x31,AND,INDY,2,5,cZidbvN
-,0x32,AND,ZPI,2,5,cZidbvN
+c,Arithmetic,SBC,Subtract With Carry
+o,0xe9,SBC,IMM,2,2,CZidbVN
+o,0xe5,SBC,ZP,2,3,CZidbVN
+o,0xf5,SBC,ZPX,2,4,CZidbVN
+o,0xed,SBC,ABS,3,4,CZidbVN
+o,0xfd,SBC,ABSX,3,4,CZidbVN
+o,0xf9,SBC,ABSY,3,4,CZidbVN
+o,0xe1,SBC,INDX,2,6,CZidbVN
+o,0xf1,SBC,INDY,2,5,CZidbVN
+o,0xf2,SBC,ZPI,2,5,CZidbVN
+t,"Subtract the operand from A"
+t,"Result is in A"
+t,"If C=0 will subtract 1 more."
+t,
+t,This is an 8-bit subtract. Use the Carry (C) or Overflow (V) flags to 
+t,determine whether a borrow took place. 
+t,
+t,"If C is cleared before operation, then 1 will be subtracted from result."
+t, 
+t,C is clear when result is less than 0.
+t,Z is set when result is zero
+t,V is set when signed result crosses -128/+127
+t,N is set when result is negative (bit 7=1)
 
+c,Boolean,AND,Logical And
+o,0x29,AND,IMM,2,2,cZidbvN
+o,0x25,AND,ZP,2,3,cZidbvN
+o,0x35,AND,ZPX,2,4,cZidbvN
+o,0x2d,AND,ABS,3,4,cZidbvN
+o,0x3d,AND,ABSX,3,4,cZidbvN
+o,0x39,AND,ABSY,3,4,cZidbvN
+o,0x21,AND,INDX,2,6,cZidbvN
+o,0x31,AND,INDY,2,5,cZidbvN
+o,0x32,AND,ZPI,2,5,cZidbvN
+t,Bitwise AND the provided value with the accumulator.
+t,"  - Sets N (Negative) flag if the bit 7 of the result is 1, and otherewise clears it"
+t,"  - Sets Z (Zero) is the result is zero, and otherwise clears it"
 
-Arithmetic Shift,0x0a,ASL,ACC,1,2,CZidbvN
-,0x06,ASL,ZP,2,5,CZidbvN
-,0x16,ASL,ZPX,2,6,CZidbvN
-,0x0e,ASL,ABS,3,6,CZidbvN
-,0x1e,ASL,ABSX,3,6/7,CZidbvN
+c,Boolean,OR,Logical OR
+o,0x09,ORA,IMM,2,2,cZidbvN
+o,0x05,ORA,ZP,2,3,cZidbvN
+o,0x15,ORA,ZPX,2,4,cZidbvN
+o,0x0d,ORA,ABS,3,4,cZidbvN
+o,0x1d,ORA,ABSX,3,4,cZidbvN
+o,0x19,ORA,ABSY,3,4,cZidbvN
+o,0x01,ORA,INDX,2,6,cZidbvN
+o,0x11,ORA,INDY,2,5,cZidbvN
+o,0x12,ORA,ZPI,2,5,cZidbvN
+t,Perform a logical OR of the given value in A 
+t,(the accumulator), storing the result in A.
+t,
+t,See [EOR](#eor) for the exclusive-OR version.
+t,  - Sets N (Negative) flag if the two's compliment value is negative
+t,  - Sets Z (Zero) flag is the value is zero
 
-Logical Shift,0x4a,LSR,ACC,1,2,cZidbvN
-,0x46,LSR,ZP,2,5,cZidbvN
-,0x56,LSR,ZPX,2,6,cZidbvN
-,0x4e,LSR,ABS,3,6,cZidbvN
-,0x5e,LSR,ABSX,3,6/7,cZidbvN
+c,Boolean,EOR,Exclusive OR
+o,0x49,EOR,IMM,2,2,cZidbvN
+o,0x45,EOR,ZP,2,3,cZidbvN
+o,0x55,EOR,ZPX,2,4,cZidbvN
+o,0x4d,EOR,ABS,3,4,cZidbvN
+o,0x5d,EOR,ABSX,3,4,cZidbvN
+o,0x59,EOR,ABSY,3,4,cZidbvN
+o,0x41,EOR,INDX,2,6,cZidbvN
+o,0x51,EOR,INDY,2,5,cZidbvN
+o,0x52,EOR,ZPI,2,5,cZidbvN
 
-Rotate Bits,0x2a,ROL,ACC,1,2,CZidbvN
-,0x26,ROL,ZP,2,5,CZidbvN
-,0x36,ROL,ZPX,2,6,CZidbvN
-,0x2e,ROL,ABS,3,6,CZidbvN
-,0x3e,ROL,ABSX,3,6/7,CZidbvN
-,0x6a,ROR,ACC,1,2,CZidbvN
-,0x66,ROR,ZP,2,5,CZidbvN
-,0x76,ROR,ZPX,2,6,CZidbvN
-,0x7e,ROR,ABS,3,6,CZidbvN
-,0x6e,ROR,ABSX,3,6/7,CZidbvN
+c,Bit Shift,ASL,Arithmetic Shift Left
+o,0x0a,ASL,ACC,1,2,CZidbvN
+o,0x06,ASL,ZP,2,5,CZidbvN
+o,0x16,ASL,ZPX,2,6,CZidbvN
+o,0x0e,ASL,ABS,3,6,CZidbvN
+o,0x1e,ASL,ABSX,3,6/7,CZidbvN
 
-Branch on Bit,0x0f,BBR0,ZPR,3,5,czidbvn
-,0x1f,BBR1,ZPR,3,5,czidbvn
-,0x2f,BBR2,ZPR,3,5,czidbvn
-,0x3f,BBR3,ZPR,3,5,czidbvn
-,0x4f,BBR4,ZPR,3,5,czidbvn
-,0x5f,BBR5,ZPR,3,5,czidbvn
-,0x6f,BBR6,ZPR,3,5,czidbvn
-,0x7f,BBR7,ZPR,3,5,czidbvn
-,0x8f,BBS0,ZPR,3,5,czidbvn
-,0x9f,BBS1,ZPR,3,5,czidbvn
-,0xaf,BBS2,ZPR,3,5,czidbvn
-,0xbf,BBS3,ZPR,3,5,czidbvn
-,0xcf,BBS4,ZPR,3,5,czidbvn
-,0xdf,BBS5,ZPR,3,5,czidbvn
-,0xef,BBS6,ZPR,3,5,czidbvn
-,0xff,BBS7,ZPR,3,5,czidbvn
+c,Bit Shift,LSR,Logical Shift Right
+o,0x4a,LSR,ACC,1,2,cZidbvN
+o,0x46,LSR,ZP,2,5,cZidbvN
+o,0x56,LSR,ZPX,2,6,cZidbvN
+o,0x4e,LSR,ABS,3,6,cZidbvN
+o,0x5e,LSR,ABSX,3,6/7,cZidbvN
 
-Branch,0x90,BCC,REL,2,2/3,czidbvn
-,0xB0,BCS,REL,2,2/3,czidbvn
-,0xF0,BEQ,REL,2,2/3,czidbvn
-,0x30,BMI,REL,2,2/3,czidbvn
-,0xD0,BNE,REL,2,2/3,czidbvn
-,0x10,BPL,REL,2,2/3,czidbvn
-,0x50,BVC,REL,2,2/3,czidbvn
-,0x70,BVS,REL,2,2/3,czidbvn
-,0x80,BRA,REL,2,3/4,czidbvn
+c,Bit Shift,ROL,Rotate Left
+o,0x2a,ROL,ACC,1,2,CZidbvN
+o,0x26,ROL,ZP,2,5,CZidbvN
+o,0x36,ROL,ZPX,2,6,CZidbvN
+o,0x2e,ROL,ABS,3,6,CZidbvN
+o,0x3e,ROL,ABSX,3,6/7,CZidbvN
+c,Bit Shift,ROR,Rotate Right
+o,0x6a,ROR,ACC,1,2,CZidbvN
+o,0x66,ROR,ZP,2,5,CZidbvN
+o,0x76,ROR,ZPX,2,6,CZidbvN
+o,0x7e,ROR,ABS,3,6,CZidbvN
+o,0x6e,ROR,ABSX,3,6/7,CZidbvN
 
-Test Bit,0x24,BIT,ZP,2,3,cZidbVN
-,0x2c,BIT,ABS,3,4,cZidbVN
-,0x89,BIT,IMM,2,2,cZidbvn
-,0x34,BIT,ZPX,2,4,cZidbVN
-,0x3c,BIT,ABSX,3,4,cZidbVN
+c,Branching,Bxx,Branch Instructions
+o,0x90,BCC,REL,2,2/3,czidbvn
+o,0xB0,BCS,REL,2,2/3,czidbvn
+o,0xF0,BEQ,REL,2,2/3,czidbvn
+o,0x30,BMI,REL,2,2/3,czidbvn
+o,0xD0,BNE,REL,2,2/3,czidbvn
+o,0x10,BPL,REL,2,2/3,czidbvn
+o,0x50,BVC,REL,2,2/3,czidbvn
+o,0x70,BVS,REL,2,2/3,czidbvn
+o,0x80,BRA,REL,2,3/4,czidbvn
 
-Misc,0x00,BRK,IMP,1,7,cziDBvn
-,0xea,NOP,IMP,1,2,czidbvn
-,0xdb,STP,IMP,1,3,czidbvn
-,0xcb,WAI,IMP,1,3,czidbvn
+c,Test Bit,BIT,Test Bit
+o,0x24,BIT,ZP,2,3,cZidbVN
+o,0x2c,BIT,ABS,3,4,cZidbVN
+o,0x89,BIT,IMM,2,2,cZidbvn
+o,0x34,BIT,ZPX,2,4,cZidbVN
+o,0x3c,BIT,ABSX,3,4,cZidbVN
 
-Clear/Set Flags,0x18,CLC,IMP,1,2,Czidbvn
-,0xd8,CLD,IMP,1,2,cziDbvn
-,0x58,CLI,IMP,1,2,czIdbvn
-,0xb8,CLV,IMP,1,2,czidbVn
-,0x38,SEC,IMP,1,2,Czidbvn
-,0xf8,SED,IMP,1,2,cziDbvn
-,0x78,SEI,IMP,1,2,czIdbvn
+c,Misc,Misc,Misc
+o,0x00,BRK,IMP,1,7,cziDBvn
+o,0xea,NOP,IMP,1,2,czidbvn
+o,0xdb,STP,IMP,1,3,czidbvn
+o,0xcb,WAI,IMP,1,3,czidbvn
 
-Stack,0x48,PHA,IMP,1,3,czidbvn
-,0x68,PLA,IMP,1,4,cZidbvN
-,0x08,PHP,IMP,1,3,czidbvn
-,0x28,PLP,IMP,1,4,CZIDBVN
-,0xda,PHX,IMP,1,3,czidbvn
-,0x5a,PHY,IMP,1,3,czidbvn
-,0xfa,PLX,IMP,1,4,cZidbvN
-,0x7a,PLY,IMP,1,4,cZidbvN
-,0x40,RTI,IMP,1,6,czidbvn
-,0x60,RTS,IMP,1,6,czidbvn
+c,Flags,Flags,Set and Clear Flags
+o,0x18,CLC,IMP,1,2,Czidbvn
+o,0xd8,CLD,IMP,1,2,cziDbvn
+o,0x58,CLI,IMP,1,2,czIdbvn
+o,0xb8,CLV,IMP,1,2,czidbVn
+o,0x38,SEC,IMP,1,2,Czidbvn
+o,0xf8,SED,IMP,1,2,cziDbvn
+o,0x78,SEI,IMP,1,2,czIdbvn
 
-Transfer,0xaa,TAX,IMP,1,2,cZidbvN
-,0x8a,TXA,IMP,1,2,cZidbvN
-,0xa8,TAY,IMP,1,2,cZidbvN
-,0x98,TYA,IMP,1,2,cZidbvN
-,0xba,TSX,IMP,1,2,cZidbvN
-,0x9a,TXS,IMP,1,2,czidbvn
+c,Stack,PHx,Push to stack
+o,0x48,PHA,IMP,1,3,czidbvn
+o,0x08,PHP,IMP,1,3,czidbvn
+o,0xda,PHX,IMP,1,3,czidbvn
+o,0x5a,PHY,IMP,1,3,czidbvn
 
-Compare,0xc9,CMP,IMM,2,2,CZidbvN
-,0xc5,CMP,ZP,2,3,CZidbvN
-,0xd5,CMP,ZPX,2,4,CZidbvN
-,0xcd,CMP,ABS,3,4,CZidbvN
-,0xdd,CMP,ABSX,3,4,CZidbvN
-,0xd9,CMP,ABSY,3,4,CZidbvN
-,0xc1,CMP,INDX,2,6,CZidbvN
-,0xd1,CMP,INDY,2,5,CZidbvN
-,0xd2,CMP,ZPI,2,5,CZidbvN
+c,Stack,PLx,Pull from stack
+o,0x68,PLA,IMP,1,4,cZidbvN
+o,0x28,PLP,IMP,1,4,CZIDBVN
+o,0xfa,PLX,IMP,1,4,cZidbvN
+o,0x7a,PLY,IMP,1,4,cZidbvN
 
-,0xe0,CPX,IMM,2,2,CZidbvN
-,0xe4,CPX,ZP,2,3,CZidbvN
-,0xec,CPX,ABS,3,4,CZidbvN
+Transfer,Txx,Transfer between registers
+o,0xaa,TAX,IMP,1,2,cZidbvN
+o,0x8a,TXA,IMP,1,2,cZidbvN
+o,0xa8,TAY,IMP,1,2,cZidbvN
+o,0x98,TYA,IMP,1,2,cZidbvN
+o,0xba,TSX,IMP,1,2,cZidbvN
+o,0x9a,TXS,IMP,1,2,czidbvn
 
-,0xc0,CPY,IMM,2,2,CZidbvN
-,0xc4,CPY,ZP,2,3,CZidbvN
-,0xcc,CPY,ABS,3,4,CZidbvN
+c,Compare,CMP,Compare A to memory
+o,0xc9,CMP,IMM,2,2,CZidbvN
+o,0xc5,CMP,ZP,2,3,CZidbvN
+o,0xd5,CMP,ZPX,2,4,CZidbvN
+o,0xcd,CMP,ABS,3,4,CZidbvN
+o,0xdd,CMP,ABSX,3,4,CZidbvN
+o,0xd9,CMP,ABSY,3,4,CZidbvN
+o,0xc1,CMP,INDX,2,6,CZidbvN
+o,0xd1,CMP,INDY,2,5,CZidbvN
+o,0xd2,CMP,ZPI,2,5,CZidbvN
 
-Inc/Dec,0xc6,DEC,ZP,2,5,cZidbvN
-,0xd6,DEC,ZPX,2,6,cZidbvN
-,0xce,DEC,ABS,3,6,cZidbvN
-,0xde,DEC,ABSX,3,7,cZidbvN
-,0x3a,DEC,ACC,1,2,cZidbvN
-,0xca,DEX,IMP,1,2,cZidbvN
-,0x88,DEY,IMP,1,2,cZidbvN
-,0xe8,INX,IMP,1,2,cZidbvN
-,0xc8,INY,IMP,1,2,cZidbvN
-,0xe6,INC,ZP,2,5,cZidbvN
-,0xf6,INC,ZPX,2,6,cZidbvN
-,0xee,INC,ABS,3,6,cZidbvN
-,0xfe,INC,ABSX,3,7,cZidbvN
-,0x1a,INC,ACC,1,2,cZidbvN
+c,Compare,CPX,Compare X to memory
+o,0xe0,CPX,IMM,2,2,CZidbvN
+o,0xe4,CPX,ZP,2,3,CZidbvN
+o,0xec,CPX,ABS,3,4,CZidbvN
 
-Exclusive OR,0x49,EOR,IMM,2,2,cZidbvN
-,0x45,EOR,ZP,2,3,cZidbvN
-,0x55,EOR,ZPX,2,4,cZidbvN
-,0x4d,EOR,ABS,3,4,cZidbvN
-,0x5d,EOR,ABSX,3,4,cZidbvN
-,0x59,EOR,ABSY,3,4,cZidbvN
-,0x41,EOR,INDX,2,6,cZidbvN
-,0x51,EOR,INDY,2,5,cZidbvN
-,0x52,EOR,ZPI,2,5,cZidbvN
+c,Compare,CPY,Compare Y to memory
+o,0xc0,CPY,IMM,2,2,CZidbvN
+o,0xc4,CPY,ZP,2,3,CZidbvN
+o,0xcc,CPY,ABS,3,4,CZidbvN
 
-Jump,0x4c,JMP,ABS,3,3,czidbvn
-,0x6c,JMP,IND,3,5,czidbvn
-,0x7c,JMP,ABSX,3,6,czidbvn
-,0x20,JSR,ABS,3,6,czidbvn
+c,Increment/Decrement,DEC,Decrement Value
+o,0xc6,DEC,ZP,2,5,cZidbvN
+o,0xd6,DEC,ZPX,2,6,cZidbvN
+o,0xce,DEC,ABS,3,6,cZidbvN
+o,0xde,DEC,ABSX,3,7,cZidbvN
+o,0x3a,DEC,ACC,1,2,cZidbvN
+o,0xca,DEX,IMP,1,2,cZidbvN
+o,0x88,DEY,IMP,1,2,cZidbvN
+c,IIncrement/Decrement,INC,Increment Value
+o,0xe8,INX,IMP,1,2,cZidbvN
+o,0xc8,INY,IMP,1,2,cZidbvN
+o,0xe6,INC,ZP,2,5,cZidbvN
+o,0xf6,INC,ZPX,2,6,cZidbvN
+o,0xee,INC,ABS,3,6,cZidbvN
+o,0xfe,INC,ABSX,3,7,cZidbvN
+o,0x1a,INC,ACC,1,2,cZidbvN
 
-Load,0xa9,LDA,IMM,2,2,cZidbvN
-,0xa5,LDA,ZP,2,3,cZidbvN
-,0xb5,LDA,ZPX,2,4,cZidbvN
-,0xad,LDA,ABS,3,4,cZidbvN
-,0xbd,LDA,ABSX,3,4,cZidbvN
-,0xb9,LDA,ABSY,3,4,cZidbvN
-,0xa1,LDA,INDX,2,6,cZidbvN
-,0xb1,LDA,INDY,2,5,cZidbvN
-,0xb2,LDA,ZPI,2,5,cZidbvN
+c,Branching,JMP,Jump to new address
+o,0x4c,JMP,ABS,3,3,czidbvn
+o,0x6c,JMP,IND,3,5,czidbvn
+o,0x7c,JMP,ABSX,3,6,czidbvn
+c,Branching,JSR,Jump to subroutine
+o,0x20,JSR,ABS,3,6,czidbvn
+c,Branching,RTx,Return from Subroutine or Interrupt
+o,0x60,RTS,IMP,1,6,czidbvn
+o,0x40,RTI,IMP,1,6,czidbvn
 
-,0xa2,LDX,IMM,2,2,cZidbvN
-,0xa6,LDX,ZP,2,3,cZidbvN
-,0xb6,LDX,ZPY,2,4,cZidbvN
-,0xae,LDX,ABS,3,4,cZidbvN
-,0xbe,LDX,ABSY,3,4,cZidbvN
+c,Load
+g,Load A
+o,0xa9,LDA,IMM,2,2,cZidbvN
+o,0xa5,LDA,ZP,2,3,cZidbvN
+o,0xb5,LDA,ZPX,2,4,cZidbvN
+o,0xad,LDA,ABS,3,4,cZidbvN
+o,0xbd,LDA,ABSX,3,4,cZidbvN
+o,0xb9,LDA,ABSY,3,4,cZidbvN
+o,0xa1,LDA,INDX,2,6,cZidbvN
+o,0xb1,LDA,INDY,2,5,cZidbvN
+o,0xb2,LDA,ZPI,2,5,cZidbvN
 
-,0xa0,LDY,IMM,2,2,cZidbvN
-,0xa4,LDY,ZP,2,3,cZidbvN
-,0xb4,LDY,ZPX,2,4,cZidbvN
-,0xac,LDY,ABS,3,4,cZidbvN
-,0xbc,LDY,ABSX,3,4,cZidbvN
+g,Load X
+o,0xa2,LDX,IMM,2,2,cZidbvN
+o,0xa6,LDX,ZP,2,3,cZidbvN
+o,0xb6,LDX,ZPY,2,4,cZidbvN
+o,0xae,LDX,ABS,3,4,cZidbvN
+o,0xbe,LDX,ABSY,3,4,cZidbvN
 
-OR,0x09,ORA,IMM,2,2,cZidbvN
-,0x05,ORA,ZP,2,3,cZidbvN
-,0x15,ORA,ZPX,2,4,cZidbvN
-,0x0d,ORA,ABS,3,4,cZidbvN
-,0x1d,ORA,ABSX,3,4,cZidbvN
-,0x19,ORA,ABSY,3,4,cZidbvN
-,0x01,ORA,INDX,2,6,cZidbvN
-,0x11,ORA,INDY,2,5,cZidbvN
-,0x12,ORA,ZPI,2,5,cZidbvN
+g,Load Y
+o,0xa0,LDY,IMM,2,2,cZidbvN
+o,0xa4,LDY,ZP,2,3,cZidbvN
+o,0xb4,LDY,ZPX,2,4,cZidbvN
+o,0xac,LDY,ABS,3,4,cZidbvN
+o,0xbc,LDY,ABSX,3,4,cZidbvN
 
-RMB,0x07,RMB0,ZP,2,5,czidbvn
-,0x17,RMB1,ZP,2,5,czidbvn
-,0x27,RMB2,ZP,2,5,czidbvn
-,0x37,RMB3,ZP,2,5,czidbvn
-,0x47,RMB4,ZP,2,5,czidbvn
-,0x57,RMB5,ZP,2,5,czidbvn
-,0x67,RMB6,ZP,2,5,czidbvn
-,0x77,RMB7,ZP,2,5,czidbvn
-SMB,0x87,SMB0,ZP,2,5,czidbvn
-,0x97,SMB1,ZP,2,5,czidbvn
-,0xa7,SMB2,ZP,2,5,czidbvn
-,0xb7,SMB3,ZP,2,5,czidbvn
-,0xc7,SMB4,ZP,2,5,czidbvn
-,0xd7,SMB5,ZP,2,5,czidbvn
-,0xe7,SMB6,ZP,2,5,czidbvn
-,0xf7,SMB7,ZP,2,5,czidbvn
+c,Store
+g,Store A
+o,0x85,STA,ZP,2,3,czidbvn
+o,0x95,STA,ZPX,2,4,czidbvn
+o,0x8d,STA,ABS,3,4,czidbvn
+o,0x9d,STA,ABSX,3,5,czidbvn
+o,0x99,STA,ABSY,3,5,czidbvn
+o,0x81,STA,INDX,2,6,czidbvn
+o,0x91,STA,INDY,2,6,czidbvn
+o,0x92,STA,ZPI,2,5,czidbvn
 
-Subtract,0xe9,SBC,IMM,2,2,CZidbVN
-,0xe5,SBC,ZP,2,3,CZidbVN
-,0xf5,SBC,ZPX,2,4,CZidbVN
-,0xed,SBC,ABS,3,4,CZidbVN
-,0xfd,SBC,ABSX,3,4,CZidbVN
-,0xf9,SBC,ABSY,3,4,CZidbVN
-,0xe1,SBC,INDX,2,6,CZidbVN
-,0xf1,SBC,INDY,2,5,CZidbVN
-,0xf2,SBC,ZPI,2,5,CZidbVN
+g,Store X
+o,0x86,STX,ZP,2,3,czidbvn
+o,0x96,STX,ZPY,2,4,czidbvn
+o,0x8e,STX,ABS,3,4,czidbvn
 
-Store,0x85,STA,ZP,2,3,czidbvn
-,0x95,STA,ZPX,2,4,czidbvn
-,0x8d,STA,ABS,3,4,czidbvn
-,0x9d,STA,ABSX,3,5,czidbvn
-,0x99,STA,ABSY,3,5,czidbvn
-,0x81,STA,INDX,2,6,czidbvn
-,0x91,STA,INDY,2,6,czidbvn
-,0x92,STA,ZPI,2,5,czidbvn
+g,Store Y
+o,0x84,STY,ZP,2,3,czidbvn
+o,0x94,STY,ZPX,2,4,czidbvn
+o,0x8c,STY,ABS,3,4,czidbvn
 
-,0x86,STX,ZP,2,3,czidbvn
-,0x96,STX,ZPY,2,4,czidbvn
-,0x8e,STX,ABS,3,4,czidbvn
-,0x84,STY,ZP,2,3,czidbvn
-,0x94,STY,ZPX,2,4,czidbvn
-,0x8c,STY,ABS,3,4,czidbvn
+g,Store Z
+o,0x64,STZ,ZP,2,3,czidbvn
+o,0x74,STZ,ZPX,2,4,czidbvn
+o,0x9c,STZ,ABS,3,4,czidbvn
+o,0x9E,STZ,ABSX,3,5,czidbvn
 
-,0x64,STZ,ZP,2,3,czidbvn
-,0x74,STZ,ZPX,2,4,czidbvn
-,0x9c,STZ,ABS,3,4,czidbvn
-,0x9E,STZ,ABSX,3,5,czidbvn
+c,Branch
+g,Branch on Bit Reset
+o,0x0f,BBR0,ZPR,3,5,czidbvn
+o,0x1f,BBR1,ZPR,3,5,czidbvn
+o,0x2f,BBR2,ZPR,3,5,czidbvn
+o,0x3f,BBR3,ZPR,3,5,czidbvn
+o,0x4f,BBR4,ZPR,3,5,czidbvn
+o,0x5f,BBR5,ZPR,3,5,czidbvn
+o,0x6f,BBR6,ZPR,3,5,czidbvn
+o,0x7f,BBR7,ZPR,3,5,czidbvn
 
-Test Reset Bit,0x14,TRB,ZP,2,5,cZidbvn
-,0x1C,TRB,ABS,3,5,cZidbvn
-,0x04,TRB,ZP,2,5,cZidbvn
-,0x0C,TRB,ABS,3,5,cZidbvn
+g,Branch on Bit Set
+o,0x8f,BBS0,ZPR,3,5,czidbvn
+o,0x9f,BBS1,ZPR,3,5,czidbvn
+o,0xaf,BBS2,ZPR,3,5,czidbvn
+o,0xbf,BBS3,ZPR,3,5,czidbvn
+o,0xcf,BBS4,ZPR,3,5,czidbvn
+o,0xdf,BBS5,ZPR,3,5,czidbvn
+o,0xef,BBS6,ZPR,3,5,czidbvn
+o,0xff,BBS7,ZPR,3,5,czidbvn
+
+c,Memory Bit Operations
+g,Reset Memory Bit
+o,0x07,RMB0,ZP,2,5,czidbvn
+o,0x17,RMB1,ZP,2,5,czidbvn
+o,0x27,RMB2,ZP,2,5,czidbvn
+o,0x37,RMB3,ZP,2,5,czidbvn
+o,0x47,RMB4,ZP,2,5,czidbvn
+o,0x57,RMB5,ZP,2,5,czidbvn
+o,0x67,RMB6,ZP,2,5,czidbvn
+o,0x77,RMB7,ZP,2,5,czidbvn
+
+g,Set Memory Bit
+o,0x87,SMB0,ZP,2,5,czidbvn
+o,0x97,SMB1,ZP,2,5,czidbvn
+o,0xa7,SMB2,ZP,2,5,czidbvn
+o,0xb7,SMB3,ZP,2,5,czidbvn
+o,0xc7,SMB4,ZP,2,5,czidbvn
+o,0xd7,SMB5,ZP,2,5,czidbvn
+o,0xe7,SMB6,ZP,2,5,czidbvn
+o,0xf7,SMB7,ZP,2,5,czidbvn
+
+g,Test Reset Bit
+o,0x14,TRB,ZP,2,5,cZidbvn
+o,0x1C,TRB,ABS,3,5,cZidbvn
+o,0x04,TRB,ZP,2,5,cZidbvn
+o,0x0C,TRB,ABS,3,5,cZidbvn

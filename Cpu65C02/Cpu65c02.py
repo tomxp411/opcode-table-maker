@@ -17,10 +17,14 @@ class Cpu65c02:
         self.output_list="Output/list_65C02.md"
         self.output_merged="Output/Opcodes_65C02.md"
 
-        self.opcodes = {}
+        # Categories of instructions (Arithmetic, Test, Branch, Jump)
+        self.categories = {}
+        # Groups of instructions (add, sub, etc)
         self.groups = {}
+        # Individual instructions
+        self.opcodes = {}
+        # Address modes: Immediate, Indirect, etc.
         self.address_modes = Address_Modes()
-    
         self.init_address_modes()
 
     def merge(self, 
@@ -39,29 +43,65 @@ class Cpu65c02:
     # #Descriptive text 
     def load_csv(self):
         line_number = 0
-        group = Group65C02()
+        cat = Group65C02()
+        grp = Group65C02()
+        Opcode65C02.address_modes = self.address_modes
         
         f = open(self.opcode_file,"r")
         for line in f:
-            line = line.strip()
             line_number += 1
+
+            line = line.strip()
+            parts = line.split(",")
+
             # skip header line
-            if line_number == 1:
-                pass
-            elif len(line) < 1:
+            if len(parts) < 2:
                 pass 
-            elif line.startswith("#"):
-                group.add_comment(line)
-            else:
+            tt = parts[0].lower()
+            
+            # Category
+            # can be c,Name or
+            # c,Name,OpcodeGroup,Description
+            if tt == "c":
+                name = parts[1]
+                if not name in self.categories:
+                    cat = Group65C02()
+                    cat.name = name 
+                    self.categories[name] = cat
+                else:
+                    cat = self.categories[name]
+                if len(parts) > 2:
+                    name = parts[2]
+                    if not name in self.groups:
+                        grp = Group65C02()
+                        grp.name = name 
+                        self.groups[name] = grp
+                    else:
+                        grp = self.groups[name]
+                if len(parts) > 3:
+                    grp.description = parts[3]
+
+            # opcode group (ADC, SBC, AND)
+            elif tt == "g":
+                name = parts[1]
+                if not name in self.groups:
+                    grp = Group65C02()
+                    grp.name = name 
+                    self.groups[name] = grp
+                else:
+                    grp = self.groups[name]
+
+            # single opcode
+            elif tt == "o":
                 op = Opcode65C02(line)
-                if op.valid:
-                    if op.group_name != group.name:
-                        group = Group65C02()
-                        group.name = op.group_name
-                        self.groups[group.name] = group
-                    self.opcodes[op.opcode] = op
-                    group.add_mnemonic(op.mnemonic)
-                    group.opcodes.append(op)
+                op.group_name = grp.name
+                op.category_name = cat.name
+                self.opcodes[op.opcode] = op
+                grp.opcodes.append(op)
+                cat.opcodes.append(op)
+            # text describing instructions
+            elif tt == "t":
+                grp.add_comment(line)
         f.close()
 
         for g in self.groups.values():
@@ -102,12 +142,23 @@ class Cpu65c02:
         
         # f = open(self.output_list,"w")
         
-        column_names = ["SYNTAX","HEX","LEN","CYCLES","FLAGS"]
-        column_width =  [12,      4,    4,    7,       8]
+        # Opcodes By Name 
+        column_count = 16
+        col_width = 5
 
-        print("## Opcodes By name",file=f)
         print(file=f)
-        last = "" 
+        print("## Opcodes By Name",file=f)
+        print(file=f)
+
+        for i in range(0,column_count):
+            print("|" + " ".rjust(col_width," "),file=f,end="")
+        print("|", file=f)
+        for i in range(0,column_count):
+            print("|" + "-".rjust(col_width,"-"),file=f,end="")
+        print("|", file=f)
+
+        last = ""
+        n = 0
         for oc in self.opcodes.values():
             t = oc.mnemonic.strip()
             skip = False
@@ -119,25 +170,88 @@ class Cpu65c02:
                 skip = True
 
             if not skip:
-                print("[" + t + "](#" + self.groups[oc.group_name].anchor + ")",
-                    file=f)
+                print("| [" + t + "](#" + self.groups[oc.group_name].anchor + ") ",
+                    file=f,end="")
+                n += 1
+                if n > column_count - 1:
+                    print("|",file=f)
+                    n = 0
             last=t
 
-        for grp in self.groups.values():
+        if n != column_count - 1:
+            print("|",file=f)
+
+        # Opcodes By Category 
+        column_count = 16
+        col_width = 5
+
+        print(file=f)
+        print("## Opcodes By Category",file=f)
+        print(file=f)
+
+        for i in range(0,column_count):
+            print("|" + " ".rjust(col_width," "),file=f,end="")
+        print("|", file=f)
+        for i in range(0,column_count):
+            print("|" + "-".rjust(col_width,"-"),file=f,end="")
+        print("|", file=f)
+
+        for key,cat in self.categories.items():
+            print("| ",cat.name,file=f,end=" ")
+
+            last = ""
+            n = 0
+            for oc in cat.opcodes:
+                t = oc.mnemonic.strip()
+                skip = False
+
+                if len(t) == 4:
+                    t=t[0:3]+"x"                
+
+                if t == last:
+                    skip = True
+
+                if not skip:
+                    print("| [" + t + "](#" + self.groups[oc.group_name].anchor + ") ",
+                        file=f,end="")
+                    n += 1
+                    if n > column_count - 1:
+                        print("|",file=f)
+                        print("|".ljust(col_width),end="",file=f)
+                        n = 0
+                last=t
+        
+            print(file=f)
+
+        if n != column_count - 1:
+            print("|",file=f)
+
+        # Details
+        column_names = ["SYNTAX","MODE","HEX","LEN","CYCLES","FLAGS"]
+        column_width = [12,      14,     4,    4,    7,       8]
+        
+        keys = []
+        for key in self.groups:
+            keys.append(key)
+        keys=sorted(keys)
+        
+        for key in keys:
+            grp = self.groups[key]
             print(file=f)
             #print("###",grp.name,"("+grp.mnemonics.strip()+")",file=f)
             print("###",grp.name,file=f)
-            print(file=f)
+            print(grp.description,file=f)
             print("```text",file=f)
             for i in range(0,len(column_names)):
                 print(column_names[i].ljust(column_width[i]), end=" ", file=f)
             print(file=f)
             for op in grp.opcodes:
                 # print("$" + op.opcode,op.flags,op.bytes,op.cycles,op.mnemonic,op.address_mode)
-                print((op.mnemonic + " " + self.address_modes[op.address_mode].example).ljust(column_width[0]),
-                    ("$" + op.opcode).ljust(column_width[1]),
-                    op.bytes.ljust(column_width[2]),
-                    op.cycles.rjust(4).ljust(column_width[3]),
+                print(op.syntax.ljust(column_width[0]),
+                    op.address_mode_name.ljust(column_width[1]),
+                    ("$" + op.opcode).ljust(column_width[2]),
+                    op.bytes.rjust(2).ljust(column_width[3]),
+                    op.cycles.ljust(2).rjust(4).ljust(column_width[4]),
                     op.flags,file=f)
             print("```",file=f)
             print(file=f)

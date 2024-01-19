@@ -7,12 +7,16 @@
 class Opcode65C02:
     last_group = ""
     parts_count = 7
+    address_modes = None
     
     def __init__(self, line:str = None):
-        self.group_name = "" 
+        self.group_name = ""
+        self.category_name = ""
         self.opcode = ""  # 2 hex digits. Trim leading $ or 0X on import
         self.mnemonic = ""
         self.address_mode = ""
+        self.address_mode_name = ""
+        self.syntax = ""
         self.bytes = ""
         self.cycles = ""
         self.flags = ""
@@ -27,19 +31,17 @@ class Opcode65C02:
         parts = line.split(",")
         if len(parts) < Opcode65C02.parts_count:
             raise Exception("Can't fully parse line" + line)
-        
-        if len(parts[0].strip()) > 0:
-            self.group_name = parts[0].strip()
-            Opcode65C02.last_group = self.group_name
-        else:
-            self.group_name = Opcode65C02.last_group
-        
+
         self.opcode = parts[1].strip()
         self.mnemonic = parts[2].strip()
         self.address_mode = parts[3].strip()
         self.bytes = parts[4].strip()
         self.cycles = parts[5].strip()
         self.flags = parts[6].strip()
+        
+        m = self.address_modes[self.address_mode]
+        self.syntax = self.mnemonic + " " + m.example
+        self.address_mode_name = m.name
 
         self.fix_flags()
         self.fix_opcode()
