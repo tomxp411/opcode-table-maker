@@ -32,8 +32,8 @@ Zero Page,X  ADC $12,X   $75  2     4   CZ---VN
 Absolute     ADC $1234   $6D  3     4   CZ---VN
 Absolute,X   ADC $1234,X $7D  3     4   CZ---VN
 Absolute,Y   ADC $1234,Y $79  3     4   CZ---VN
-Indirect,X   ADC ($12,x) $61  2     6   CZ---VN
-Indirect,Y   ADC ($12),y $71  2     5   CZ---VN
+Indirect,X   ADC ($12,X) $61  2     6   CZ---VN
+Indirect,Y   ADC ($12),Y $71  2     5   CZ---VN
 ZP Indirect  ADC ($12)   $72  2     5   CZ---VN
 ```
 
@@ -48,7 +48,7 @@ V is set when signed result exceeds -128 to 127 <br/>
 N is set when result is negative (bit 7=1) <br/>
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Logical AND
@@ -61,14 +61,14 @@ Zero Page,X  AND $12,X   $35  2     4   -Z----N
 Absolute     AND $1234   $2D  3     4   -Z----N
 Absolute,X   AND $1234,X $3D  3     4   -Z----N
 Absolute,Y   AND $1234,Y $39  3     4   -Z----N
-Indirect,X   AND ($12,x) $21  2     6   -Z----N
-Indirect,Y   AND ($12),y $31  2     5   -Z----N
+Indirect,X   AND ($12,X) $21  2     6   -Z----N
+Indirect,Y   AND ($12),Y $31  2     5   -Z----N
 ZP Indirect  AND ($12)   $32  2     5   -Z----N
 ```
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Bit Shifting
@@ -99,7 +99,7 @@ Absolute,X   ROR $1234,X $6E  3   6/7   CZ----N
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Branch on Bit
@@ -126,7 +126,7 @@ ZP Relative  BBS7 $1234  $FF  3     5   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Branch
@@ -146,7 +146,7 @@ Relative     BRA $1234   $80  2   3/4   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Test Bit
@@ -162,7 +162,7 @@ Absolute,X   BIT $1234,X $3C  3     4   -Z---VN
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Misc
@@ -177,7 +177,7 @@ Implied      WAI         $CB  1     3   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Flags
@@ -195,7 +195,7 @@ Implied      SEI         $78  1     2   -zI----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Stack
@@ -216,7 +216,7 @@ Implied      RTS         $60  1     6   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Transfer
@@ -233,7 +233,7 @@ Implied      TXS         $9A  1     2   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Compare
@@ -246,8 +246,8 @@ Zero Page,X  CMP $12,X   $D5  2     4   CZ----N
 Absolute     CMP $1234   $CD  3     4   CZ----N
 Absolute,X   CMP $1234,X $DD  3     4   CZ----N
 Absolute,Y   CMP $1234,Y $D9  3     4   CZ----N
-Indirect,X   CMP ($12,x) $C1  2     6   CZ----N
-Indirect,Y   CMP ($12),y $D1  2     5   CZ----N
+Indirect,X   CMP ($12,X) $C1  2     6   CZ----N
+Indirect,Y   CMP ($12),Y $D1  2     5   CZ----N
 ZP Indirect  CMP ($12)   $D2  2     5   CZ----N
 Immediate    CPX #$12    $E0  2     2   CZ----N
 Zero Page    CPX $12     $E4  2     3   CZ----N
@@ -259,7 +259,7 @@ Absolute     CPY $1234   $CC  3     4   CZ----N
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Inc/Dec
@@ -284,7 +284,7 @@ Accumulator  INC A       $1A  1     2   -Z----N
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Exclusive OR
@@ -297,14 +297,14 @@ Zero Page,X  EOR $12,X   $55  2     4   -Z----N
 Absolute     EOR $1234   $4D  3     4   -Z----N
 Absolute,X   EOR $1234,X $5D  3     4   -Z----N
 Absolute,Y   EOR $1234,Y $59  3     4   -Z----N
-Indirect,X   EOR ($12,x) $41  2     6   -Z----N
-Indirect,Y   EOR ($12),y $51  2     5   -Z----N
+Indirect,X   EOR ($12,X) $41  2     6   -Z----N
+Indirect,Y   EOR ($12),Y $51  2     5   -Z----N
 ZP Indirect  EOR ($12)   $52  2     5   -Z----N
 ```
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Jump
@@ -319,7 +319,7 @@ Absolute     JSR $1234   $20  3     6   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Load
@@ -332,8 +332,8 @@ Zero Page,X  LDA $12,X   $B5  2     4   -Z----N
 Absolute     LDA $1234   $AD  3     4   -Z----N
 Absolute,X   LDA $1234,X $BD  3     4   -Z----N
 Absolute,Y   LDA $1234,Y $B9  3     4   -Z----N
-Indirect,X   LDA ($12,x) $A1  2     6   -Z----N
-Indirect,Y   LDA ($12),y $B1  2     5   -Z----N
+Indirect,X   LDA ($12,X) $A1  2     6   -Z----N
+Indirect,Y   LDA ($12),Y $B1  2     5   -Z----N
 ZP Indirect  LDA ($12)   $B2  2     5   -Z----N
 Immediate    LDX #$12    $A2  2     2   -Z----N
 Zero Page    LDX $12     $A6  2     3   -Z----N
@@ -349,7 +349,7 @@ Absolute,X   LDY $1234,X $BC  3     4   -Z----N
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### OR
@@ -362,14 +362,14 @@ Zero Page,X  ORA $12,X   $15  2     4   -Z----N
 Absolute     ORA $1234   $0D  3     4   -Z----N
 Absolute,X   ORA $1234,X $1D  3     4   -Z----N
 Absolute,Y   ORA $1234,Y $19  3     4   -Z----N
-Indirect,X   ORA ($12,x) $01  2     6   -Z----N
-Indirect,Y   ORA ($12),y $11  2     5   -Z----N
+Indirect,X   ORA ($12,X) $01  2     6   -Z----N
+Indirect,Y   ORA ($12),Y $11  2     5   -Z----N
 ZP Indirect  ORA ($12)   $12  2     5   -Z----N
 ```
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### RMB
@@ -388,7 +388,7 @@ Zero Page    RMB7 $12    $77  2     5   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### SMB
@@ -407,7 +407,7 @@ Zero Page    SMB7 $12    $F7  2     5   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Subtract
@@ -420,14 +420,14 @@ Zero Page,X  SBC $12,X   $F5  2     4   CZ---VN
 Absolute     SBC $1234   $ED  3     4   CZ---VN
 Absolute,X   SBC $1234,X $FD  3     4   CZ---VN
 Absolute,Y   SBC $1234,Y $F9  3     4   CZ---VN
-Indirect,X   SBC ($12,x) $E1  2     6   CZ---VN
-Indirect,Y   SBC ($12),y $F1  2     5   CZ---VN
+Indirect,X   SBC ($12,X) $E1  2     6   CZ---VN
+Indirect,Y   SBC ($12),Y $F1  2     5   CZ---VN
 ZP Indirect  SBC ($12)   $F2  2     5   CZ---VN
 ```
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Store
@@ -439,8 +439,8 @@ Zero Page,X  STA $12,X   $95  2     4   -z-----
 Absolute     STA $1234   $8D  3     4   -z-----
 Absolute,X   STA $1234,X $9D  3     5   -z-----
 Absolute,Y   STA $1234,Y $99  3     5   -z-----
-Indirect,X   STA ($12,x) $81  2     6   -z-----
-Indirect,Y   STA ($12),y $91  2     6   -z-----
+Indirect,X   STA ($12,X) $81  2     6   -z-----
+Indirect,Y   STA ($12),Y $91  2     6   -z-----
 ZP Indirect  STA ($12)   $92  2     5   -z-----
 Zero Page    STX $12     $86  2     3   -z-----
 Zero Page,Y  STX $12,Y   $96  2     4   -z-----
@@ -456,7 +456,7 @@ Absolute,X   STZ $1234,X $9E  3     5   -z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 
 
 ### Test Reset Bit
@@ -471,5 +471,5 @@ Absolute     TRB $1234   $0C  3     5   -Z-----
 
 
 ---
-[top](#opcodes-by-name)
+[top](#)
 

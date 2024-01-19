@@ -68,6 +68,32 @@ class Cpu65c02:
         f.close()
 
 
+        f = open(self.output_table,"w")
+        hex="0123456789ABCDEF"
+        col_width = 12
+        #header
+        print("|" + " ".ljust(col_width),file=f,end="")
+        for i in range(0,16):
+            print("| -" + hex[i].ljust(col_width-1," "),file=f,end="")
+        print("|", file=f)
+
+        print("|" + "-".ljust(col_width,"-"),file=f,end="")
+        for i in range(0,16):
+            print("|" + "-".rjust(col_width,"-"),file=f,end="")
+        print("|", file=f)
+
+        for j in range(0,16):
+            print("|" + hex[j]+"-".ljust(col_width),file=f,end="")
+            for i in range(0,16):
+                key = hex[j]+hex[i]
+                text = ""
+                if key in self.opcodes:
+                    oc=self.opcodes[key]
+                    text = oc.mnemonic + "&nbsp;" + self.address_modes[oc.address_mode].example
+                print("|" + text.ljust(col_width," "),file=f,end="")
+            print("|", file=f)
+        f.close()
+        
         f = open(self.output_list,"w")
         
         print("## Opcodes By name",file=f)
@@ -102,7 +128,7 @@ class Cpu65c02:
                  print(c,"<br/>",file=f)
             print(file=f)
             print("---", file=f)
-            print("[top](#opcodes-by-name)",file=f)
+            print("[top](#)",file=f)
             print(file=f)
 
     def init_address_modes(self):
@@ -113,8 +139,8 @@ class Cpu65c02:
         self.address_modes.add("ABS",  "Absolute", "$1234")
         self.address_modes.add("ABSX", "Absolute,X", "$1234,X")
         self.address_modes.add("ABSY", "Absolute,Y", "$1234,Y")
-        self.address_modes.add("INDX", "Indirect,X", "($12,x)")
-        self.address_modes.add("INDY", "Indirect,Y", "($12),y")
+        self.address_modes.add("INDX", "Indirect,X", "($12,X)")
+        self.address_modes.add("INDY", "Indirect,Y", "($12),Y")
         self.address_modes.add("ZPI",  "ZP Indirect", "($12)")
         self.address_modes.add("ACC",  "Accumulator", "A")
         self.address_modes.add("ZPR",  "ZP Relative", "$1234")
