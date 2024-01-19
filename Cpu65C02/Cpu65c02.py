@@ -70,14 +70,14 @@ class Cpu65c02:
 
         f = open(self.output_list,"w")
         
+        print("## Opcodes By name",file=f)
+        print(file=f)
         for grp in self.groups.values():
-            print(file=f)
-            t = grp.name.replace(" ","-").lower()
-            print(grp.name,
-                  "[" + grp.mnemonics.strip() + "](#" + t + ")",
+            t = grp.name.lower()
+            t = t.replace(" ","-")
+            t = t.replace("/","")
+            print("[" + grp.mnemonics.strip() + "](#" + t + ")",
                   file=f)
-            #print("###",grp.name,file=f)
-            print(file=f)
 
         for grp in self.groups.values():
             print(file=f)
@@ -102,6 +102,8 @@ class Cpu65c02:
                  print(c,"<br/>",file=f)
             print(file=f)
             print("---", file=f)
+            print("[top](#opcodes-by-name)",file=f)
+            print(file=f)
 
     def init_address_modes(self):
         self.address_modes.add("IMM",  "Immediate","#$12")

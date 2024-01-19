@@ -1,66 +1,26 @@
+## Opcodes By name
 
-Add [ADC](#add)
-
-
-Logical AND [AND](#logical-and)
-
-
-Bit Shifting [ASL LSR ROL ROR](#bit-shifting)
-
-
-Branch on Bit [BBRx BBSx](#branch-on-bit)
-
-
-Branch [BCC BCS BEQ BMI BNE BPL BVC BVS BRA](#branch)
-
-
-Test Bit [BIT](#test-bit)
-
-
-Misc [BRK NOP STP WAI](#misc)
-
-
-Flags [CLC CLD CLI CLV SEC SED SEI](#flags)
-
-
-Stack [PHA PLA PHP PLP PHX PHY PLX PLY RTI RTS](#stack)
-
-
-Transfer [TAX TXA TAY TYA TSX TXS](#transfer)
-
-
-Compare [CMP CPX CPY](#compare)
-
-
-Inc/Dec [DEC DEX DEY INX INY INC](#inc/dec)
-
-
-Exclusive OR [EOR](#exclusive-or)
-
-
-Jump [JMP JSR](#jump)
-
-
-Load [LDA LDX LDY](#load)
-
-
-OR [ORA](#or)
-
-
-RMB [RMBx](#rmb)
-
-
-SMB [SMBx](#smb)
-
-
-Subtract [SBC](#subtract)
-
-
-Store [STA STX STY STZ](#store)
-
-
-Test Reset Bit [TRB](#test-reset-bit)
-
+[ADC](#add)
+[AND](#logical-and)
+[ASL LSR ROL ROR](#bit-shifting)
+[BBRx BBSx](#branch-on-bit)
+[BCC BCS BEQ BMI BNE BPL BVC BVS BRA](#branch)
+[BIT](#test-bit)
+[BRK NOP STP WAI](#misc)
+[CLC CLD CLI CLV SEC SED SEI](#flags)
+[PHA PLA PHP PLP PHX PHY PLX PLY RTI RTS](#stack)
+[TAX TXA TAY TYA TSX TXS](#transfer)
+[CMP CPX CPY](#compare)
+[DEC DEX DEY INX INY INC](#incdec)
+[EOR](#exclusive-or)
+[JMP JSR](#jump)
+[LDA LDX LDY](#load)
+[ORA](#or)
+[RMBx](#rmb)
+[SMBx](#smb)
+[SBC](#subtract)
+[STA STX STY STZ](#store)
+[TRB](#test-reset-bit)
 
 ### Add
 
@@ -88,6 +48,8 @@ V is set when signed result exceeds -128 to 127 <br/>
 N is set when result is negative (bit 7=1) <br/>
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Logical AND
 
@@ -106,6 +68,8 @@ ZP Indirect  AND ($12)   $32  2     5   -Z----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Bit Shifting
 
@@ -135,6 +99,8 @@ Absolute,X   ROR $1234,X $6E  3   6/7   CZ----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Branch on Bit
 
@@ -160,6 +126,8 @@ ZP Relative  BBS7 $1234  $FF  3     5   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Branch
 
@@ -178,6 +146,8 @@ Relative     BRA $1234   $80  2   3/4   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Test Bit
 
@@ -192,6 +162,8 @@ Absolute,X   BIT $1234,X $3C  3     4   -Z---VN
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Misc
 
@@ -205,6 +177,8 @@ Implied      WAI         $CB  1     3   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Flags
 
@@ -221,6 +195,8 @@ Implied      SEI         $78  1     2   -zI----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Stack
 
@@ -240,6 +216,8 @@ Implied      RTS         $60  1     6   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Transfer
 
@@ -255,6 +233,8 @@ Implied      TXS         $9A  1     2   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Compare
 
@@ -279,6 +259,8 @@ Absolute     CPY $1234   $CC  3     4   CZ----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Inc/Dec
 
@@ -302,6 +284,8 @@ Accumulator  INC A       $1A  1     2   -Z----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Exclusive OR
 
@@ -320,6 +304,8 @@ ZP Indirect  EOR ($12)   $52  2     5   -Z----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Jump
 
@@ -333,6 +319,8 @@ Absolute     JSR $1234   $20  3     6   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Load
 
@@ -361,6 +349,8 @@ Absolute,X   LDY $1234,X $BC  3     4   -Z----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### OR
 
@@ -379,6 +369,8 @@ ZP Indirect  ORA ($12)   $12  2     5   -Z----N
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### RMB
 
@@ -396,6 +388,8 @@ Zero Page    RMB7 $12    $77  2     5   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### SMB
 
@@ -413,6 +407,8 @@ Zero Page    SMB7 $12    $F7  2     5   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Subtract
 
@@ -431,6 +427,8 @@ ZP Indirect  SBC ($12)   $F2  2     5   CZ---VN
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Store
 
@@ -458,6 +456,8 @@ Absolute,X   STZ $1234,X $9E  3     5   -z-----
 
 
 ---
+[top](#opcodes-by-name)
+
 
 ### Test Reset Bit
 
@@ -471,3 +471,5 @@ Absolute     TRB $1234   $0C  3     5   -Z-----
 
 
 ---
+[top](#opcodes-by-name)
+
