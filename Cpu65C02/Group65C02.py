@@ -2,8 +2,10 @@ class Group65C02:
     def __init__(self):
         self.name = ""     # group name: Add, And, Jump
         self.mnemonics = "" # all mnemonics in group
+        self.anchor = ""
         self.opcodes = []  # array of opcodes
         self.comments = [] # array of strings
+
 
     def add_comment(self, text):
         s = text

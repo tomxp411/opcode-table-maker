@@ -17,9 +17,6 @@ class Cpu65c02:
         self.output_list="Output/list_65C02.md"
         self.output_merged="Output/Opcodes_65C02.md"
 
-        self.column_names = ["MODE","SYNTAX","HEX","LEN","CYCLES","FLAGS"]
-        self.colum_width =  [12,    11,      3,    3,    6,       8]
-
         self.opcodes = {}
         self.groups = {}
         self.address_modes = Address_Modes()
@@ -67,14 +64,22 @@ class Cpu65c02:
                     group.opcodes.append(op)
         f.close()
 
+        for g in self.groups.values():
+            t = g.name.lower()
+            t = t.replace(" ","-")
+            t = t.replace("/","")
+            g.anchor = t
 
-        f = open(self.output_table,"w")
         hex="0123456789ABCDEF"
         col_width = 12
+
+        f = open(self.output_table,"w")
+        print("## Opcodes By Number",file=f)
+
         #header
         print("|" + " ".ljust(col_width),file=f,end="")
         for i in range(0,16):
-            print("| -" + hex[i].ljust(col_width-1," "),file=f,end="")
+            print("| x" + hex[i].ljust(col_width-1," "),file=f,end="")
         print("|", file=f)
 
         print("|" + "-".ljust(col_width,"-"),file=f,end="")
@@ -83,26 +88,27 @@ class Cpu65c02:
         print("|", file=f)
 
         for j in range(0,16):
-            print("|" + hex[j]+"-".ljust(col_width),file=f,end="")
+            print("|" + hex[j]+"x".ljust(col_width),file=f,end="")
             for i in range(0,16):
                 key = hex[j]+hex[i]
                 text = ""
                 if key in self.opcodes:
                     oc=self.opcodes[key]
-                    text = oc.mnemonic + "&nbsp;" + self.address_modes[oc.address_mode].example
-                print("|" + text.ljust(col_width," "),file=f,end="")
+                    text = "[" + oc.mnemonic + "](#" + self.groups[oc.group_name].anchor + ")"
+                print("|" + text,file=f,end="")
             print("|", file=f)
-        f.close()
+
+        # f.close()
         
-        f = open(self.output_list,"w")
+        # f = open(self.output_list,"w")
         
+        column_names = ["SYNTAX","HEX","LEN","CYCLES","FLAGS"]
+        column_width =  [12,      4,    4,    7,       8]
+
         print("## Opcodes By name",file=f)
         print(file=f)
         for grp in self.groups.values():
-            t = grp.name.lower()
-            t = t.replace(" ","-")
-            t = t.replace("/","")
-            print("[" + grp.mnemonics.strip() + "](#" + t + ")",
+            print("[" + grp.mnemonics.strip() + "](#" + grp.anchor + ")",
                   file=f)
 
         for grp in self.groups.values():
@@ -111,16 +117,15 @@ class Cpu65c02:
             print("###",grp.name,file=f)
             print(file=f)
             print("```text",file=f)
-            for i in range(0,len(self.column_names)):
-                print(self.column_names[i].ljust(self.colum_width[i]), end=" ", file=f)
+            for i in range(0,len(column_names)):
+                print(column_names[i].ljust(column_width[i]), end=" ", file=f)
             print(file=f)
             for op in grp.opcodes:
                 # print("$" + op.opcode,op.flags,op.bytes,op.cycles,op.mnemonic,op.address_mode)
-                print(self.address_modes[op.address_mode].name.ljust(self.colum_width[0]),
-                    (op.mnemonic + " " + self.address_modes[op.address_mode].example).ljust(self.colum_width[1]),
-                    "$" + op.opcode,
-                    " " + op.bytes + " ",
-                    op.cycles.rjust(4) + "  ",
+                print((op.mnemonic + " " + self.address_modes[op.address_mode].example).ljust(column_width[0]),
+                    ("$" + op.opcode).ljust(column_width[1]),
+                    op.bytes.ljust(column_width[2]),
+                    op.cycles.rjust(4).ljust(column_width[3]),
                     op.flags,file=f)
             print("```",file=f)
             print(file=f)
