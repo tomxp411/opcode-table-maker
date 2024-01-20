@@ -20,6 +20,7 @@ class Opcode65C02:
         self.bytes = ""
         self.cycles = ""
         self.flags = ""
+        self.comment = ""
         self.valid = False 
 
 
@@ -38,6 +39,8 @@ class Opcode65C02:
         self.bytes = parts[4].strip()
         self.cycles = parts[5].strip()
         self.flags = parts[6].strip()
+        if len(parts) > 7:
+            self.comment = parts[7].strip()
         
         m = self.address_modes[self.address_mode]
         self.syntax = self.mnemonic + " " + m.example

@@ -50,48 +50,40 @@ class Cpu65c02:
         f = open(self.opcode_file,"r")
         for line in f:
             line_number += 1
-
-            line = line.strip()
-            parts = line.split(",")
-
-            # skip header line
-            if len(parts) < 2:
-                pass 
-            tt = parts[0].lower()
             
+            parts = [line]
+            tt = ""
+            # ! lines are CSV
+            if line.startswith("!"):
+                parts = line.split(",")
+                tt = parts[0][1:].lower().strip()
+
             # Category
             # can be c,Name or
             # c,Name,OpcodeGroup,Description
             if tt == "c":
-                name = parts[1]
-                if not name in self.categories:
+                # category
+                val = parts[1]
+                if not val in self.categories:
                     cat = Group65C02()
-                    cat.name = name 
-                    self.categories[name] = cat
+                    cat.name = val 
+                    self.categories[val] = cat
                 else:
-                    cat = self.categories[name]
+                    cat = self.categories[val]
+                # Mnemonic
                 if len(parts) > 2:
-                    name = parts[2]
-                    if not name in self.groups:
+                    val = parts[2]
+                    if not val in self.groups:
                         grp = Group65C02()
-                        grp.name = name 
-                        self.groups[name] = grp
+                        grp.name = val 
+                        self.groups[val] = grp
                     else:
-                        grp = self.groups[name]
+                        grp = self.groups[val]
+                # Description
                 if len(parts) > 3:
                     grp.description = parts[3]
 
-            # opcode group (ADC, SBC, AND)
-            elif tt == "g":
-                name = parts[1]
-                if not name in self.groups:
-                    grp = Group65C02()
-                    grp.name = name 
-                    self.groups[name] = grp
-                else:
-                    grp = self.groups[name]
-
-            # single opcode
+            # Opcode/Instruction
             elif tt == "o":
                 op = Opcode65C02(line)
                 op.group_name = grp.name
@@ -99,9 +91,9 @@ class Cpu65c02:
                 self.opcodes[op.opcode] = op
                 grp.opcodes.append(op)
                 cat.opcodes.append(op)
-            # text describing instructions
-            elif tt == "t":
+            else:
                 grp.add_comment(line)
+
         f.close()
 
         for g in self.groups.values():
@@ -115,6 +107,7 @@ class Cpu65c02:
 
         f = open(self.output_table,"w")
         print("## Opcodes By Number",file=f)
+        print(file=f)
 
         #header
         print("|" + " ".ljust(col_width),file=f,end="")
@@ -157,17 +150,23 @@ class Cpu65c02:
             print("|" + "-".rjust(col_width,"-"),file=f,end="")
         print("|", file=f)
 
+        ocbn = {}
+        for key,val in self.opcodes.items():
+            if not val.mnemonic in ocbn:
+                ocbn[val.mnemonic] = val
+        ocs = sorted(ocbn)
+
         last = ""
         n = 0
-        for oc in self.opcodes.values():
-            t = oc.mnemonic.strip()
+        for key in ocs:
+            oc = ocbn[key]
+            t = oc.mnemonic
             skip = False
-
             if len(t) == 4:
                 t=t[0:3]+"x"                
-
             if t == last:
                 skip = True
+            last=t
 
             if not skip:
                 print("| [" + t + "](#" + self.groups[oc.group_name].anchor + ") ",
@@ -176,7 +175,6 @@ class Cpu65c02:
                 if n > column_count - 1:
                     print("|",file=f)
                     n = 0
-            last=t
 
         if n != column_count - 1:
             print("|",file=f)
@@ -220,43 +218,64 @@ class Cpu65c02:
                         print("|".ljust(col_width),end="",file=f)
                         n = 0
                 last=t
-        
-            print(file=f)
-
-        if n != column_count - 1:
             print("|",file=f)
 
         # Details
         column_names = ["SYNTAX","MODE","HEX","LEN","CYCLES","FLAGS"]
         column_width = [12,      14,     4,    4,    7,       8]
         
-        keys = []
+        groups_sorted = []
         for key in self.groups:
-            keys.append(key)
-        keys=sorted(keys)
+            groups_sorted.append(key)
+        groups_sorted=sorted(groups_sorted)
         
-        for key in keys:
+        layout = 1
+        # layout = 2
+
+        for key in groups_sorted:
             grp = self.groups[key]
             print(file=f)
             #print("###",grp.name,"("+grp.mnemonics.strip()+")",file=f)
             print("###",grp.name,file=f)
-            print(grp.description,file=f)
-            print("```text",file=f)
-            for i in range(0,len(column_names)):
-                print(column_names[i].ljust(column_width[i]), end=" ", file=f)
             print(file=f)
+            print(grp.description,file=f)
+            print(file=f)
+            if layout == 1:
+                print("```text",file=f)
+                for i in range(0,len(column_names)):
+                    print(column_names[i].ljust(column_width[i]), end=" ", file=f)
+                print(file=f)
+            else:
+                for i in range(0,len(column_names)):
+                    #print(column_names[i].ljust(column_width[i]), end=" ", file=f)
+                    print("|",column_names[i].ljust(column_width[i]),end=" ",file=f)
+                print("|",file=f)
+                for i in range(0,len(column_names)):
+                    #print(column_names[i].ljust(column_width[i]), end=" ", file=f)
+                    print("|","".ljust(column_width[i],"-"),end=" ",file=f)
+                print("|",file=f)
             for op in grp.opcodes:
-                # print("$" + op.opcode,op.flags,op.bytes,op.cycles,op.mnemonic,op.address_mode)
-                print(op.syntax.ljust(column_width[0]),
-                    op.address_mode_name.ljust(column_width[1]),
-                    ("$" + op.opcode).ljust(column_width[2]),
-                    op.bytes.rjust(2).ljust(column_width[3]),
-                    op.cycles.ljust(2).rjust(4).ljust(column_width[4]),
-                    op.flags,file=f)
-            print("```",file=f)
+                if layout == 1:
+                    # print("$" + op.opcode,op.flags,op.bytes,op.cycles,op.mnemonic,op.address_mode)
+                    print(op.syntax.ljust(column_width[0]),
+                        op.address_mode_name.ljust(column_width[1]),
+                        ("$" + op.opcode).ljust(column_width[2]),
+                        op.bytes.rjust(2).ljust(column_width[3]),
+                        op.cycles.ljust(2).rjust(4).ljust(column_width[4]),
+                        op.flags,op.comment,file=f)
+                else:
+                    print("|",op.syntax.ljust(column_width[0]),end=" ",file=f)
+                    print("|",op.address_mode_name.ljust(column_width[1]),end=" ",file=f)
+                    print("|",("$" + op.opcode).ljust(column_width[2]),end=" ",file=f)
+                    print("|",op.bytes.rjust(2).ljust(column_width[3]),end=" ",file=f)
+                    print("|",op.cycles.ljust(2).rjust(4).ljust(column_width[4]),end=" ",file=f)
+                    print("|",op.flags,op.comment,end=" ",file=f)
+                    print("|",file=f)
+            if layout == 1:
+                print("```",file=f)
             print(file=f)
             for c in grp.comments:
-                 print(c,"<br/>",file=f)
+                print(c,file=f)
             print(file=f)
             print("---", file=f)
             print("[top](#)",file=f)

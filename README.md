@@ -1,64 +1,50 @@
 # Opcode Table Maker
 
-## Description 
+## Description
 
 OTM helps create tabular views of CPU opcodes, starting with a standard tex-delimited table.
 
-For example: 
+Input Format:
 
-```
-Group , Opcode , Mnemonic , Operand , Address Mode , Bytes , Time , Flags    
-LOAD  , $01    , LOAD     , A,Addr  , Memory       , 3     , 7    , N------Z 
-      , $02    , LOAD     , B,Addr  , Memory       , 3     , 7    , N------Z
-      , $11    , LOAD     , A,HL    , Indirect     , 3     , 7    , N------Z
-#Load a register from memory
-#Sets N flag to bit 7
-#Sets Z flag if loaded data is zero, Clears Z flag if data is non-zero
-#
-# HL performs an indirect read/write from the address in HL.
-# H is the high byte of the address.
-# L is the low byte of the address.
-```
+```csv
+!c,Category, Mnemonic , Short Description
+!h,Opcode , Mnemonic , Address Mode , Bytes , Time , Flags    
+!o,0x00   , LDA      , IMM          , 2     , 2    , CZ---VN
+Text description of opcode group
+Multiple lines can be added to the description.
+* Markdown features are supported in the text field.
+- Like lists, **bold**, and _italics_.
 
-The above example is a standard CSV file, with quotes wrapping a multi-line field. 
-
-Only populate Group once per opcode group. 
-
-Comments (lines starting with #) will be placed after the opcode details in the listing, as shown below.
-
-This will be converted to a Markdown table, like this:
-
-### Opcode Table
-
-| -- | -0          | -1          | -2          | -3 
-|----|-------------|-------------|-------------|----                                                                  
-| 0- | BRK         | LOAD A,ADDR | LOAD B,ADDR | ...
-| 1- |             | LOAD A,HL   | ...         | ...
-
-It also creates a detailed listing, like this:
-
-### LOAD
-
-```
-$01  N------Z  LOAD A,Addr
-$02  N------Z  LOAD B,Addr
+Use semicolon break at the end to force a line break,;
+like this.
 ```
 
-Load a register from memory<br/>
-Sets N flag to bit 7<br/>
-Sets Z flag if loaded data is zero, Clears Z flag if data is non-zero<br/>
+**Group** is used to group opcodes that have the same (or similar) names.
+For example, all LDA opcodes are in the same group. Opcodes like TAX, TAY, and
+TXA can also be grouped together, since they perform the same function, just
+with different register pairs.
 
-HL performs an indirect read/write from the address in HL.<br/>
-H is the high byte of the address.<br/>
-L is the low byte of the address.<br/>
+## Output
+
+The script generates a Markdown file with a table of instructions by name,
+instructions by category, and an alphabetical listing of instructions, with
+the address modes, sample syntax, number of bytes, execution timing, and
+flags affected.
+
+At the end of each detail table, the group's text will be printed, explaining
+the operation of the instructions.
 
 ## Merge Tokens
 
-The script creates a stand-alone MD file with the output data, as well as a merged document with other descriptive text. 
+The script creates a stand-alone MD file with the output data, as well as a
+merged document, which can contain other text.
 
-`@opcode-table` will be replaced with the text from the table view.
+Your template should be a standard Markdown file, but can include an Include
+directive to include other Markdown files.
 
-`@opcode-list` will be replaced with the text from the list view.
+`!include filename`
+
+Will include the file named _filename_.
 
 Note that the @ must be the first character on the line, and you may not have any non-whitespace characters after the merge token.
 
@@ -71,11 +57,12 @@ commonly used in home computers during the 1975-1985 era.
 ## License
 
 This product is being built for our personal use, but we are sharing with you in the hope you'll find it useful. We provide no warranty
-of any kind. 
+of any kind.
 
-Please read [License.md]. This is open source software, and you can use it for your own projects. 
+Please read [License.md]. This is open source software, and you can use it for your own projects.
 Factual data on this repository (ie: opcode listings) cannot be Copyrighted under US law and so are Public Domain.
 All Copyright notices must be preserved in derivative versions, as follows:
 
-(c) 2024 Tom Wilson, Tim Soderson
-Contact: wilsontp@gmail.com 
+(c) 2024 Tom Wilson, Tim Soderson  
+Contact: [wilsontp@gmail.com](wilsontp@gmail.com) or file an Issue on the repo
+here.

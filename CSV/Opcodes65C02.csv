@@ -1,318 +1,651 @@
-h,Opcode,Mnemonic,Addr Mode,Len,Time,Flags
-c,Arithmetic,ADC,Add with Carry
-o,0x69,ADC,IMM,2,2,CZidbVN
-o,0x65,ADC,ZP,2,3,CZidbVN
-o,0x75,ADC,ZPX,2,4,CZidbVN
-o,0x6d,ADC,ABS,3,4,CZidbVN
-o,0x7d,ADC,ABSX,3,4,CZidbVN
-o,0x79,ADC,ABSY,3,4,CZidbVN
-o,0x61,ADC,INDX,2,6,CZidbVN
-o,0x71,ADC,INDY,2,5,CZidbVN
-o,0x72,ADC,ZPI,2,5,CZidbVN
-t,Add a number to the accumulator. 
-t,Result is stored in A 
-t,
-t,This is an 8-bit add. Use the Carry (C) or Overflow (V) flags to determine
-t,whether the result was too large for an 8 bit number. 
-t,
-t,"If C is set before operation, then 1 will be added to the result."
-t, 
-t,C is set when result is more than 255 ($FF)
-t,Z is set when result is zero
-t,V is set when signed result crosses -128/+127
-t,N is set when result is negative (bit 7=1)
+!h,Opcode,Mnemonic,Addr Mode,Len,Time,Flags,Notes
+!c,Arithmetic,ADC,Add with Carry
+!o,0x69,ADC,IMM,2,2,CZ---VN
+!o,0x65,ADC,ZP,2,3,CZ---VN
+!o,0x75,ADC,ZPX,2,4,CZ---VN
+!o,0x6d,ADC,ABS,3,4,CZ---VN
+!o,0x7d,ADC,ABSX,3,4,CZ---VN
+!o,0x79,ADC,ABSY,3,4,CZ---VN
+!o,0x61,ADC,INDX,2,6,CZ---VN
+!o,0x71,ADC,INDY,2,5,CZ---VN
+!o,0x72,ADC,ZPI,2,5,CZ---VN,+c
+Add a number to the Accumulator and stores the result in A.
 
-c,Arithmetic,SBC,Subtract With Carry
-o,0xe9,SBC,IMM,2,2,CZidbVN
-o,0xe5,SBC,ZP,2,3,CZidbVN
-o,0xf5,SBC,ZPX,2,4,CZidbVN
-o,0xed,SBC,ABS,3,4,CZidbVN
-o,0xfd,SBC,ABSX,3,4,CZidbVN
-o,0xf9,SBC,ABSY,3,4,CZidbVN
-o,0xe1,SBC,INDX,2,6,CZidbVN
-o,0xf1,SBC,INDY,2,5,CZidbVN
-o,0xf2,SBC,ZPI,2,5,CZidbVN
-t,"Subtract the operand from A"
-t,"Result is in A"
-t,"If C=0 will subtract 1 more."
-t,
-t,This is an 8-bit subtract. Use the Carry (C) or Overflow (V) flags to 
-t,determine whether a borrow took place. 
-t,
-t,"If C is cleared before operation, then 1 will be subtracted from result."
-t, 
-t,C is clear when result is less than 0.
-t,Z is set when result is zero
-t,V is set when signed result crosses -128/+127
-t,N is set when result is negative (bit 7=1)
+Use the Carry (C) or Overflow (V) flags to determine whether the result was too
+large for an 8 bit number.
 
-c,Boolean,AND,Logical And
-o,0x29,AND,IMM,2,2,cZidbvN
-o,0x25,AND,ZP,2,3,cZidbvN
-o,0x35,AND,ZPX,2,4,cZidbvN
-o,0x2d,AND,ABS,3,4,cZidbvN
-o,0x3d,AND,ABSX,3,4,cZidbvN
-o,0x39,AND,ABSY,3,4,cZidbvN
-o,0x21,AND,INDX,2,6,cZidbvN
-o,0x31,AND,INDY,2,5,cZidbvN
-o,0x32,AND,ZPI,2,5,cZidbvN
-t,Bitwise AND the provided value with the accumulator.
-t,"  - Sets N (Negative) flag if the bit 7 of the result is 1, and otherewise clears it"
-t,"  - Sets Z (Zero) is the result is zero, and otherwise clears it"
+If C is set before operation, then 1 will be added to the result.
+ 
+C is set when result is more than 255 ($FF);
+Z is set when result is zero;
+V is set when signed result is too large. (Goes below -128 or above 127).;
+N is set when result is negative (bit 7=1);
 
-c,Boolean,OR,Logical OR
-o,0x09,ORA,IMM,2,2,cZidbvN
-o,0x05,ORA,ZP,2,3,cZidbvN
-o,0x15,ORA,ZPX,2,4,cZidbvN
-o,0x0d,ORA,ABS,3,4,cZidbvN
-o,0x1d,ORA,ABSX,3,4,cZidbvN
-o,0x19,ORA,ABSY,3,4,cZidbvN
-o,0x01,ORA,INDX,2,6,cZidbvN
-o,0x11,ORA,INDY,2,5,cZidbvN
-o,0x12,ORA,ZPI,2,5,cZidbvN
-t,Perform a logical OR of the given value in A 
-t,(the accumulator), storing the result in A.
-t,
-t,See [EOR](#eor) for the exclusive-OR version.
-t,  - Sets N (Negative) flag if the two's compliment value is negative
-t,  - Sets Z (Zero) flag is the value is zero
++c new for 65C02
 
-c,Boolean,EOR,Exclusive OR
-o,0x49,EOR,IMM,2,2,cZidbvN
-o,0x45,EOR,ZP,2,3,cZidbvN
-o,0x55,EOR,ZPX,2,4,cZidbvN
-o,0x4d,EOR,ABS,3,4,cZidbvN
-o,0x5d,EOR,ABSX,3,4,cZidbvN
-o,0x59,EOR,ABSY,3,4,cZidbvN
-o,0x41,EOR,INDX,2,6,cZidbvN
-o,0x51,EOR,INDY,2,5,cZidbvN
-o,0x52,EOR,ZPI,2,5,cZidbvN
+!c,Arithmetic,SBC,Subtract With Carry
+!o,0xe9,SBC,IMM,2,2,CZ---VN
+!o,0xe5,SBC,ZP,2,3,CZ---VN
+!o,0xf5,SBC,ZPX,2,4,CZ---VN
+!o,0xed,SBC,ABS,3,4,CZ---VN
+!o,0xfd,SBC,ABSX,3,4,CZ---VN
+!o,0xf9,SBC,ABSY,3,4,CZ---VN
+!o,0xe1,SBC,INDX,2,6,CZ---VN
+!o,0xf1,SBC,INDY,2,5,CZ---VN
+!o,0xf2,SBC,ZPI,2,5,CZ---VN,+c
+Subtract the operand from A and places the result in A.
 
-c,Bit Shift,ASL,Arithmetic Shift Left
-o,0x0a,ASL,ACC,1,2,CZidbvN
-o,0x06,ASL,ZP,2,5,CZidbvN
-o,0x16,ASL,ZPX,2,6,CZidbvN
-o,0x0e,ASL,ABS,3,6,CZidbvN
-o,0x1e,ASL,ABSX,3,6/7,CZidbvN
+When Carry is 0, an additional 1 is subtracted.
 
-c,Bit Shift,LSR,Logical Shift Right
-o,0x4a,LSR,ACC,1,2,cZidbvN
-o,0x46,LSR,ZP,2,5,cZidbvN
-o,0x56,LSR,ZPX,2,6,cZidbvN
-o,0x4e,LSR,ABS,3,6,cZidbvN
-o,0x5e,LSR,ABSX,3,6/7,cZidbvN
+There is no "Subtract without carry". To do that, use SEC first to set the Carry
+flag. 
 
-c,Bit Shift,ROL,Rotate Left
-o,0x2a,ROL,ACC,1,2,CZidbvN
-o,0x26,ROL,ZP,2,5,CZidbvN
-o,0x36,ROL,ZPX,2,6,CZidbvN
-o,0x2e,ROL,ABS,3,6,CZidbvN
-o,0x3e,ROL,ABSX,3,6/7,CZidbvN
-c,Bit Shift,ROR,Rotate Right
-o,0x6a,ROR,ACC,1,2,CZidbvN
-o,0x66,ROR,ZP,2,5,CZidbvN
-o,0x76,ROR,ZPX,2,6,CZidbvN
-o,0x7e,ROR,ABS,3,6,CZidbvN
-o,0x6e,ROR,ABSX,3,6/7,CZidbvN
+If D=1, subtraction is Binary Coded Decimal. If D=0 then subtraction is binary.
 
-c,Branching,Bxx,Branch Instructions
-o,0x90,BCC,REL,2,2/3,czidbvn
-o,0xB0,BCS,REL,2,2/3,czidbvn
-o,0xF0,BEQ,REL,2,2/3,czidbvn
-o,0x30,BMI,REL,2,2/3,czidbvn
-o,0xD0,BNE,REL,2,2/3,czidbvn
-o,0x10,BPL,REL,2,2/3,czidbvn
-o,0x50,BVC,REL,2,2/3,czidbvn
-o,0x70,BVS,REL,2,2/3,czidbvn
-o,0x80,BRA,REL,2,3/4,czidbvn
+C is clear when result is less than 0. (ie: Borrow took place);
+Z is set when result is zero;
+V is set when signed result goes below -128 or above 127.;
+N is set when result is negative (bit 7=1);
 
-c,Test Bit,BIT,Test Bit
-o,0x24,BIT,ZP,2,3,cZidbVN
-o,0x2c,BIT,ABS,3,4,cZidbVN
-o,0x89,BIT,IMM,2,2,cZidbvn
-o,0x34,BIT,ZPX,2,4,cZidbVN
-o,0x3c,BIT,ABSX,3,4,cZidbVN
++c new for 65C02
 
-c,Misc,Misc,Misc
-o,0x00,BRK,IMP,1,7,cziDBvn
-o,0xea,NOP,IMP,1,2,czidbvn
-o,0xdb,STP,IMP,1,3,czidbvn
-o,0xcb,WAI,IMP,1,3,czidbvn
+!c,Boolean,AND,Logical And
+!o,0x29,AND,IMM,2,2,-Z----N
+!o,0x25,AND,ZP,2,3,-Z----N
+!o,0x35,AND,ZPX,2,4,-Z----N
+!o,0x2d,AND,ABS,3,4,-Z----N
+!o,0x3d,AND,ABSX,3,4,-Z----N
+!o,0x39,AND,ABSY,3,4,-Z----N
+!o,0x21,AND,INDX,2,6,-Z----N
+!o,0x31,AND,INDY,2,5,-Z----N
+!o,0x32,AND,ZPI,2,5,-Z----N,+c
+Bitwise AND the provided value with the Accumulator.
 
-c,Flags,Flags,Set and Clear Flags
-o,0x18,CLC,IMP,1,2,Czidbvn
-o,0xd8,CLD,IMP,1,2,cziDbvn
-o,0x58,CLI,IMP,1,2,czIdbvn
-o,0xb8,CLV,IMP,1,2,czidbVn
-o,0x38,SEC,IMP,1,2,Czidbvn
-o,0xf8,SED,IMP,1,2,cziDbvn
-o,0x78,SEI,IMP,1,2,czIdbvn
+- Sets N (Negative) flag if the bit 7 of the result is 1, and otherewise
+clears it.
+- Sets Z (Zero) is the result is zero, and otherwise clears it;
 
-c,Stack,PHx,Push to stack
-o,0x48,PHA,IMP,1,3,czidbvn
-o,0x08,PHP,IMP,1,3,czidbvn
-o,0xda,PHX,IMP,1,3,czidbvn
-o,0x5a,PHY,IMP,1,3,czidbvn
+`AND #$FF` will leave A unaffected (but still set the flags).;
+`AND #$00` will clear A. 
+`AND #$0F` will clear the high nibble of A, leaving a value of $00 to $0F
+in A. 
 
-c,Stack,PLx,Pull from stack
-o,0x68,PLA,IMP,1,4,cZidbvN
-o,0x28,PLP,IMP,1,4,CZIDBVN
-o,0xfa,PLX,IMP,1,4,cZidbvN
-o,0x7a,PLY,IMP,1,4,cZidbvN
+| M | A | Result |
+|---|---|--------|
+| 0 | 0 |   0    |
+| 0 | 1 |   0    |
+| 1 | 0 |   0    |
+| 1 | 1 |   1    |
 
-Transfer,Txx,Transfer between registers
-o,0xaa,TAX,IMP,1,2,cZidbvN
-o,0x8a,TXA,IMP,1,2,cZidbvN
-o,0xa8,TAY,IMP,1,2,cZidbvN
-o,0x98,TYA,IMP,1,2,cZidbvN
-o,0xba,TSX,IMP,1,2,cZidbvN
-o,0x9a,TXS,IMP,1,2,czidbvn
++c new for 65C02
 
-c,Compare,CMP,Compare A to memory
-o,0xc9,CMP,IMM,2,2,CZidbvN
-o,0xc5,CMP,ZP,2,3,CZidbvN
-o,0xd5,CMP,ZPX,2,4,CZidbvN
-o,0xcd,CMP,ABS,3,4,CZidbvN
-o,0xdd,CMP,ABSX,3,4,CZidbvN
-o,0xd9,CMP,ABSY,3,4,CZidbvN
-o,0xc1,CMP,INDX,2,6,CZidbvN
-o,0xd1,CMP,INDY,2,5,CZidbvN
-o,0xd2,CMP,ZPI,2,5,CZidbvN
+!c,Bit Shift,ASL,Arithmetic Shift Left
+!o,0x0a,ASL,ACC,1,2,CZ----N,+c
+!o,0x06,ASL,ZP,2,5,CZ----N,+c
+!o,0x16,ASL,ZPX,2,6,CZ----N,+c
+!o,0x0e,ASL,ABS,3,6,CZ----N,+c
+!o,0x1e,ASL,ABSX,3,6/7,CZ----N,+p
+Shifts all bits to the left by one position, through the Carry bit.
 
-c,Compare,CPX,Compare X to memory
-o,0xe0,CPX,IMM,2,2,CZidbvN
-o,0xe4,CPX,ZP,2,3,CZidbvN
-o,0xec,CPX,ABS,3,4,CZidbvN
+The Carry bit is shifted into bit 0.;
+Bit 7 is shifted into Carry.;
 
-c,Compare,CPY,Compare Y to memory
-o,0xc0,CPY,IMM,2,2,CZidbvN
-o,0xc4,CPY,ZP,2,3,CZidbvN
-o,0xcc,CPY,ABS,3,4,CZidbvN
+[LSR](#lsr) works the same way, but shifts to the right, through the carry bit.
 
-c,Increment/Decrement,DEC,Decrement Value
-o,0xc6,DEC,ZP,2,5,cZidbvN
-o,0xd6,DEC,ZPX,2,6,cZidbvN
-o,0xce,DEC,ABS,3,6,cZidbvN
-o,0xde,DEC,ABSX,3,7,cZidbvN
-o,0x3a,DEC,ACC,1,2,cZidbvN
-o,0xca,DEX,IMP,1,2,cZidbvN
-o,0x88,DEY,IMP,1,2,cZidbvN
-c,IIncrement/Decrement,INC,Increment Value
-o,0xe8,INX,IMP,1,2,cZidbvN
-o,0xc8,INY,IMP,1,2,cZidbvN
-o,0xe6,INC,ZP,2,5,cZidbvN
-o,0xf6,INC,ZPX,2,6,cZidbvN
-o,0xee,INC,ABS,3,6,cZidbvN
-o,0xfe,INC,ABSX,3,7,cZidbvN
-o,0x1a,INC,ACC,1,2,cZidbvN
+[ROL](#rol) is similar, except that ROL shifts bit 7 directly into bit 0 and to
+Carry.
 
-c,Branching,JMP,Jump to new address
-o,0x4c,JMP,ABS,3,3,czidbvn
-o,0x6c,JMP,IND,3,5,czidbvn
-o,0x7c,JMP,ABSX,3,6,czidbvn
-c,Branching,JSR,Jump to subroutine
-o,0x20,JSR,ABS,3,6,czidbvn
-c,Branching,RTx,Return from Subroutine or Interrupt
-o,0x60,RTS,IMP,1,6,czidbvn
-o,0x40,RTI,IMP,1,6,czidbvn
++p Adds a cycle if ,X crosses a page boundary.;
++c New for the 65C02;
 
-c,Load
-g,Load A
-o,0xa9,LDA,IMM,2,2,cZidbvN
-o,0xa5,LDA,ZP,2,3,cZidbvN
-o,0xb5,LDA,ZPX,2,4,cZidbvN
-o,0xad,LDA,ABS,3,4,cZidbvN
-o,0xbd,LDA,ABSX,3,4,cZidbvN
-o,0xb9,LDA,ABSY,3,4,cZidbvN
-o,0xa1,LDA,INDX,2,6,cZidbvN
-o,0xb1,LDA,INDY,2,5,cZidbvN
-o,0xb2,LDA,ZPI,2,5,cZidbvN
+!c,Branch,BBRx,Branch on Bit Reset
+!o,0x0f,BBR0,ZPR,3,5,-------
+!o,0x1f,BBR1,ZPR,3,5,-------
+!o,0x2f,BBR2,ZPR,3,5,-------
+!o,0x3f,BBR3,ZPR,3,5,-------
+!o,0x4f,BBR4,ZPR,3,5,-------
+!o,0x5f,BBR5,ZPR,3,5,-------
+!o,0x6f,BBR6,ZPR,3,5,-------
+!o,0x7f,BBR7,ZPR,3,5,-------
+Branch to LABEL if bit x of zero page address is 0 where x is the number of the 
+specific bit (0-7).
 
-g,Load X
-o,0xa2,LDX,IMM,2,2,cZidbvN
-o,0xa6,LDX,ZP,2,3,cZidbvN
-o,0xb6,LDX,ZPY,2,4,cZidbvN
-o,0xae,LDX,ABS,3,4,cZidbvN
-o,0xbe,LDX,ABSY,3,4,cZidbvN
+Specific to the 65C02 (*unavailable on the 65C816*)
 
-g,Load Y
-o,0xa0,LDY,IMM,2,2,cZidbvN
-o,0xa4,LDY,ZP,2,3,cZidbvN
-o,0xb4,LDY,ZPX,2,4,cZidbvN
-o,0xac,LDY,ABS,3,4,cZidbvN
-o,0xbc,LDY,ABSX,3,4,cZidbvN
+#### Example
 
-c,Store
-g,Store A
-o,0x85,STA,ZP,2,3,czidbvn
-o,0x95,STA,ZPX,2,4,czidbvn
-o,0x8d,STA,ABS,3,4,czidbvn
-o,0x9d,STA,ABSX,3,5,czidbvn
-o,0x99,STA,ABSY,3,5,czidbvn
-o,0x81,STA,INDX,2,6,czidbvn
-o,0x91,STA,INDY,2,6,czidbvn
-o,0x92,STA,ZPI,2,5,czidbvn
+```asm
+  check_flag:
+    BBR3 zeropage_flag, flag_not_set
+  flag_set:
+    NOP
+    ...
+  flag_not_set:
+    NOP
+    ...
+```
+The above BBR3 looks at value in zeropage_flag (here it's a label to an actual
+zero page address) and if bit 3 of the value is *zero* the branch would be
+taken to `@flag_not_set`.
 
-g,Store X
-o,0x86,STX,ZP,2,3,czidbvn
-o,0x96,STX,ZPY,2,4,czidbvn
-o,0x8e,STX,ABS,3,4,czidbvn
+!c,Branch,BBSx,Branch on Bit Set
+!o,0x8f,BBS0,ZPR,3,5,-------
+!o,0x9f,BBS1,ZPR,3,5,-------
+!o,0xaf,BBS2,ZPR,3,5,-------
+!o,0xbf,BBS3,ZPR,3,5,-------
+!o,0xcf,BBS4,ZPR,3,5,-------
+!o,0xdf,BBS5,ZPR,3,5,-------
+!o,0xef,BBS6,ZPR,3,5,-------
+!o,0xff,BBS7,ZPR,3,5,-------
 
-g,Store Y
-o,0x84,STY,ZP,2,3,czidbvn
-o,0x94,STY,ZPX,2,4,czidbvn
-o,0x8c,STY,ABS,3,4,czidbvn
+Branch to LABEL if bit x of zero page address is 1 where x is the number 
+of the specific bit (0-7).
 
-g,Store Z
-o,0x64,STZ,ZP,2,3,czidbvn
-o,0x74,STZ,ZPX,2,4,czidbvn
-o,0x9c,STZ,ABS,3,4,czidbvn
-o,0x9E,STZ,ABSX,3,5,czidbvn
+Specific to the 65C02 (*unavailable on the 65C816*)
 
-c,Branch
-g,Branch on Bit Reset
-o,0x0f,BBR0,ZPR,3,5,czidbvn
-o,0x1f,BBR1,ZPR,3,5,czidbvn
-o,0x2f,BBR2,ZPR,3,5,czidbvn
-o,0x3f,BBR3,ZPR,3,5,czidbvn
-o,0x4f,BBR4,ZPR,3,5,czidbvn
-o,0x5f,BBR5,ZPR,3,5,czidbvn
-o,0x6f,BBR6,ZPR,3,5,czidbvn
-o,0x7f,BBR7,ZPR,3,5,czidbvn
+#### Example (ca65)
 
-g,Branch on Bit Set
-o,0x8f,BBS0,ZPR,3,5,czidbvn
-o,0x9f,BBS1,ZPR,3,5,czidbvn
-o,0xaf,BBS2,ZPR,3,5,czidbvn
-o,0xbf,BBS3,ZPR,3,5,czidbvn
-o,0xcf,BBS4,ZPR,3,5,czidbvn
-o,0xdf,BBS5,ZPR,3,5,czidbvn
-o,0xef,BBS6,ZPR,3,5,czidbvn
-o,0xff,BBS7,ZPR,3,5,czidbvn
+```
+  @check_flag:
+    BBS3 zeropage_flag, @flag_set
+  @flag_not_set:
+    NOP
+    ...
+  @flag_set:
+    NOP
+    ...
+```
 
-c,Memory Bit Operations
-g,Reset Memory Bit
-o,0x07,RMB0,ZP,2,5,czidbvn
-o,0x17,RMB1,ZP,2,5,czidbvn
-o,0x27,RMB2,ZP,2,5,czidbvn
-o,0x37,RMB3,ZP,2,5,czidbvn
-o,0x47,RMB4,ZP,2,5,czidbvn
-o,0x57,RMB5,ZP,2,5,czidbvn
-o,0x67,RMB6,ZP,2,5,czidbvn
-o,0x77,RMB7,ZP,2,5,czidbvn
+The above BBR3 looks at value in zeropage_flag (here it's a label to an actual
+zero page address) and if bit 3 of the value is *zero* the branch would be
+taken to `@flag_set`.
 
-g,Set Memory Bit
-o,0x87,SMB0,ZP,2,5,czidbvn
-o,0x97,SMB1,ZP,2,5,czidbvn
-o,0xa7,SMB2,ZP,2,5,czidbvn
-o,0xb7,SMB3,ZP,2,5,czidbvn
-o,0xc7,SMB4,ZP,2,5,czidbvn
-o,0xd7,SMB5,ZP,2,5,czidbvn
-o,0xe7,SMB6,ZP,2,5,czidbvn
-o,0xf7,SMB7,ZP,2,5,czidbvn
+!c,Test Bit,BIT,Test Bit
+!o,0x24,BIT,ZP,2,3,-Z---VN
+!o,0x2c,BIT,ABS,3,4,-Z---VN
+!o,0x89,BIT,IMM,2,2,-Z-----
+!o,0x34,BIT,ZPX,2,4,-Z---VN
+!o,0x3c,BIT,ABSX,3,4,-Z---VN
+- Sets Z (Zero) flag based on an AND of value provided to the Accumulator.
+- Sets N (Negative) flag to the value of bit 7 at the provided address.
+- Sets V (Overflow) flag to the value of bit 6 at the provided addres.
 
-g,Test Reset Bit
-o,0x14,TRB,ZP,2,5,cZidbvn
-o,0x1C,TRB,ABS,3,5,cZidbvn
-o,0x04,TRB,ZP,2,5,cZidbvn
-o,0x0C,TRB,ABS,3,5,cZidbvn
+!c,Boolean,OR,Logical OR
+!o,0x09,ORA,IMM,2,2,-Z----N
+!o,0x05,ORA,ZP,2,3,-Z----N
+!o,0x15,ORA,ZPX,2,4,-Z----N
+!o,0x0d,ORA,ABS,3,4,-Z----N
+!o,0x1d,ORA,ABSX,3,4,-Z----N
+!o,0x19,ORA,ABSY,3,4,-Z----N
+!o,0x01,ORA,INDX,2,6,-Z----N
+!o,0x11,ORA,INDY,2,5,-Z----N
+!o,0x12,ORA,ZPI,2,5,-Z----N,+c
+Perform a logical OR of the given value in A 
+(the Accumulator), storing the result in A.
+
+See [EOR](#eor) for the exclusive-OR version.
+
+- Sets N (Negative) flag if the two's compliment value is negative
+- Sets Z (Zero) flag is the value is zero
+
++c new for 65C02
+
+!c,Bit Shift,LSR,Logical Shift Right
+!o,0x4a,LSR,ACC,1,2,-Z----N
+!o,0x46,LSR,ZP,2,5,-Z----N
+!o,0x56,LSR,ZPX,2,6,-Z----N
+!o,0x4e,LSR,ABS,3,6,-Z----N
+!o,0x5e,LSR,ABSX,3,6/7,-Z----N,[^2]
+
+!c,Bit Shift,ROL,Rotate Left
+!o,0x2a,ROL,ACC,1,2,CZ----N
+!o,0x26,ROL,ZP,2,5,CZ----N
+!o,0x36,ROL,ZPX,2,6,CZ----N
+!o,0x2e,ROL,ABS,3,6,CZ----N
+!o,0x3e,ROL,ABSX,3,6/7,CZ----N,[^2]
+!c,Bit Shift,ROR,Rotate Right
+!o,0x6a,ROR,ACC,1,2,CZ----N
+!o,0x66,ROR,ZP,2,5,CZ----N
+!o,0x76,ROR,ZPX,2,6,CZ----N
+!o,0x7e,ROR,ABS,3,6,CZ----N
+!o,0x6e,ROR,ABSX,3,6/7,CZ----N,[^2]
+
+!c,Branching,BRA,Branch Instructions
+!o,0x90,BCC,REL,2,2/3,-------,+p Carry Clear
+!o,0xB0,BCS,REL,2,2/3,-------,+p Carry Set
+!o,0xF0,BEQ,REL,2,2/3,-------,+p Equal: Zero bit set
+!o,0x30,BMI,REL,2,2/3,-------,+p Negative bit set
+!o,0xD0,BNE,REL,2,2/3,-------,+p Not Equal: Zero bit clear
+!o,0x10,BPL,REL,2,2/3,-------,+p Negative bit not set
+!o,0x50,BVC,REL,2,2/3,-------,+p oVerflow Clear
+!o,0x70,BVS,REL,2,2/3,-------,+p oVerflow Set
+!o,0x80,BRA,REL,2,3/4,-------,+p Always
+The branch instructions take the branch when the related flag is Set (1) or 
+Clear (0). 
+
+When combined with CMP, this is the 6502's "IF THEN" construct.
+
+```
+LDA $1234  ; Reads the value of address $1234
+CMP #$20   ; Compares it with the literal $20 (32)
+BEQ Match  ; If they are equal, move to the label "Match".
+```
+
+The operand is a _relative_ address, based on the Program Counter at the start
+of the next opcode. As a result, you can only branch 127 bytes forward or 128
+bytes back. However, most assemblers take a label or an address literal. So
+the assembled value will be computed based on the PC and the entered value.
+
+For example, if the PC is $1000, the statement `BCS $1023` will be `$B0 $21`.
+
++p: Execution takes one additional cycle when moving across a page boundary.
+
+!c,Misc,BRK,Break: Software Interrupt
+!o,0x00,BRK,IMP,1,7,---DB--
+BRK is a software interrupt. With any interrupt several things happen: 
+
+1. The Program Counter is incremented by 2 bytes. 
+2. The new PC and flags are pushed onto the stack.
+3. The B flag is set.
+4. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+5. The CPU reads the address from the NMI vector at $FFFE and jumps there.
+
+On the X16, BRK will jump out of the running program to the machine monitor. 
+You can then examine the state of the CPU registers and memory. 
+
+The B flag is used to distinguish a BRK from an NMI. An interrupt triggered by
+asserting the NMI pin does not set the B flag, and so the X16 does a warm boot
+of BASIC, rather than jumping to MONitor.
+
+!c,Misc,NOP,No Operation
+!o,0xea,NOP,IMP,1,2,-------
+NOP simply does nothing for 2 clock cycles. No registers are affected, and no
+memory reads or writes occur. This can be used to delay the clock by 2 ticks.
+
+It's also a useful way to blank out unwanted instructions in memory or in
+a machine language program on disk. By changing the byte values of the opcode
+and operands to $EA, you can effectively cancel out an instruction.
+
+!c,Misc,STP,Stop
+!o,0xdb,STP,IMP,1,3,-------,+c
+Stops (or halts) the processor and places it in a lower power state until a
+hardware reset occurs. For the X16 emulator, when the debugger is enabled 
+using the `-debug` command-line parameter, the STP instruction will break into 
+the debugger automatically.
+
+If debugging is not enabled, the emulator will prompt the user to close the 
+emulator or reset the emulation. 
+
++c New for the 65C02
+
+!c,Misc,WAI,Wait
+!o,0xcb,WAI,IMP,1,3,-------,+c
+
+Effectively stops the processor until a hardware interrupt occurs. The intterupt
+is processed immediately, and execution resumes in the Interrupt handler. 
+
+NMI, IRQ, and RST (Reset) will recover from the WAI condition.
+
+Normally, an instruction completes its operation before actually handling an 
+interrupt. But if WAI has executed, the CPU does not need to defer the
+interrupt, and so the interrupt can be handled immediately.
+
++c New for the 65C02
+
+!c,Flags,CLC,Clear Carry
+!o,0x18,CLC,IMP,1,2,C------
+Clears the Carry flag. This is useful before ADC to prevent an extra 1 during
+addition. C is also often used in KERNAL routines to alter the operation of the 
+routine or return certain information.
+
+!c,Flags,CLD,Clear Decimal Flag
+!o,0xd8,CLD,IMP,1,2,---D---
+Clears the Decimal flag. This switches the CPU back to binary operation if it
+was previously in BCD mode.
+
+!c,Flags,CLI,Clear Interrupt Disable
+!o,0x58,CLI,IMP,1,2,--I----
+Clear Interrupt disable. This allows IRQ interrupts to proceed normally. NMI
+and RST are always enabled.
+
+Use SEI to disable interrupts
+
+!c,Flags,CLV,Clear oVerflow
+!o,0xb8,CLV,IMP,1,2,-----V-
+Clear the Overflow (V) flag after an arithmetic operation, such as ADC or SBC.
+
+!c,Flags,SEC,Set Carry
+!o,0x38,SEC,IMP,1,2,C------
+Sets the Carry flag. This is used before SBC to prevent an extra subtract. C
+is also often used in KERNAL routines to alter the operation of the routine
+or return certain information.
+
+!c,Flags,SED,Set Decimal
+!o,0xf8,SED,IMP,1,2,---D---
+Sets the Decimal flag. This will put the CPU in BCD mode, which affects the
+behavior of ADC and SBC.
+
+In binary mode, adding 1 to $09 will set the Accumulator to $0F.;
+In BCD mode, adding 1 to $09 will set the Accumulator to $10.;
+
+Using BCD allows for easier conversion of binary numbers to decimal. BCD also
+allows for storing decimal numbers without loss of precision due to power-of-2
+rounding.
+
+!c,Flags,SEI,Set Interrupt Disable
+!o,0x78,SEI,IMP,1,2,--I----
+Sets or clears the Interrupt Disable flag. When I is set, the CPU will not
+execute IRQ interrupts, even if the line is asserted. Use CLI to re-enable
+interrupts.
+
+!c,Compare,CMP,Compare A to memory
+!o,0xc9,CMP,IMM,2,2,CZ----N
+!o,0xc5,CMP,ZP,2,3,CZ----N
+!o,0xd5,CMP,ZPX,2,4,CZ----N
+!o,0xcd,CMP,ABS,3,4,CZ----N
+!o,0xdd,CMP,ABSX,3,4,CZ----N
+!o,0xd9,CMP,ABSY,3,4,CZ----N
+!o,0xc1,CMP,INDX,2,6,CZ----N
+!o,0xd1,CMP,INDY,2,5,CZ----N
+!o,0xd2,CMP,ZPI,2,5,CZ----N,+c
+Compares the value in the Accumulator (A) with the given value. It sets flags
+based on subtracting A - _Value_.
+
+- Sets C (Carry) flag if the value in A is >= given value
+- Clears C (Carry) flag if the value in A is < given value
+- Sets Z (Zero) flag if the values are equal
+- Clears Z (Zero) flag if the values are not equal
+- Sets N (Negative) flag if value in A is < given value
+
+!c,Compare,CPX,Compare X to memory
+!o,0xe0,CPX,IMM,2,2,CZ----N
+!o,0xe4,CPX,ZP,2,3,CZ----N
+!o,0xec,CPX,ABS,3,4,CZ----N
+Compares the value in the X register with the given value. It sets flags
+based on subtracting X - _Value_.
+
+- Sets C (Carry) flag if the value in X is >= given value
+- Clears C (Carry) flag if the value in X is < given value
+- Sets Z (Zero) flag if the values are equal
+- Clears Z (Zero) flag if the values are not equal
+- Sets N (Negative) flag if value in X is < given value
+
++c new for 65C02
+
+!c,Compare,CPY,Compare Y to memory
+!o,0xc0,CPY,IMM,2,2,CZ----N
+!o,0xc4,CPY,ZP,2,3,CZ----N
+!o,0xcc,CPY,ABS,3,4,CZ----N
+Compares the value in the Y register with the given value. It sets flags
+based on subtracting Y - _Value_.
+
+- Sets C (Carry) flag if the value in Y is >= given value
+- Clears C (Carry) flag if the value in Y is < given value
+- Sets Z (Zero) flag if the values are equal
+- Clears Z (Zero) flag if the values are not equal
+- Sets N (Negative) flag if value in Y is < given value
+
+!c,Increment/Decrement,DEC,Decrement Value
+!o,0xc6,DEC,ZP,2,5,-Z----N
+!o,0xd6,DEC,ZPX,2,6,-Z----N
+!o,0xce,DEC,ABS,3,6,-Z----N
+!o,0xde,DEC,ABSX,3,7,-Z----N
+!o,0x3a,DEC,ACC,1,2,-Z----N
+!o,0xca,DEX,IMP,1,2,-Z----N
+!o,0x88,DEY,IMP,1,2,-Z----N
+Decrement value by one: this subtracts 1 from memory or the designated register,
+leaving the new value in its place.
+
+`DEC` with an operand operates on memory.
+
+`DEX` operates on the X register;
+`DEY` operates on the Y register;
+`DEC A` or `DEC` operates on the Accumulator. 
+
+- Sets N (Negative) flag if the two's compliment value is negative
+- Sets Z (Zero) flag is the value is zero
+
+**Example**
+
+You can peform a 16-bit DEC by chaining two DECs together, testing the low
+byte before decrementing the high byte:
+
+```
+;16 bit decrement
+      LDA Num_Low
+      BNE Dec16_1
+      DEC Num_High
+LABEL DEC Num_Low
+```
+
+!c,Boolean,EOR,Exclusive OR
+!o,0x49,EOR,IMM,2,2,-Z----N
+!o,0x45,EOR,ZP,2,3,-Z----N
+!o,0x55,EOR,ZPX,2,4,-Z----N
+!o,0x4d,EOR,ABS,3,4,-Z----N
+!o,0x5d,EOR,ABSX,3,4,-Z----N
+!o,0x59,EOR,ABSY,3,4,-Z----N
+!o,0x41,EOR,INDX,2,6,-Z----N
+!o,0x51,EOR,INDY,2,5,-Z----N
+!o,0x52,EOR,ZPI,2,5,-Z----N,+c
+
+Perform an exclusive OR of the given value in A 
+(the accumulator), storing the result in A.
+
+The exclusive OR version of [ORA](#ora).
+
+- Sets N (Negative) flag if the two's compliment value is negative
+- Sets Z (Zero) flag is the value is zero
+
+Exclusive OR returns a 1 bit for each bit that is different in the values 
+tested. It returns a 0 for each bit that is the same.
+
+`EOR #$00` has no effect on A, but still sets the Z and N flags.;
+`EOR #$FF` inverts the bits in A.;
+
+| M | A | Result |
+|---|---|--------|
+| 0 | 0 |   0    |
+| 0 | 1 |   1    |
+| 1 | 0 |   1    |
+| 1 | 1 |   0    |
+
++c new for 65C02
+
+!c,Increment/Decrement,INC,Increment Value
+!o,0xe8,INX,IMP,1,2,-Z----N
+!o,0xc8,INY,IMP,1,2,-Z----N
+!o,0xe6,INC,ZP,2,5,-Z----N
+!o,0xf6,INC,ZPX,2,6,-Z----N
+!o,0xee,INC,ABS,3,6,-Z----N
+!o,0xfe,INC,ABSX,3,7,-Z----N
+!o,0x1a,INC,ACC,1,2,-Z----N
+Increment by one: this adds 1 to memory or the designated register, leaving the
+new value in its place.
+
+- Sets N (Negative) flag if the two's compliment value is negative
+- Sets Z (Zero) flag is the value is zero
+
+`INC oper` operates on memory.;
+`INX` operates on the X register.;
+`INY` operates on the Y register.;
+`INC A` or `INC` with no operand operates on the Accumulator.;
+
+**Example**
+
+You can peform a 16-bit INC by chaining two INCs together, testing the low
+byte after incrementing it. 
+
+```
+;16 bit increment
+         INC Addr_Low
+         BNE Inc16_1
+         INC Addr_High
+Inc16_1: ...
+```
+!c,Branching,JMP,Jump to new address
+!o,0x4c,JMP,ABS,3,3,-------
+!o,0x6c,JMP,IND,3,5,-------
+!o,0x7c,JMP,ABSX,3,6,-------
+Jump to specified memory location and begin execution
+from this point.
+
+Note for indirect jumps: The CPU does not correctly retrieve the second byte
+of the pointer from the next page, so you should never use a pointer address
+on the last byte of a page. ie: $12FE.
+
+#### (Absolute,X) and Jump Tables
+
+(Absolute,X) is an addition mode for the 65C02 and is
+commonly used for implementing jump tables.
+
+So we might have something like:
+
+```
+important_jump_table:
+  .word routine1
+  .word routine2
+...
+
+LDX #$02
+JMP (important_jump_table,x)
+```
+
+The above would jump to the address of `routine2`, and is much faster than 
+the old 6502 method of pushing the two bytes onto the stack and performing an
+RTS.
+
+!c,Load Data,LDA,Read memory to Accumulator
+!o,0xa9,LDA,IMM,2,2,-Z----N
+!o,0xa5,LDA,ZP,2,3,-Z----N
+!o,0xb5,LDA,ZPX,2,4,-Z----N
+!o,0xad,LDA,ABS,3,4,-Z----N
+!o,0xbd,LDA,ABSX,3,4,-Z----N
+!o,0xb9,LDA,ABSY,3,4,-Z----N
+!o,0xa1,LDA,INDX,2,6,-Z----N
+!o,0xb1,LDA,INDY,2,5,-Z----N
+!o,0xb2,LDA,ZPI,2,5,-Z----N,+c
+Place the given value from memory into the accumulator (A).
+
+- Sets N (Negative) flag if the two's compliment value is negative
+- Sets Z (Zero) flag is the value is zero
+
++c New for the 65C02;
+
+!c,Load Data,LDX,Read memory to X Index Register
+!o,0xa2,LDX,IMM,2,2,-Z----N
+!o,0xa6,LDX,ZP,2,3,-Z----N
+!o,0xb6,LDX,ZPY,2,4,-Z----N
+!o,0xae,LDX,ABS,3,4,-Z----N
+!o,0xbe,LDX,ABSY,3,4,-Z----N
+
+!c,Load Data,LDY,Read memory to Y Index Register
+!o,0xa0,LDY,IMM,2,2,-Z----N
+!o,0xa4,LDY,ZP,2,3,-Z----N
+!o,0xb4,LDY,ZPX,2,4,-Z----N
+!o,0xac,LDY,ABS,3,4,-Z----N
+!o,0xbc,LDY,ABSX,3,4,-Z----N
+
+
+
+!c,Branching,JSR,Jump to Subroutine
+!o,0x20,JSR,ABS,3,6,-------
+Stores the address of the Program Counter to the stack.;
+Jump to specified memory location and begin execution from this point.;
+
+This is used to run subroutines in user programs, as well as running KERNAL
+routines. RTS is used at the end of the routine to return to the instruction
+immediately after the JSR.
+
+Be careful to always match JSR and RTS, as imbalanced JSR/RTS operations will
+either overflow or underflow the stack.
+
+!c,Branching,RTS,Return from Subroutine
+!o,0x60,RTS,IMP,1,6,-------
+Typically used at the end of a subroutine. It jumps 
+back to the address after the [JSR](#jsr) that called it
+by popping the top 2 bytes off the stack and transferring
+control to that address +1.
+
+!c,Branching,RTI,Return from Interrupt
+!o,0x40,RTI,IMP,1,6,-------
+Return from an interrupt by popping three values off the stack.
+The first is for the status register (P) followed by the two bytes of the 
+program counter.
+
+Note that unlike [RTS](#rts), the popped address is the actual
+return address (rather than address-1).
+
+!c,Stack,PHx,Push to stack
+!o,0x48,PHA,IMP,1,3,-------
+!o,0x08,PHP,IMP,1,3,-------
+!o,0xda,PHX,IMP,1,3,-------
+!o,0x5a,PHY,IMP,1,3,-------
+
+!c,Stack,PLx,Pull from stack
+!o,0x68,PLA,IMP,1,4,-Z----N
+!o,0x28,PLP,IMP,1,4,CZIDBVN
+!o,0xfa,PLX,IMP,1,4,-Z----N
+!o,0x7a,PLY,IMP,1,4,-Z----N
+
+!c,Transfer,Txx,Transfer between registers
+!o,0xaa,TAX,IMP,1,2,-Z----N
+!o,0x8a,TXA,IMP,1,2,-Z----N
+!o,0xa8,TAY,IMP,1,2,-Z----N
+!o,0x98,TYA,IMP,1,2,-Z----N
+!o,0xba,TSX,IMP,1,2,-Z----N
+!o,0x9a,TXS,IMP,1,2,-------
+
+!c,Store Data,STA,Store Accumulator contents to memory
+!o,0x85,STA,ZP,2,3,-------
+!o,0x95,STA,ZPX,2,4,-------
+!o,0x8d,STA,ABS,3,4,-------
+!o,0x9d,STA,ABSX,3,5,-------
+!o,0x99,STA,ABSY,3,5,-------
+!o,0x81,STA,INDX,2,6,-------
+!o,0x91,STA,INDY,2,6,-------
+!o,0x92,STA,ZPI,2,5,-------,+c
+
++c new for 65C02
+
+!c,Store Data,STX,Save X Index Register contents to memory
+!o,0x86,STX,ZP,2,3,-------
+!o,0x96,STX,ZPY,2,4,-------
+!o,0x8e,STX,ABS,3,4,-------
+
+!c,Store Data,STY,Save Y Index Register contents to memory
+!o,0x84,STY,ZP,2,3,-------
+!o,0x94,STY,ZPX,2,4,-------
+!o,0x8c,STY,ABS,3,4,-------
+
+!c,Store Data,STZ,Set memory to zero
+!o,0x64,STZ,ZP,2,3,-------
+!o,0x74,STZ,ZPX,2,4,-------
+!o,0x9c,STZ,ABS,3,4,-------
+!o,0x9E,STZ,ABSX,3,5,-------
+
+!c,Bit Operations,RMBx,Memory Bit Operations
+!o,0x07,RMB0,ZP,2,5,-------
+!o,0x17,RMB1,ZP,2,5,-------
+!o,0x27,RMB2,ZP,2,5,-------
+!o,0x37,RMB3,ZP,2,5,-------
+!o,0x47,RMB4,ZP,2,5,-------
+!o,0x57,RMB5,ZP,2,5,-------
+!o,0x67,RMB6,ZP,2,5,-------
+!o,0x77,RMB7,ZP,2,5,-------
+
+!c,Bit Operations,SMBx,Set Memory Bit
+!o,0x87,SMB0,ZP,2,5,-------
+!o,0x97,SMB1,ZP,2,5,-------
+!o,0xa7,SMB2,ZP,2,5,-------
+!o,0xb7,SMB3,ZP,2,5,-------
+!o,0xc7,SMB4,ZP,2,5,-------
+!o,0xd7,SMB5,ZP,2,5,-------
+!o,0xe7,SMB6,ZP,2,5,-------
+!o,0xf7,SMB7,ZP,2,5,-------
+
+!c,Test Bit,TRB,Test and reset bit
+!o,0x14,TRB,ZP,2,5,-Z-----
+!o,0x1C,TRB,ABS,3,5,-Z-----
+!o,0x04,TRB,ZP,2,5,-Z-----
+!o,0x0C,TRB,ABS,3,5,-Z-----
