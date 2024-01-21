@@ -7,6 +7,8 @@ from .Group65C02 import *
 from .Address_Modes import *
 
 class Cpu65c02:
+    INCLUDE_TOKEN = "!include "
+
     def __init__(self):
         #internal variables 
         self.last_group=""
@@ -15,7 +17,7 @@ class Cpu65c02:
         self.opcode_file="CSV/Opcodes65C02.csv"
         self.output_table="Output/table_65C02.md"
         self.output_list="Output/list_65C02.md"
-        self.output_merged="Output/Opcodes_65C02.md"
+        self.output_merged="Output/CPU_6502.md"
 
         # Categories of instructions (Arithmetic, Test, Branch, Jump)
         self.categories = {}
@@ -27,13 +29,7 @@ class Cpu65c02:
         self.address_modes = Address_Modes()
         self.init_address_modes()
 
-    def merge(self, 
-              template_file=None, 
-              opcode_file=None, 
-              output_table=None,
-              output_list=None,
-              output_merged=None):
-        
+    def generate_tables(self):
         self.load_csv()
 
     # read the CPU opcodes from the CSV file
@@ -41,7 +37,7 @@ class Cpu65c02:
     # Group,opcode,mnemonic,address mode,bytes,cycles,flags
     # or 
     # #Descriptive text 
-    def load_csv(self):
+    def load_csv(self, output_file=None):
         line_number = 0
         cat = Group65C02()
         grp = Group65C02()
@@ -298,3 +294,33 @@ class Cpu65c02:
         self.address_modes.add("IMP",  "Implied", "")
         self.address_modes.add("IND",  "Indirect", "($1234)")
         self.address_modes.add("ZPY",  "Zero Page,Y", "$12,Y")
+
+    def merge(self,
+              template_filename = None,
+              output_filename = None):
+        
+        if template_filename:
+            self.template_file = template_filename
+        if output_filename:
+            self.output_merged = output_filename
+
+        lines = []
+        ftemplate = open(self.template_file,"r")
+        for tline in ftemplate:
+            if tline.startswith(self.INCLUDE_TOKEN):
+                self.include(tline[len(self.INCLUDE_TOKEN):].strip(), 
+                             lines)
+            else:
+                lines.append(tline)
+        ftemplate.close()
+
+        foutput = open(self.output_merged,"w")
+        for line in lines:
+            foutput.write(line)
+        foutput.close()
+
+    def include(self, filename:str, lines:list):
+        finclude = open(filename,"r")
+        for line in finclude:
+            lines.append(line)
+        finclude.close()

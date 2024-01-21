@@ -11,6 +11,8 @@ class Group65C02:
         text = text.strip("\r\n")
         if text.endswith(";"):
             text=text[:len(text)-1] + "<br/>"
+        if len(text.strip()) == 0:
+            text = text.strip()
         self.comments.append(text)
 
     def add_mnemonic(self, text):

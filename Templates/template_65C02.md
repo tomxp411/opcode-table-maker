@@ -1,27 +1,24 @@
 # Appendix C: The 65C02 Processor
 
-This is not meant to be a complete manual on the 65C02 processor, though is meant 
-to serve as a convenient quick reference. Much of this information comes from
-6502.org and pagetable.com. It is been placed here for convenience though further
-information can be found at those (and other) sources.
-
-## Possible 65C816 Support Compatibilty
-
-The Commander X16 may be upgraded at some point to use the WDC 65C816 CPU.
-The 65C816 is mostly compatible with the 65C02, except for 4 instructions 
-(`BBRx`, `BBSx`, `RMBx`, and `SMBx`).
-
-As a result, we recommend *not* using the BBR, BBS, RMB and SMB instructions,
-as these may become invalid in future versions of the Commander X16.
-
-These instructions are *not* supported on the Commander X16 as of the R47
-release.
+This is not meant to be a complete manual on the 65C02 processor, though is
+meant to serve as a convenient quick reference. Much of this information comes
+from 6502.org and pagetable.com. It is been placed here for convenience though
+further information can be found at those (and other) sources.
 
 ## Overview
 
 The WDC65C02 CPU is a modern version of the MOS6502 with a few additional
 instructions and addressing modes and is capable of running at up to 14 MHz. On
 the Commander X16, it is clocked at 8 MHz.
+
+## A note about 65C816 Compatibilty
+
+The Commander X16 may be upgraded at some point to use the WDC 65C816 CPU.
+The 65C816 is mostly compatible with the 65C02, except for 4 instructions
+(`BBRx`, `BBSx`, `RMBx`, and `SMBx`).
+
+These instructions are *not* supported on the Commander X16 as of the R47
+release and will generate an error when used in the emulator.
 
 ## Instruction Tables
 
@@ -31,7 +28,7 @@ the Commander X16, it is clocked at 8 MHz.
 
 Flags are stored in the P register. PHP and PLP can be used
 to directly manipulate this register. Otherwise the flags
-are used to indicate certain statuses and changed by 
+are used to indicate certain statuses and changed by
 various instructions.
 
 P-Register:
@@ -103,14 +100,14 @@ that does not have macro support with small changes.
 
 ## Further Reading
 
-* <http://www.6502.org/tutorials/6502opcodes.html>
-* <http://6502.org/tutorials/65c02opcodes.html>
-* <https://www.pagetable.com/c64ref/6502/?cpu=65c02>
-* <http://www.oxyron.de/html/opcodesc02.html>
-* <https://www.nesdev.org/wiki/Status_flags>
-* <https://skilldrick.github.io/easy6502/>
-* <https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf>
-* <https://www.westerndesigncenter.com/wdc/documentation/w65c816s.pdf>
+- <http://www.6502.org/tutorials/6502opcodes.html>
+- <http://6502.org/tutorials/65c02opcodes.html>
+- <https://www.pagetable.com/c64ref/6502/?cpu=65c02>
+- <http://www.oxyron.de/html/opcodesc02.html>
+- <https://www.nesdev.org/wiki/Status_flags>
+- <https://skilldrick.github.io/easy6502/>
+- <https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf>
+- <https://www.westerndesigncenter.com/wdc/documentation/w65c816s.pdf>
 
 [^1]: Add 1 cycle if a page boundary is crossed  
 [^2]: Add 1 cycle if branch is taken on the same page, or 2 if it's taken to
