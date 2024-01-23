@@ -17,7 +17,7 @@ class Cpu65c02:
         self.opcode_file="CSV/Opcodes65C02.csv"
         self.output_table="Output/table_65C02.md"
         self.output_list="Output/list_65C02.md"
-        self.output_merged="Output/CPU_6502.md"
+        self.output_merged="Output/X16 Reference - Appendix C - 65C02 Processor.md"
 
         # Categories of instructions (Arithmetic, Test, Branch, Jump)
         self.categories = {}
