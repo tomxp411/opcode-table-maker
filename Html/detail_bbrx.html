@@ -1,0 +1,130 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: BBRx</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Branch on Bit Reset</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>BBR0 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$0F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR1 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$1F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR2 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$2F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR3 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$3F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR4 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$4F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR5 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$5F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR6 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$6F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>BBR7 $12,$1234</td>
+        <td>ZP Relative</td>
+        <td>$7F</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Branch to LABEL if bit x of zero page address is 0 where x is the number of the
+      specific bit (0-7).
+    </p>
+    <p>Specific to the 65C02 (*unavailable on the 65C816*)</p>
+    <p>#### Example</p>
+    <p>
+      ```asm
+        check_flag:
+          BBR3 zeropage_flag, flag_not_set
+        flag_set:
+          NOP
+          ...
+        flag_not_set:
+          NOP
+          ...
+      ```
+    </p>
+    <p>
+      The above BBR3 looks at value in zeropage_flag (here it's a label to an actual
+      zero page address) and if bit 3 of the value is *zero* the branch would be
+      taken to `@flag_not_set`.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

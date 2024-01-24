@@ -1,0 +1,85 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: PHA</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Push to stack</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>PHA </td>
+        <td>Implied</td>
+        <td>$48</td>
+        <td class='number'>1</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>PHP </td>
+        <td>Implied</td>
+        <td>$08</td>
+        <td class='number'>1</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>PHX </td>
+        <td>Implied</td>
+        <td>$DA</td>
+        <td class='number'>1</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>PHY </td>
+        <td>Implied</td>
+        <td>$5A</td>
+        <td class='number'>1</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>Pushes a register to the stack.</p>
+    <p>
+      This instruction copies the value in the affected register to the address
+      of the stack pointer, then moves the stack pointer downward by one byte.
+    </p>
+    <p>
+      Be careful to match Push and Pull operations so that you don't accidentally
+      overflow or underflow the stack.
+    </p>
+    <p>PHP pushes the Flags, also called P for Program Status Register.</p>
+    <p>
+      The corresponding "Pull" instructions are [PLA](#pla), [PHP](#pla), [PHX](#pla),
+      and [PHY](#pla).
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

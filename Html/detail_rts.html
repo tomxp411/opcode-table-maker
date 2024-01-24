@@ -1,0 +1,50 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: RTS</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Return from Subroutine</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>RTS </td>
+        <td>Implied</td>
+        <td>$60</td>
+        <td class='number'>1</td>
+        <td class='number'>6</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Typically used at the end of a subroutine. It jumps
+      back to the address after the [JSR](#jsr) that called it
+      by popping the top 2 bytes off the stack and transferring
+      control to that address +1.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

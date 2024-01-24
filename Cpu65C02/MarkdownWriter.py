@@ -1,98 +1,34 @@
 #
-# merge_65c02
+# MarkdownWriter
 # 
 
-from .Opcode65c02 import *
-from .Group65C02 import *
-from .Address_Modes import *
+from .Opcode import *
+from .Group import *
+from .CsvImport import *
+from .AddressModes import *
+from .MergeFile import *
 
-class Cpu65c02:
-    INCLUDE_TOKEN = "!include "
-
+class markdown_writer:
     def __init__(self):
         #internal variables 
         self.last_group=""
 
-        self.template_file="Templates/template_65C02.md"
+        self.template_filename="Templates/template_65C02.md"
         self.opcode_file="CSV/Opcodes65C02.csv"
         self.output_table="Output/table_65C02.md"
         self.output_list="Output/list_65C02.md"
-        self.output_merged="Output/X16 Reference - Appendix C - 65C02 Processor.md"
+        self.output_merged_filename="Output/X16 Reference - Appendix C - 65C02 Processor.md"
 
-        # Categories of instructions (Arithmetic, Test, Branch, Jump)
-        self.categories = {}
-        # Groups of instructions (add, sub, etc)
-        self.groups = {}
-        # Individual instructions
-        self.opcodes = {}
-        # Address modes: Immediate, Indirect, etc.
-        self.address_modes = Address_Modes()
-        self.init_address_modes()
+        self.cpu = None # type: cpu_model_65c02()
 
     def generate_tables(self):
-        self.load_csv()
+        csv = csv_65C02()
+        csv.load_csv(self.opcode_file)
+        self.cpu = csv.cpu
+        self.write_table()
 
-    # read the CPU opcodes from the CSV file
-    # format is:
-    # Group,opcode,mnemonic,address mode,bytes,cycles,flags
-    # or 
-    # #Descriptive text 
-    def load_csv(self, output_file=None):
-        line_number = 0
-        cat = Group65C02()
-        grp = Group65C02()
-        Opcode65C02.address_modes = self.address_modes
-        
-        f = open(self.opcode_file,"r")
-        for line in f:
-            line_number += 1
-            
-            parts = [line]
-            tt = ""
-            # ! lines are CSV
-            if line.startswith("!"):
-                parts = line.split(",")
-                tt = parts[0][1:].lower().strip()
-
-            # Category
-            # can be c,Name or
-            # c,Name,OpcodeGroup,Description
-            if tt == "c":
-                # category
-                val = parts[1]
-                if not val in self.categories:
-                    cat = Group65C02()
-                    cat.name = val 
-                    self.categories[val] = cat
-                else:
-                    cat = self.categories[val]
-                # Mnemonic
-                if len(parts) > 2:
-                    val = parts[2]
-                    if not val in self.groups:
-                        grp = Group65C02()
-                        grp.name = val 
-                        self.groups[val] = grp
-                    else:
-                        grp = self.groups[val]
-                # Description
-                if len(parts) > 3:
-                    grp.description = parts[3]
-
-            # Opcode/Instruction
-            elif tt == "o":
-                op = Opcode65C02(line)
-                op.group_name = grp.name
-                op.category_name = cat.name
-                self.opcodes[op.opcode] = op
-                grp.opcodes.append(op)
-                cat.opcodes.append(op)
-            else:
-                grp.add_comment(line)
-
-        f.close()
-
-        for g in self.groups.values():
+    def write_table(self):
+        for g in self.cpu.groups.values():
             t = g.name.lower()
             t = t.replace(" ","-")
             t = t.replace("/","")
@@ -121,9 +57,9 @@ class Cpu65c02:
             for i in range(0,16):
                 key = hex[j]+hex[i]
                 text = ""
-                if key in self.opcodes:
-                    oc=self.opcodes[key]
-                    text = "[" + oc.mnemonic + "](#" + self.groups[oc.group_name].anchor + ")"
+                if key in self.cpu.opcodes:
+                    oc=self.cpu.opcodes[key]
+                    text = "[" + oc.mnemonic + "](#" + self.cpu.groups[oc.group_name].anchor + ")"
                 print("|" + text,file=f,end="")
             print("|", file=f)
 
@@ -147,7 +83,7 @@ class Cpu65c02:
         print("|", file=f)
 
         ocbn = {}
-        for key,val in self.opcodes.items():
+        for key,val in self.cpu.opcodes.items():
             if not val.mnemonic in ocbn:
                 ocbn[val.mnemonic] = val
         ocs = sorted(ocbn)
@@ -165,7 +101,7 @@ class Cpu65c02:
             last=t
 
             if not skip:
-                print("| [" + t + "](#" + self.groups[oc.group_name].anchor + ") ",
+                print("| [" + t + "](#" + self.cpu.groups[oc.group_name].anchor + ") ",
                     file=f,end="")
                 n += 1
                 if n > column_count - 1:
@@ -190,7 +126,7 @@ class Cpu65c02:
             print("|" + "-".rjust(col_width,"-"),file=f,end="")
         print("|", file=f)
 
-        for key,cat in self.categories.items():
+        for key,cat in self.cpu.categories.items():
             print("| ",cat.name,file=f,end=" ")
 
             last = ""
@@ -206,7 +142,7 @@ class Cpu65c02:
                     skip = True
 
                 if not skip:
-                    print("| [" + t + "](#" + self.groups[oc.group_name].anchor + ") ",
+                    print("| [" + t + "](#" + self.cpu.groups[oc.group_name].anchor + ") ",
                         file=f,end="")
                     n += 1
                     if n > column_count - 1:
@@ -221,7 +157,7 @@ class Cpu65c02:
         column_width = [12,      14,     4,    4,    7,       8]
         
         groups_sorted = []
-        for key in self.groups:
+        for key in self.cpu.groups:
             groups_sorted.append(key)
         groups_sorted=sorted(groups_sorted)
         
@@ -229,7 +165,7 @@ class Cpu65c02:
         # layout = 2
 
         for key in groups_sorted:
-            grp = self.groups[key]
+            grp = self.cpu.groups[key]
             print(file=f)
             #print("###",grp.name,"("+grp.mnemonics.strip()+")",file=f)
             print("###",grp.name,file=f)
@@ -277,50 +213,3 @@ class Cpu65c02:
             print("[top](#)",file=f)
             print(file=f)
 
-    def init_address_modes(self):
-        self.address_modes.add("IMM",  "Immediate","#$12")
-        self.address_modes.add("IMM",  "Immediate","#$12")
-        self.address_modes.add("ZP",   "Zero Page","$12")
-        self.address_modes.add("ZPX",  "Zero Page,X", "$12,X")
-        self.address_modes.add("ABS",  "Absolute", "$1234")
-        self.address_modes.add("ABSX", "Absolute,X", "$1234,X")
-        self.address_modes.add("ABSY", "Absolute,Y", "$1234,Y")
-        self.address_modes.add("INDX", "Indirect,X", "($12,X)")
-        self.address_modes.add("INDY", "Indirect,Y", "($12),Y")
-        self.address_modes.add("ZPI",  "ZP Indirect", "($12)")
-        self.address_modes.add("ACC",  "Accumulator", "A")
-        self.address_modes.add("ZPR",  "ZP Relative", "$1234")
-        self.address_modes.add("REL",  "Relative", "$1234")
-        self.address_modes.add("IMP",  "Implied", "")
-        self.address_modes.add("IND",  "Indirect", "($1234)")
-        self.address_modes.add("ZPY",  "Zero Page,Y", "$12,Y")
-
-    def merge(self,
-              template_filename = None,
-              output_filename = None):
-        
-        if template_filename:
-            self.template_file = template_filename
-        if output_filename:
-            self.output_merged = output_filename
-
-        lines = []
-        ftemplate = open(self.template_file,"r")
-        for tline in ftemplate:
-            if tline.startswith(self.INCLUDE_TOKEN):
-                self.include(tline[len(self.INCLUDE_TOKEN):].strip(), 
-                             lines)
-            else:
-                lines.append(tline)
-        ftemplate.close()
-
-        foutput = open(self.output_merged,"w")
-        for line in lines:
-            foutput.write(line)
-        foutput.close()
-
-    def include(self, filename:str, lines:list):
-        finclude = open(filename,"r")
-        for line in finclude:
-            lines.append(line)
-        finclude.close()

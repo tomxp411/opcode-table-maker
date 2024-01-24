@@ -1,0 +1,49 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: SEI</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Set Interrupt Disable</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>SEI </td>
+        <td>Implied</td>
+        <td>$78</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>--I----</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Sets or clears the Interrupt Disable flag. When I is set, the CPU will not
+      execute IRQ interrupts, even if the line is asserted. Use CLI to re-enable
+      interrupts.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

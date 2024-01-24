@@ -1,0 +1,142 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: AND</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Logical And</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>AND #$12</td>
+        <td>Immediate</td>
+        <td>$29</td>
+        <td class='number'>2</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND $12</td>
+        <td>Zero Page</td>
+        <td>$25</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$35</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND $1234</td>
+        <td>Absolute</td>
+        <td>$2D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$3D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND $1234,Y</td>
+        <td>Absolute,Y</td>
+        <td>$39</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND ($12,X)</td>
+        <td>Indirect,X</td>
+        <td>$21</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND ($12),Y</td>
+        <td>Indirect,Y</td>
+        <td>$31</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>AND ($12)</td>
+        <td>ZP Indirect</td>
+        <td>$32</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p>Bitwise AND the provided value with the Accumulator.</p>
+    <p>
+      - Sets N (Negative) flag if the bit 7 of the result is 1, and otherewise
+      clears it.
+      - Sets Z (Zero) is the result is zero, and otherwise clears it<br/>
+    </p>
+    <p>
+      `AND #$FF` will leave A unaffected (but still set the flags).<br/>
+      `AND #$00` will clear A.<br/>
+      `AND #$0F` will clear the high nibble of A, leaving a value of $00 to $0F
+      in A.<br/>
+    </p>
+    <p>
+      | M | A | Result |
+      |---|---|--------|
+      | 0 | 0 |   0    |
+      | 0 | 1 |   0    |
+      | 1 | 0 |   0    |
+      | 1 | 1 |   1    |
+    </p>
+    <p>
+      **Other Boolean Instructions:**<br/>
+      [EOR](#eor) exclusive-OR<br/>
+      [ORA](#ora) bitwise OR<br/>
+    </p>
+    <p>+c new for 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

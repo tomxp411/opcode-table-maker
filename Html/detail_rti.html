@@ -1,0 +1,53 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: RTI</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Return from Interrupt</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>RTI </td>
+        <td>Implied</td>
+        <td>$40</td>
+        <td class='number'>1</td>
+        <td class='number'>6</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Return from an interrupt by popping three values off the stack.
+      The first is for the status register (P) followed by the two bytes of the
+      program counter.
+    </p>
+    <p>
+      Note that unlike [RTS](#rts), the popped address is the actual
+      return address (rather than address-1).
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

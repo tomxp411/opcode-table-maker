@@ -1,0 +1,62 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: TSB</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Test and set bit</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>TSB $12</td>
+        <td>Zero Page</td>
+        <td>$04</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z-----</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>TSB $1234</td>
+        <td>Absolute</td>
+        <td>$0C</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-Z-----</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Performs an OR with each bit in the accumulator and memory.
+      Each bit that is 1 in the Accumulator is set to 1 in memory. This is similar to
+      an ORA operation, execpt that the result is stored in memory, not in A.
+    </p>
+    <p>
+      The Z flag is set based on the final result of the operation, ie: the memory
+      data is 0.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

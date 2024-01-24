@@ -1,0 +1,94 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: ASL</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Arithmetic Shift Left</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>ASL A</td>
+        <td>Accumulator</td>
+        <td>$0A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>CZ----N</td>
+        <td>+c</td>
+      </tr>
+      <tr>
+        <td>ASL $12</td>
+        <td>Zero Page</td>
+        <td>$06</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ----N</td>
+        <td>+c</td>
+      </tr>
+      <tr>
+        <td>ASL $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$16</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>CZ----N</td>
+        <td>+c</td>
+      </tr>
+      <tr>
+        <td>ASL $1234</td>
+        <td>Absolute</td>
+        <td>$0E</td>
+        <td class='number'>3</td>
+        <td class='number'>6</td>
+        <td>CZ----N</td>
+        <td>+c</td>
+      </tr>
+      <tr>
+        <td>ASL $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$1E</td>
+        <td class='number'>3</td>
+        <td class='number'>6/7</td>
+        <td>CZ----N</td>
+        <td>+p</td>
+      </tr>
+    </table>
+    <p>Shifts all bits to the left by one position, through the Carry bit.</p>
+    <p>
+      The Carry bit is shifted into bit 0.<br/>
+      Bit 7 is shifted into Carry.<br/>
+    </p>
+    <p>
+      **Similar instructions:**<br/>
+      [LSR](#lsr) is the opposite instruction and shifts to the right, through carry.<br/>
+      [ROL](#rol) shifts from bit 7 to bit 0.<br/>
+    </p>
+    <p>
+      +p Adds a cycle if ,X crosses a page boundary.<br/>
+      +c New for the 65C02<br/>
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

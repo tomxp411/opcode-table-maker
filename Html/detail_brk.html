@@ -1,0 +1,61 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: BRK</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Break: Software Interrupt</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>BRK </td>
+        <td>Implied</td>
+        <td>$00</td>
+        <td class='number'>1</td>
+        <td class='number'>7</td>
+        <td>---DB--</td>
+        <td/>
+      </tr>
+    </table>
+    <p>BRK is a software interrupt. With any interrupt several things happen:</p>
+    <p>
+      1. The Program Counter is incremented by 2 bytes.
+      2. The new PC and flags are pushed onto the stack.
+      3. The B flag is set.
+      4. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+      5. The CPU reads the address from the NMI vector at $FFFE and jumps there.
+    </p>
+    <p>
+      On the X16, BRK will jump out of the running program to the machine monitor.
+      You can then examine the state of the CPU registers and memory.
+    </p>
+    <p>
+      The B flag is used to distinguish a BRK from an NMI. An interrupt triggered by
+      asserting the NMI pin does not set the B flag, and so the X16 does a warm boot
+      of BASIC, rather than jumping to MONitor.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

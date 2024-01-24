@@ -1,0 +1,127 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: CMP</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Compare A to memory</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>CMP #$12</td>
+        <td>Immediate</td>
+        <td>$C9</td>
+        <td class='number'>2</td>
+        <td class='number'>2</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP $12</td>
+        <td>Zero Page</td>
+        <td>$C5</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$D5</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP $1234</td>
+        <td>Absolute</td>
+        <td>$CD</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$DD</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP $1234,Y</td>
+        <td>Absolute,Y</td>
+        <td>$D9</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP ($12,X)</td>
+        <td>Indirect,X</td>
+        <td>$C1</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP ($12),Y</td>
+        <td>Indirect,Y</td>
+        <td>$D1</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CMP ($12)</td>
+        <td>ZP Indirect</td>
+        <td>$D2</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ----N</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p>
+      Compares the value in the Accumulator (A) with the given value. It sets flags
+      based on subtracting A - _Value_.
+    </p>
+    <p>
+      - Sets C (Carry) flag if the value in A is >= given value
+      - Clears C (Carry) flag if the value in A is < given value
+      - Sets Z (Zero) flag if the values are equal
+      - Clears Z (Zero) flag if the values are not equal
+      - Sets N (Negative) flag if value in A is < given value
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

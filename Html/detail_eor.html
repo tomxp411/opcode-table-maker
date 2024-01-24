@@ -1,0 +1,148 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: EOR</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Exclusive OR</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>EOR #$12</td>
+        <td>Immediate</td>
+        <td>$49</td>
+        <td class='number'>2</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR $12</td>
+        <td>Zero Page</td>
+        <td>$45</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$55</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR $1234</td>
+        <td>Absolute</td>
+        <td>$4D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$5D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR $1234,Y</td>
+        <td>Absolute,Y</td>
+        <td>$59</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR ($12,X)</td>
+        <td>Indirect,X</td>
+        <td>$41</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR ($12),Y</td>
+        <td>Indirect,Y</td>
+        <td>$51</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>EOR ($12)</td>
+        <td>ZP Indirect</td>
+        <td>$52</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p/>
+    <p>
+      Perform an exclusive OR of the given value in A
+      (the accumulator), storing the result in A.
+    </p>
+    <p>The exclusive OR version of [ORA](#ora).</p>
+    <p>
+      - Sets N (Negative) flag if the two's compliment value is negative
+      - Sets Z (Zero) flag is the value is zero
+    </p>
+    <p>
+      Exclusive OR returns a 1 bit for each bit that is different in the values
+      tested. It returns a 0 for each bit that is the same.
+    </p>
+    <p>
+      `EOR #$00` has no effect on A, but still sets the Z and N flags.<br/>
+      `EOR #$FF` inverts the bits in A.<br/>
+    </p>
+    <p>
+      | M | A | Result |
+      |---|---|--------|
+      | 0 | 0 |   0    |
+      | 0 | 1 |   1    |
+      | 1 | 0 |   1    |
+      | 1 | 1 |   0    |
+    </p>
+    <p>
+      **Other Boolean Instructions:**<br/>
+      [ORA](#ora) bitwise OR<br/>
+      [AND](#and) bitwise AND<br/>
+    </p>
+    <p>+c new for 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

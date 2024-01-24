@@ -1,0 +1,48 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: CLD</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Clear Decimal Flag</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>CLD </td>
+        <td>Implied</td>
+        <td>$D8</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>---D---</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Clears the Decimal flag. This switches the CPU back to binary operation if it
+      was previously in BCD mode.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

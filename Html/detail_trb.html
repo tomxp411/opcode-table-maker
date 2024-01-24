@@ -1,0 +1,76 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: TRB</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Test and reset bit</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>TRB $12</td>
+        <td>Zero Page</td>
+        <td>$14</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z-----</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>TRB $1234</td>
+        <td>Absolute</td>
+        <td>$1C</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-Z-----</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Effectively an inverted AND between memory and the Accumulator. The bits that
+      are 1 in the Accumulator are set to 0 in memory.
+    </p>
+    <p>- Sets Z (Zero) flag if all bits from the AND are zero.</p>
+    <p>Example:</p>
+    <p>
+      ```asm
+                ; Assume location $20 has a value of $11.
+      LDA #$01  ; Load a bit mask of 0000 0001
+      TRB $20   ; Apply the mask and reset bit 0
+                ; Location $20 now has a value of $10.
+      ```
+    </p>
+    <p>This is conceptually similar to</p>
+    <p>
+      ```asm
+      LDA #$01 ; We want to clear bit 1 of the data
+      EOR #$FF ; Invert the mask, so $01 becomes $FE (1111 1110)
+      AND $20  ; AND with memory, saving the result in .A
+      STA $20  ; Store it back to memory.
+      ```
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

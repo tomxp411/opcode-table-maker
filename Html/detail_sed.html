@@ -1,0 +1,57 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: SED</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Set Decimal</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>SED </td>
+        <td>Implied</td>
+        <td>$F8</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>---D---</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Sets the Decimal flag. This will put the CPU in BCD mode, which affects the
+      behavior of ADC and SBC.
+    </p>
+    <p>
+      In binary mode, adding 1 to $09 will set the Accumulator to $0F.<br/>
+      In BCD mode, adding 1 to $09 will set the Accumulator to $10.<br/>
+    </p>
+    <p>
+      Using BCD allows for easier conversion of binary numbers to decimal. BCD also
+      allows for storing decimal numbers without loss of precision due to power-of-2
+      rounding.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

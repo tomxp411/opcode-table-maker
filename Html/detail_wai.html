@@ -1,0 +1,56 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: WAI</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Wait</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>WAI </td>
+        <td>Implied</td>
+        <td>$CB</td>
+        <td class='number'>1</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p/>
+    <p>
+      Effectively stops the processor until a hardware interrupt occurs. The intterupt
+      is processed immediately, and execution resumes in the Interrupt handler.
+    </p>
+    <p>NMI, IRQ, and RST (Reset) will recover from the WAI condition.</p>
+    <p>
+      Normally, an instruction completes its operation before actually handling an
+      interrupt. But if WAI has executed, the CPU does not need to defer the
+      interrupt, and so the interrupt can be handled immediately.
+    </p>
+    <p>+c New for the 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

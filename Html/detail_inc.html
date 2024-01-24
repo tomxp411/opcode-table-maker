@@ -1,0 +1,126 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: INC</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Increment Value</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>INX </td>
+        <td>Implied</td>
+        <td>$E8</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>INY </td>
+        <td>Implied</td>
+        <td>$C8</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>INC $12</td>
+        <td>Zero Page</td>
+        <td>$E6</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>INC $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$F6</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>INC $1234</td>
+        <td>Absolute</td>
+        <td>$EE</td>
+        <td class='number'>3</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>INC $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$FE</td>
+        <td class='number'>3</td>
+        <td class='number'>7</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>INC A</td>
+        <td>Accumulator</td>
+        <td>$1A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Increment by one: this adds 1 to memory or the designated register, leaving the
+      new value in its place.
+    </p>
+    <p>
+      - Sets N (Negative) flag if the two's compliment value is negative
+      - Sets Z (Zero) flag is the value is zero
+    </p>
+    <p>
+      `INC oper` operates on memory.<br/>
+      `INX` operates on the X register.<br/>
+      `INY` operates on the Y register.<br/>
+      `INC A` or `INC` with no operand operates on the Accumulator.<br/>
+    </p>
+    <p>**Example**</p>
+    <p>
+      You can peform a 16-bit INC by chaining two INCs together, testing the low
+      byte after incrementing it.
+    </p>
+    <p>
+      ```asm
+      ;16 bit increment
+               INC Addr_Low
+               BNE Inc16_1
+               INC Addr_High
+      Inc16_1: ...
+      ```
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

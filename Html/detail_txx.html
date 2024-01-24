@@ -1,0 +1,101 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: Txx</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Transfer between registers</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>TAX </td>
+        <td>Implied</td>
+        <td>$AA</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td>Copy from .A to .X</td>
+      </tr>
+      <tr>
+        <td>TXA </td>
+        <td>Implied</td>
+        <td>$8A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td>Copy from .X to .A</td>
+      </tr>
+      <tr>
+        <td>TAY </td>
+        <td>Implied</td>
+        <td>$A8</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td>Copy from .A to .Y</td>
+      </tr>
+      <tr>
+        <td>TYA </td>
+        <td>Implied</td>
+        <td>$98</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td>Copy from .Y to .A</td>
+      </tr>
+      <tr>
+        <td>TSX </td>
+        <td>Implied</td>
+        <td>$BA</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td>Copy from Stack Pointer to .X</td>
+      </tr>
+      <tr>
+        <td>TXS </td>
+        <td>Implied</td>
+        <td>$9A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-------</td>
+        <td>Copy from .X to Stack Pointer</td>
+      </tr>
+    </table>
+    <p>Copies data from one register to anohter.</p>
+    <p>
+      TSX and TSX copy between the Stack Pointer and the X register. This is the only
+      way to directly control the Stack Pointer. To initialize the Stack Pointer to
+      a specific address, you can use the following instructions.
+    </p>
+    <p>
+      ```asm
+      LDX #$FF
+      TXS
+      ```
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

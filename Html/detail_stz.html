@@ -1,0 +1,72 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: STZ</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Set memory to zero</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>STZ $12</td>
+        <td>Zero Page</td>
+        <td>$64</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STZ $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$74</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STZ $1234</td>
+        <td>Absolute</td>
+        <td>$9C</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STZ $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$9E</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p/>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

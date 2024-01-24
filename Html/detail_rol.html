@@ -1,0 +1,89 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: ROL</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Rotate Left</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>ROL A</td>
+        <td>Accumulator</td>
+        <td>$2A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ROL $12</td>
+        <td>Zero Page</td>
+        <td>$26</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ROL $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$36</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ROL $1234</td>
+        <td>Absolute</td>
+        <td>$2E</td>
+        <td class='number'>3</td>
+        <td class='number'>6</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ROL $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$3E</td>
+        <td class='number'>3</td>
+        <td class='number'>6/7</td>
+        <td>CZ----N</td>
+        <td>+p</td>
+      </tr>
+    </table>
+    <p>
+      Rotate all bits to the left one position. The value in the carry (C) flag is
+      shifted into bit 0 and the original bit 7 is shifted into the carry (C).
+    </p>
+    <p>
+      [ASL](#asl) rotates _through_ the Carry flag, effectively making a 9 bit shift.<br/>
+      [ROR](#ror) rotates to the right<br/>
+    </p>
+    <p>+p add one cycle when addr + x crosses a page boundary.</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

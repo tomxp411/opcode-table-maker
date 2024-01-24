@@ -5,10 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: convert_markdown",
             "type": "python",
             "request": "launch",
-            "program": "merge.py",
+            "program": "convert_markdown.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: convert_html",
+            "type": "python",
+            "request": "launch",
+            "program": "convert_html.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

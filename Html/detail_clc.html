@@ -1,0 +1,49 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: CLC</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Clear Carry</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>CLC </td>
+        <td>Implied</td>
+        <td>$18</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>C------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Clears the Carry flag. This is useful before ADC to prevent an extra 1 during
+      addition. C is also often used in KERNAL routines to alter the operation of the
+      routine or return certain information.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

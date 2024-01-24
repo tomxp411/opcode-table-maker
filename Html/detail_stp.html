@@ -1,0 +1,55 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: STP</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Stop</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>STP </td>
+        <td>Implied</td>
+        <td>$DB</td>
+        <td class='number'>1</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p>
+      Stops (or halts) the processor and places it in a lower power state until a
+      hardware reset occurs. For the X16 emulator, when the debugger is enabled
+      using the `-debug` command-line parameter, the STP instruction will break into
+      the debugger automatically.
+    </p>
+    <p>
+      If debugging is not enabled, the emulator will prompt the user to close the
+      emulator or reset the emulation.
+    </p>
+    <p>+c New for the 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

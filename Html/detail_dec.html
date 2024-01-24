@@ -1,0 +1,126 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: DEC</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Decrement Value</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>DEC $12</td>
+        <td>Zero Page</td>
+        <td>$C6</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>DEC $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$D6</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>DEC $1234</td>
+        <td>Absolute</td>
+        <td>$CE</td>
+        <td class='number'>3</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>DEC $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$DE</td>
+        <td class='number'>3</td>
+        <td class='number'>7</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>DEC A</td>
+        <td>Accumulator</td>
+        <td>$3A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>DEX </td>
+        <td>Implied</td>
+        <td>$CA</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>DEY </td>
+        <td>Implied</td>
+        <td>$88</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Decrement value by one: this subtracts 1 from memory or the designated register,
+      leaving the new value in its place.
+    </p>
+    <p>`DEC` with an operand operates on memory.</p>
+    <p>
+      `DEX` operates on the X register<br/>
+      `DEY` operates on the Y register<br/>
+      `DEC A` or `DEC` operates on the Accumulator.
+    </p>
+    <p>
+      - Sets N (Negative) flag if the two's compliment value is negative
+      - Sets Z (Zero) flag is the value is zero
+    </p>
+    <p>**Example**</p>
+    <p>
+      You can peform a 16-bit DEC by chaining two DECs together, testing the low
+      byte before decrementing the high byte:
+    </p>
+    <p>
+      ```asm
+      ;16 bit decrement
+            LDA Num_Low
+            BNE Dec16_1
+            DEC Num_High
+      LABEL DEC Num_Low
+      ```
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

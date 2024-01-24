@@ -1,0 +1,58 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: NOP</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>No Operation</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>NOP </td>
+        <td>Implied</td>
+        <td>$EA</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      NOP simply does nothing for 2 clock cycles. No registers are affected, and no
+      memory reads or writes occur. This can be used to delay the clock by 2 ticks.
+    </p>
+    <p>
+      It's also a useful way to blank out unwanted instructions in memory or in
+      a machine language program on disk. By changing the byte values of the opcode
+      and operands to $EA, you can effectively cancel out an instruction.
+    </p>
+    <p>
+      It is also useful for adding small delays to your code. For instance, to add a
+      bit of delay when writing to the YM2151 chip (see
+      [Chapter 11 - YM Write Procedure](X16%20Reference%20-%2011%20-%20Sound%20Programming.md#vera-psg-and-pcm-programming)).
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

@@ -1,0 +1,129 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: ADC</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Add with Carry</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>ADC #$12</td>
+        <td>Immediate</td>
+        <td>$69</td>
+        <td class='number'>2</td>
+        <td class='number'>2</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC $12</td>
+        <td>Zero Page</td>
+        <td>$65</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$75</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC $1234</td>
+        <td>Absolute</td>
+        <td>$6D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$7D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC $1234,Y</td>
+        <td>Absolute,Y</td>
+        <td>$79</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC ($12,X)</td>
+        <td>Indirect,X</td>
+        <td>$61</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC ($12),Y</td>
+        <td>Indirect,Y</td>
+        <td>$71</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>ADC ($12)</td>
+        <td>ZP Indirect</td>
+        <td>$72</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ---VN</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p>Add a number to the Accumulator and stores the result in A.</p>
+    <p>
+      Use the Carry (C) or Overflow (V) flags to determine whether the result was too
+      large for an 8 bit number.
+    </p>
+    <p>If C is set before operation, then 1 will be added to the result.</p>
+    <p>
+      C is set when result is more than 255 ($FF)<br/>
+      Z is set when result is zero<br/>
+      V is set when signed result is too large. (Goes below -128 or above 127).<br/>
+      N is set when result is negative (bit 7=1)<br/>
+    </p>
+    <p>+c new for 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

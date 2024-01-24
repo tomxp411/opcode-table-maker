@@ -1,0 +1,94 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: LSR</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Logical Shift Right</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>LSR A</td>
+        <td>Accumulator</td>
+        <td>$4A</td>
+        <td class='number'>1</td>
+        <td class='number'>2</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>LSR $12</td>
+        <td>Zero Page</td>
+        <td>$46</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>LSR $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$56</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>LSR $1234</td>
+        <td>Absolute</td>
+        <td>$4E</td>
+        <td class='number'>3</td>
+        <td class='number'>6</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>LSR $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$5E</td>
+        <td class='number'>3</td>
+        <td class='number'>6/7</td>
+        <td>-Z----N</td>
+        <td>[^2]</td>
+      </tr>
+    </table>
+    <p>Shifts all bits to the right by one position, through the Carry bit.</p>
+    <p>
+      Bit 0 is shifted into Carry.<br/>
+      The Carry bit is shifted into bit 7.<br/>
+    </p>
+    <p>
+      **Similar instructions:**<br/>
+      [ASL](#asl) is the opposite instruction, shifting to the left through carry<br/>
+      [ROR](#ror) rotates bit 0 directly to bit 7.
+    </p>
+    <p>
+      +p Adds a cycle if ,X crosses a page boundary.<br/>
+      +c New for the 65C02<br/>
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

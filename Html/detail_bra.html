@@ -1,0 +1,136 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: BRA</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Branch Instructions</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>BCC $1234</td>
+        <td>Relative</td>
+        <td>$90</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p Carry Clear</td>
+      </tr>
+      <tr>
+        <td>BCS $1234</td>
+        <td>Relative</td>
+        <td>$B0</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p Carry Set</td>
+      </tr>
+      <tr>
+        <td>BEQ $1234</td>
+        <td>Relative</td>
+        <td>$F0</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p Equal: Zero bit set</td>
+      </tr>
+      <tr>
+        <td>BMI $1234</td>
+        <td>Relative</td>
+        <td>$30</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p Negative bit set</td>
+      </tr>
+      <tr>
+        <td>BNE $1234</td>
+        <td>Relative</td>
+        <td>$D0</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p Not Equal: Zero bit clear</td>
+      </tr>
+      <tr>
+        <td>BPL $1234</td>
+        <td>Relative</td>
+        <td>$10</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p Negative bit not set</td>
+      </tr>
+      <tr>
+        <td>BVC $1234</td>
+        <td>Relative</td>
+        <td>$50</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p oVerflow Clear</td>
+      </tr>
+      <tr>
+        <td>BVS $1234</td>
+        <td>Relative</td>
+        <td>$70</td>
+        <td class='number'>2</td>
+        <td class='number'>2/3</td>
+        <td>-------</td>
+        <td>+p oVerflow Set</td>
+      </tr>
+      <tr>
+        <td>BRA $1234</td>
+        <td>Relative</td>
+        <td>$80</td>
+        <td class='number'>2</td>
+        <td class='number'>3/4</td>
+        <td>-------</td>
+        <td>+p Always</td>
+      </tr>
+    </table>
+    <p>
+      The branch instructions take the branch when the related flag is Set (1) or
+      Clear (0).
+    </p>
+    <p>When combined with CMP, this is the 6502's "IF THEN" construct.</p>
+    <p>
+      ```asm
+      LDA $1234  ; Reads the value of address $1234
+      CMP #$20   ; Compares it with the literal $20 (32)
+      BEQ Match  ; If they are equal, move to the label "Match".
+      ```
+    </p>
+    <p>
+      The operand is a _relative_ address, based on the Program Counter at the start
+      of the next opcode. As a result, you can only branch 127 bytes forward or 128
+      bytes back. However, most assemblers take a label or an address literal. So
+      the assembled value will be computed based on the PC and the entered value.
+    </p>
+    <p>For example, if the PC is $1000, the statement `BCS $1023` will be `$B0 $21`.</p>
+    <p>+p: Execution takes one additional cycle when moving across a page boundary.</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

@@ -1,0 +1,73 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: CPY</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Compare Y to memory</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>CPY #$12</td>
+        <td>Immediate</td>
+        <td>$C0</td>
+        <td class='number'>2</td>
+        <td class='number'>2</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CPY $12</td>
+        <td>Zero Page</td>
+        <td>$C4</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>CPY $1234</td>
+        <td>Absolute</td>
+        <td>$CC</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ----N</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Compares the value in the Y register with the given value. It sets flags
+      based on subtracting Y - _Value_.
+    </p>
+    <p>
+      - Sets C (Carry) flag if the value in Y is >= given value
+      - Clears C (Carry) flag if the value in Y is < given value
+      - Sets Z (Zero) flag if the values are equal
+      - Clears Z (Zero) flag if the values are not equal
+      - Sets N (Negative) flag if value in Y is < given value
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

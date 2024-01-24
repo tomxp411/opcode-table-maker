@@ -1,0 +1,86 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: PLA</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Pull from stack</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>PLA </td>
+        <td>Implied</td>
+        <td>$68</td>
+        <td class='number'>1</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>PLP </td>
+        <td>Implied</td>
+        <td>$28</td>
+        <td class='number'>1</td>
+        <td class='number'>4</td>
+        <td>CZIDBVN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>PLX </td>
+        <td>Implied</td>
+        <td>$FA</td>
+        <td class='number'>1</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>PLY </td>
+        <td>Implied</td>
+        <td>$7A</td>
+        <td class='number'>1</td>
+        <td class='number'>4</td>
+        <td>-Z----N</td>
+        <td/>
+      </tr>
+    </table>
+    <p>Pulls a value from the stack into a register.</p>
+    <p>
+      This instruction moves the stack pointer up by one byte, then copies the value
+      from the address of the stack pointer to the affected register.
+    </p>
+    <p>
+      Be careful to match Push and Pull operations so that you don't accidentally
+      overflow or underflow the stack.
+    </p>
+    <p>PLP pushes the Flags, also called P for Program Status Register.</p>
+    <p>Use TXS or TSX to directly manage the stack pointer.</p>
+    <p>
+      The corresponding "Push" instructions are [PHA](#pha), [PHP](#pha), [PHX](#pha),
+      and [PHY](#pha).
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

@@ -1,0 +1,94 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: JMP</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Jump to new address</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>JMP $1234</td>
+        <td>Absolute</td>
+        <td>$4C</td>
+        <td class='number'>3</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>JMP ($1234)</td>
+        <td>Indirect</td>
+        <td>$6C</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>JMP $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$7C</td>
+        <td class='number'>3</td>
+        <td class='number'>6</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+    </table>
+    <p>
+      Jump to specified memory location and begin execution
+      from this point.
+    </p>
+    <p>
+      Note for indirect jumps: The CPU does not correctly retrieve the second byte
+      of the pointer from the next page, so you should never use a pointer address
+      on the last byte of a page. ie: $12FE.
+    </p>
+    <p>#### (Absolute,X) and Jump Tables</p>
+    <p>
+      (Absolute,X) is an addition mode for the 65C02 and is
+      commonly used for implementing jump tables.
+    </p>
+    <p>So we might have something like:</p>
+    <p>
+      ```asm
+      important_jump_table:
+        .word routine1
+        .word routine2
+      ...
+    </p>
+    <p>
+      LDX #$02
+      JMP (important_jump_table,x)
+      ```
+    </p>
+    <p>
+      The above would jump to the address of `routine2`, and is much faster than
+      the old 6502 method of pushing the two bytes onto the stack and performing an
+      RTS.
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

@@ -1,0 +1,117 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: SMBx</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Set Memory Bit</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>SMB0 $12</td>
+        <td>Zero Page</td>
+        <td>$87</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB1 $12</td>
+        <td>Zero Page</td>
+        <td>$97</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB2 $12</td>
+        <td>Zero Page</td>
+        <td>$A7</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB3 $12</td>
+        <td>Zero Page</td>
+        <td>$B7</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB4 $12</td>
+        <td>Zero Page</td>
+        <td>$C7</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB5 $12</td>
+        <td>Zero Page</td>
+        <td>$D7</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB6 $12</td>
+        <td>Zero Page</td>
+        <td>$E7</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>SMB7 $12</td>
+        <td>Zero Page</td>
+        <td>$F7</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+    </table>
+    <p>
+      Set bit x to 1 at the given zero page address where x is the number
+      of the specific bit (0-7).
+    </p>
+    <p>Often used in conjunction with [BBR](#bbrx) and [BBS](#bbsx).</p>
+    <p>Specific to the 65C02 (*unavailable on the 65C816*)</p>
+    <p>
+      +c new to the 65C02<br/>
+      -816 _not available_ on the 65C816<br/>
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

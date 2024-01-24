@@ -1,0 +1,130 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: SBC</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Subtract With Carry</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>SBC #$12</td>
+        <td>Immediate</td>
+        <td>$E9</td>
+        <td class='number'>2</td>
+        <td class='number'>2</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC $12</td>
+        <td>Zero Page</td>
+        <td>$E5</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$F5</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC $1234</td>
+        <td>Absolute</td>
+        <td>$ED</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$FD</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC $1234,Y</td>
+        <td>Absolute,Y</td>
+        <td>$F9</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC ($12,X)</td>
+        <td>Indirect,X</td>
+        <td>$E1</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC ($12),Y</td>
+        <td>Indirect,Y</td>
+        <td>$F1</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ---VN</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>SBC ($12)</td>
+        <td>ZP Indirect</td>
+        <td>$F2</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>CZ---VN</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p>Subtract the operand from A and places the result in A.</p>
+    <p>When Carry is 0, an additional 1 is subtracted.</p>
+    <p>
+      There is no "Subtract without carry". To do that, use SEC first to set the Carry
+      flag.
+    </p>
+    <p>If D=1, subtraction is Binary Coded Decimal. If D=0 then subtraction is binary.</p>
+    <p>
+      C is clear when result is less than 0. (ie: Borrow took place)<br/>
+      Z is set when result is zero<br/>
+      V is set when signed result goes below -128 or above 127.<br/>
+      N is set when result is negative (bit 7=1)<br/>
+    </p>
+    <p>+c new for 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

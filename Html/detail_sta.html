@@ -1,0 +1,109 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: STA</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Store Accumulator contents to memory</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>STA $12</td>
+        <td>Zero Page</td>
+        <td>$85</td>
+        <td class='number'>2</td>
+        <td class='number'>3</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA $12,X</td>
+        <td>Zero Page,X</td>
+        <td>$95</td>
+        <td class='number'>2</td>
+        <td class='number'>4</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA $1234</td>
+        <td>Absolute</td>
+        <td>$8D</td>
+        <td class='number'>3</td>
+        <td class='number'>4</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA $1234,X</td>
+        <td>Absolute,X</td>
+        <td>$9D</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA $1234,Y</td>
+        <td>Absolute,Y</td>
+        <td>$99</td>
+        <td class='number'>3</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA ($12,X)</td>
+        <td>Indirect,X</td>
+        <td>$81</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA ($12),Y</td>
+        <td>Indirect,Y</td>
+        <td>$91</td>
+        <td class='number'>2</td>
+        <td class='number'>6</td>
+        <td>-------</td>
+        <td/>
+      </tr>
+      <tr>
+        <td>STA ($12)</td>
+        <td>ZP Indirect</td>
+        <td>$92</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c</td>
+      </tr>
+    </table>
+    <p>Place the given value from the accumulator (A) into memory.</p>
+    <p>+c new for 65C02</p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+

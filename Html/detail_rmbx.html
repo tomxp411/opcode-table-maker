@@ -1,0 +1,116 @@
+<html>
+  <header>
+    <title>65C02 Opcode Details: RMBx</title>
+    <style>
+      th, td {
+        border : none;
+        border-collapse : collapse;
+        font-family : 'Lucida Console', 'Courier New', monospace;
+        padding-left : 8px;
+        padding-right : 8px;
+      }
+      .number {
+        text-align : center;
+      }
+    </style>
+  </header>
+  <body>
+    <h1>Memory Bit Operations</h1>
+    <table>
+      <tr>
+        <th>SYNTAX</th>
+        <th>MODE</th>
+        <th>HEX</th>
+        <th>LEN</th>
+        <th>CYCLES</th>
+        <th>FLAGS</th>
+      </tr>
+      <tr>
+        <td>RMB0 $12</td>
+        <td>Zero Page</td>
+        <td>$07</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB1 $12</td>
+        <td>Zero Page</td>
+        <td>$17</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB2 $12</td>
+        <td>Zero Page</td>
+        <td>$27</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB3 $12</td>
+        <td>Zero Page</td>
+        <td>$37</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB4 $12</td>
+        <td>Zero Page</td>
+        <td>$47</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB5 $12</td>
+        <td>Zero Page</td>
+        <td>$57</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB6 $12</td>
+        <td>Zero Page</td>
+        <td>$67</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+      <tr>
+        <td>RMB7 $12</td>
+        <td>Zero Page</td>
+        <td>$77</td>
+        <td class='number'>2</td>
+        <td class='number'>5</td>
+        <td>-------</td>
+        <td>+c -816</td>
+      </tr>
+    </table>
+    <p>
+      Set bit x to 0 at the given zero page address where x is the number of the
+      specified bit (0-7).
+    </p>
+    <p>Often used in conjunction with [BBR](#bbrx) and [BBS](#bbsx).</p>
+    <p>
+      +c new to the 65C02<br/>
+      -816 _not available_ on the 65C816<br/>
+    </p>
+    <p/>
+    <p>
+      <a href='#' onclick='history.back();'><< Back</a>
+    </p>
+  </body>
+</html>
+
