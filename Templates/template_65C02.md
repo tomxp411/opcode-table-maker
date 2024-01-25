@@ -17,12 +17,14 @@ The Commander X16 may be upgraded at some point to use the WDC 65C816 CPU.
 The 65C816 is mostly compatible with the 65C02, except for 4 instructions
 (`BBRx`, `BBSx`, `RMBx`, and `SMBx`).
 
-These instructions are *not* supported on the Commander X16 as of the R47
-release and will generate an error when used in the emulator.
+These instructions *may* be deprecated in a future release of the emulator, and
+so we suggest not using these instructions. Some people are already using the
+65C816 in their X16 systems, and so using these instructions will cause your
+programs to malfunction on these computers.
 
 ## Instruction Tables
 
-!include Output/table_65C02.md
+!include Markdown/table_65C02.md
 
 ## Status Flags
 

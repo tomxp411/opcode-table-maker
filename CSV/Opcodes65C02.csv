@@ -367,7 +367,7 @@ byte after incrementing it.
 Inc16_1: ...
 ```
 
-!c,Branching,JMP,Jump to new address
+!c,Flow,JMP,Jump to new address
 !o,0x4c,JMP,ABS,3,3,-------
 !o,0x6c,JMP,IND,3,5,-------
 !o,0x7c,JMP,ABSX,3,6,-------
@@ -399,7 +399,7 @@ The above would jump to the address of `routine2`, and is much faster than
 the old 6502 method of pushing the two bytes onto the stack and performing an
 RTS.
 
-!c,Branching,JSR,Jump to Subroutine
+!c,Flow,JSR,Jump to Subroutine
 !o,0x20,JSR,ABS,3,6,-------
 Stores the address of the Program Counter to the stack.;
 Jump to specified memory location and begin execution from this point.;
@@ -602,7 +602,7 @@ bit 0 is shifted into the carry (C).
 [LSR](#lsr) rotates _through_ the Carry flag, effectively making a 9 bit shift.;
 [ROL](#rol) rotates to the left.
 
-!c,Branching,RTI,Return from Interrupt
+!c,Flow,RTI,Return from Interrupt
 !o,0x40,RTI,IMP,1,6,-------
 Return from an interrupt by popping three values off the stack.
 The first is for the status register (P) followed by the two bytes of the
@@ -611,7 +611,7 @@ program counter.
 Note that unlike [RTS](#rts), the popped address is the actual
 return address (rather than address-1).
 
-!c,Branching,RTS,Return from Subroutine
+!c,Flow,RTS,Return from Subroutine
 !o,0x60,RTS,IMP,1,6,-------
 Typically used at the end of a subroutine. It jumps
 back to the address after the [JSR](#jsr) that called it

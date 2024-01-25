@@ -15,9 +15,9 @@ class markdown_writer:
 
         self.template_filename="Templates/template_65C02.md"
         self.opcode_file="CSV/Opcodes65C02.csv"
-        self.output_table="Output/table_65C02.md"
-        self.output_list="Output/list_65C02.md"
-        self.output_merged_filename="Output/X16 Reference - Appendix C - 65C02 Processor.md"
+        self.output_table="Markdown/table_65C02.md"
+        self.output_list="Markdown/list_65C02.md"
+        self.output_merged_filename="Markdown/X16 Reference - Appendix C - 65C02 Processor.md"
 
         self.cpu = None # type: cpu_model_65c02()
 
@@ -38,7 +38,7 @@ class markdown_writer:
         col_width = 12
 
         f = open(self.output_table,"w")
-        print("## Opcodes By Number",file=f)
+        print("## Instructions By Number",file=f)
         print(file=f)
 
         #header
@@ -72,7 +72,7 @@ class markdown_writer:
         col_width = 5
 
         print(file=f)
-        print("## Opcodes By Name",file=f)
+        print("## Instructions By Name",file=f)
         print(file=f)
 
         for i in range(0,column_count):
@@ -116,7 +116,7 @@ class markdown_writer:
         col_width = 5
 
         print(file=f)
-        print("## Opcodes By Category",file=f)
+        print("## Instructions By Category",file=f)
         print(file=f)
 
         for i in range(0,column_count):
