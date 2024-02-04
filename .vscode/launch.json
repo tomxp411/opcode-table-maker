@@ -5,16 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: convert_markdown",
-            "type": "python",
+            "name": "convert_markdown",
+            "type": "debugpy",
             "request": "launch",
             "program": "convert_markdown.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },
         {
-            "name": "Python: convert_html",
-            "type": "python",
+            "name": "convert_html",
+            "type": "debugpy",
             "request": "launch",
             "program": "convert_html.py",
             "console": "integratedTerminal",

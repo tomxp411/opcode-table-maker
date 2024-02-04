@@ -29,10 +29,10 @@ class markdown_writer:
 
     def write_table(self):
         for g in self.cpu.groups.values():
-            t = g.name.lower()
-            t = t.replace(" ","-")
-            t = t.replace("/","")
-            g.anchor = t
+            m = g.name.lower()
+            m = m.replace(" ","-")
+            m = m.replace("/","")
+            g.anchor = m
 
         hex="0123456789ABCDEF"
         col_width = 12
@@ -42,12 +42,12 @@ class markdown_writer:
         print(file=f)
 
         #header
-        print("|" + " ".ljust(col_width),file=f,end="")
+        print("|" + " ".ljust(col_width),file=f,end=" ")
         for i in range(0,16):
-            print("| x" + hex[i].ljust(col_width-1," "),file=f,end="")
+            print("| x" + hex[i].ljust(col_width-3," "),file=f,end=" ")
         print("|", file=f)
 
-        print("|" + "-".ljust(col_width,"-"),file=f,end="")
+        print("|" + "-".ljust(col_width,"-"),file=f,end="-")
         for i in range(0,16):
             print("|" + "-".rjust(col_width,"-"),file=f,end="")
         print("|", file=f)
@@ -60,7 +60,7 @@ class markdown_writer:
                 if key in self.cpu.opcodes:
                     oc=self.cpu.opcodes[key]
                     text = "[" + oc.mnemonic + "](#" + self.cpu.groups[oc.group_name].anchor + ")"
-                print("|" + text,file=f,end="")
+                print("|" + text.ljust(col_width),file=f,end="")
             print("|", file=f)
 
         # f.close()
@@ -68,19 +68,14 @@ class markdown_writer:
         # f = open(self.output_list,"w")
         
         # Opcodes By Name 
-        column_count = 16
-        col_width = 5
+        col_count = 16
+        col_width = 15
 
         print(file=f)
         print("## Instructions By Name",file=f)
         print(file=f)
 
-        for i in range(0,column_count):
-            print("|" + " ".rjust(col_width," "),file=f,end="")
-        print("|", file=f)
-        for i in range(0,column_count):
-            print("|" + "-".rjust(col_width,"-"),file=f,end="")
-        print("|", file=f)
+        self.write_header(col_count,col_width,f)
 
         ocbn = {}
         for key,val in self.cpu.opcodes.items():
@@ -92,66 +87,68 @@ class markdown_writer:
         n = 0
         for key in ocs:
             oc = ocbn[key]
-            t = oc.mnemonic
+            m = oc.mnemonic
             skip = False
-            if len(t) == 4:
-                t=t[0:3]+"x"                
-            if t == last:
+            if len(m) == 4:
+                m=m[0:3]+"x"                
+            if m == last:
                 skip = True
-            last=t
+            last=m
 
             if not skip:
-                print("| [" + t + "](#" + self.cpu.groups[oc.group_name].anchor + ") ",
+                m = "[" + m + "](#" + self.cpu.groups[oc.group_name].anchor + ") "
+                print("|",m.ljust(col_width-1),
                     file=f,end="")
                 n += 1
-                if n > column_count - 1:
+                if n > col_count - 1:
                     print("|",file=f)
                     n = 0
-
-        if n != column_count - 1:
-            print("|",file=f)
+        
+        n = col_count - n
+        if n > 0:
+            print("|".ljust(col_width+1) * n,end="",file=f)
+        print("|",file=f)
 
         # Opcodes By Category 
-        column_count = 16
-        col_width = 5
+        col_count = 16 
+        col_width = 21
 
         print(file=f)
         print("## Instructions By Category",file=f)
         print(file=f)
 
-        for i in range(0,column_count):
-            print("|" + " ".rjust(col_width," "),file=f,end="")
-        print("|", file=f)
-        for i in range(0,column_count):
-            print("|" + "-".rjust(col_width,"-"),file=f,end="")
-        print("|", file=f)
+        self.write_header(col_count, col_width, f)
 
         for key,cat in self.cpu.categories.items():
-            print("| ",cat.name,file=f,end=" ")
+            print("|",cat.name.ljust(col_width-2),file=f,end=" ")
 
             last = ""
             n = 0
+            ccount = 0
             for oc in cat.opcodes:
-                t = oc.mnemonic.strip()
+                m = oc.mnemonic.strip()
                 skip = False
 
-                if len(t) == 4:
-                    t=t[0:3]+"x"                
+                if len(m) == 4:
+                    m=m[0:3]+"x"                
 
-                if t == last:
+                if m == last:
                     skip = True
 
                 if not skip:
-                    print("| [" + t + "](#" + self.cpu.groups[oc.group_name].anchor + ") ",
-                        file=f,end="")
+                    t = "[" + m + "](#" + self.cpu.groups[oc.group_name].anchor + ") "
+                    print("|",t.ljust(col_width-1),file=f,end="")
                     n += 1
-                    if n > column_count - 1:
+                    if n > col_count - 1:
                         print("|",file=f)
                         print("|".ljust(col_width),end="",file=f)
                         n = 0
-                last=t
+                    ccount += 1
+                last=m
+            n = col_count - ccount - 1
+            if n > 0:
+                print("|".ljust(col_width+1) * n,end="",file=f)
             print("|",file=f)
-
         # Details
         column_names = ["SYNTAX","MODE","HEX","LEN","CYCLES","FLAGS"]
         column_width = [12,      14,     4,    4,    7,       8]
@@ -213,3 +210,10 @@ class markdown_writer:
             print("[top](#)",file=f)
             print(file=f)
 
+    def write_header(self, col_count, col_width, file = None):
+        for i in range(0,col_count):
+            print("|"+" ".ljust(col_width," "),file=file,end="")
+        print("|", file=file)
+        for i in range(0,col_count):
+            print("|" + "-".ljust(col_width,"-"),file=file,end="")
+        print("|", file=file)

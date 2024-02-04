@@ -1,3 +1,4 @@
+
 # Appendix C: The 65C02 Processor
 
 This is not meant to be a complete manual on the 65C02 processor, though is
@@ -48,9 +49,10 @@ P-Register:
 
 ## Replacement Macros for Bit Instructions
 
-Since `BBRx`, `BBSx`, `RMBx`, and `SMBx` should not be used to support a possible
-upgrade path to the 65816, here are some example macros that can be used to
-help convert existing software that may have been using these instructions:
+Since `BBRx`, `BBSx`, `RMBx`, and `SMBx` should not be used to support a
+possible upgrade path to the 65816, here are some example macros that can be
+used to help convert existing software that may have been using these
+instructions:
 
 ```asm
 .macro bbs bit_position, data, destination
