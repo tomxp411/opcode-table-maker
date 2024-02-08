@@ -172,14 +172,14 @@ ASL $8080    Absolute       $0E   3     6     CZ----N +c
 ASL $8080,X  Absolute,X     $1E   3    6/7    CZ----N +p
 ```
 
-Shifts all bits to the left by one position, through the Carry bit.
+Shifts all bits to the left by one position, moving 0 into the low bit.
 
-The Carry bit is shifted into bit 0.<br/>
-Bit 7 is shifted into Carry.<br/>
+0 is shifted into bit 0.<br/>
+Bit 7 is shifted to Carry.<br/>
 
 **Similar instructions:**<br/>
-[LSR](#lsr) is the opposite instruction and shifts to the right, through carry.<br/>
-[ROL](#rol) shifts from bit 7 to bit 0.<br/>
+[LSR](#lsr) is the opposite instruction and shifts to the right.<br/>
+[ROL](#rol) shifts left through Carry.
 
 +p Adds a cycle if ,X crosses a page boundary.<br/>
 +c New for the 65C02<br/>
@@ -824,14 +824,14 @@ LSR $8080    Absolute       $4E   3     6     -Z----N
 LSR $8080,X  Absolute,X     $5E   3    6/7    -Z----N [^2]
 ```
 
-Shifts all bits to the right by one position, through the Carry bit.
+Shifts all bits to the right by one position.
 
 Bit 0 is shifted into Carry.<br/>
-The Carry bit is shifted into bit 7.<br/>
+0 shifted into bit 7.<br/>
 
 **Similar instructions:**<br/>
-[ASL](#asl) is the opposite instruction, shifting to the left through carry<br/>
-[ROR](#ror) rotates bit 0 directly to bit 7.
+[ASL](#asl) is the opposite instruction, shifting to the left.<br/>
+[ROR](#ror) rotates bit 0 through Carry to bit 7.<br/>
 
 +p Adds a cycle if ,X crosses a page boundary.<br/>
 +c New for the 65C02<br/>
@@ -1017,8 +1017,8 @@ ROL $8080,X  Absolute,X     $3E   3    6/7    CZ----N +p
 Rotate all bits to the left one position. The value in the carry (C) flag is
 shifted into bit 0 and the original bit 7 is shifted into the carry (C).
 
-[ASL](#asl) rotates _through_ the Carry flag, effectively making a 9 bit shift.<br/>
-[ROR](#ror) rotates to the right<br/>
+[ASL](#asl) shifts left, moving 0 into bit 0
+[ROR](#ror) rotates to the right.
 
 +p add one cycle when addr + x crosses a page boundary.
 
@@ -1044,7 +1044,7 @@ Rotate all bits to the right one position. The value in
 the carry (C) flag is shifted into bit 7 and the original
 bit 0 is shifted into the carry (C).
 
-[LSR](#lsr) rotates _through_ the Carry flag, effectively making a 9 bit shift.<br/>
+[LSR](#lsr) shifts right, placing 0 into bit 7.
 [ROL](#rol) rotates to the left.
 
 

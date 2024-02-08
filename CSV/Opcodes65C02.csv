@@ -63,14 +63,14 @@ in A.;
 !o,0x16,ASL,ZPX,2,6,CZ----N,+c
 !o,0x0e,ASL,ABS,3,6,CZ----N,+c
 !o,0x1e,ASL,ABSX,3,6/7,CZ----N,+p
-Shifts all bits to the left by one position, through the Carry bit.
+Shifts all bits to the left by one position, moving 0 into the low bit.
 
-The Carry bit is shifted into bit 0.;
-Bit 7 is shifted into Carry.;
+0 is shifted into bit 0.;
+Bit 7 is shifted to Carry.;
 
 **Similar instructions:**;
-[LSR](#lsr) is the opposite instruction and shifts to the right, through carry.;
-[ROL](#rol) shifts from bit 7 to bit 0.;
+[LSR](#lsr) is the opposite instruction and shifts to the right.;
+[ROL](#rol) shifts left through Carry.
 
 +p Adds a cycle if ,X crosses a page boundary.;
 +c New for the 65C02;
@@ -463,14 +463,14 @@ Place the given value from memory into the Y register.
 !o,0x56,LSR,ZPX,2,6,-Z----N
 !o,0x4e,LSR,ABS,3,6,-Z----N
 !o,0x5e,LSR,ABSX,3,6/7,-Z----N,[^2]
-Shifts all bits to the right by one position, through the Carry bit.
+Shifts all bits to the right by one position.
 
 Bit 0 is shifted into Carry.;
-The Carry bit is shifted into bit 7.;
+0 shifted into bit 7.;
 
 **Similar instructions:**;
-[ASL](#asl) is the opposite instruction, shifting to the left through carry;
-[ROR](#ror) rotates bit 0 directly to bit 7.
+[ASL](#asl) is the opposite instruction, shifting to the left.;
+[ROR](#ror) rotates bit 0 through Carry to bit 7.;
 
 +p Adds a cycle if ,X crosses a page boundary.;
 +c New for the 65C02;
@@ -584,8 +584,8 @@ Often used in conjunction with [BBR](#bbrx) and [BBS](#bbsx).
 Rotate all bits to the left one position. The value in the carry (C) flag is
 shifted into bit 0 and the original bit 7 is shifted into the carry (C).
 
-[ASL](#asl) rotates _through_ the Carry flag, effectively making a 9 bit shift.;
-[ROR](#ror) rotates to the right;
+[ASL](#asl) shifts left, moving 0 into bit 0
+[ROR](#ror) rotates to the right.
 
 +p add one cycle when addr + x crosses a page boundary.
 
@@ -599,7 +599,7 @@ Rotate all bits to the right one position. The value in
 the carry (C) flag is shifted into bit 7 and the original
 bit 0 is shifted into the carry (C).
 
-[LSR](#lsr) rotates _through_ the Carry flag, effectively making a 9 bit shift.;
+[LSR](#lsr) shifts right, placing 0 into bit 7.
 [ROL](#rol) rotates to the left.
 
 !c,Flow,RTI,Return from Interrupt
