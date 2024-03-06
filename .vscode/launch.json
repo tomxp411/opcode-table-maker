@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "convert_65C816",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "convert_65C816.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "convert_markdown",
             "type": "debugpy",
             "request": "launch",
