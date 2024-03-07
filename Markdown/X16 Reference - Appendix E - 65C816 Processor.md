@@ -33,14 +33,14 @@ and .x flags are clear.
 
 | Notation   | Name             | Description     |
 |------------|------------------|-----------------|
-| .A         | Accumulator      | The accumulator. It stores the result of moth math and logical operations.  |
-| .X         | X Index          | .X is mostly used as a counter and to offset addresses with X indexed modes |
-| .Y         | Y Index          | .Y is mostly used as a counter and to offset addresses with Y indexed modes |
-| .S         | Stack Pointer    | SP points to the next open position on the stack.                           |
-| DBR / .K   | Data Bank        | Data bank is the default bank for operations that use a 16 bit address.     |
-| .PB / PBR  | Program Bank     | The default address for 16 bit JMP and JSR oprerations. Can only be set with a 24 bit JMP or JSR. |
-| .P         | Processor Status | The flags. |
-| PC         | Program Counter  | The address of the current CPU instruction |
+| A         | Accumulator      | The accumulator. It stores the result of moth math and logical operations.  |
+| X         | X Index          | .X is mostly used as a counter and to offset addresses with X indexed modes |
+| Y         | Y Index          | .Y is mostly used as a counter and to offset addresses with Y indexed modes |
+| S         | Stack Pointer    | SP points to the next open position on the stack.                           |
+| DB or DBR | Data Bank        | Data bank is the default bank for operations that use a 16 bit address.     |
+| K or  PBR | Program Bank     | The default address for 16 bit JMP and JSR oprerations. Can only be set with a 24 bit JMP or JSR. |
+| P         | Processor Status | The flags. |
+| PC        | Program Counter  | The address of the current CPU instruction |
 
 ## Status Flags
 
