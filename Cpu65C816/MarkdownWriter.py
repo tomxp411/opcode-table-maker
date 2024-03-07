@@ -16,12 +16,12 @@ class markdown_writer:
 
         self.hex_digits = "0123456789ABCDEF"
 
-        self.template_filename="Templates/template_65C816.md"
         self.opcode_file="CSV/Opcodes65C816.csv"
         self.category_file="CSV/Groups65C816.csv"
         self.modes_file="CSV/Modes65C816.csv"
         self.details_file="CSV/Details65C816.md"
         self.output_file="Markdown/table_65C816.md"
+        self.template_filename="Templates/template_65C816.md"
         self.output_merged_filename="Markdown/X16 Reference - Appendix E - 65C816 Processor.md"
 
         self.cpu = None
@@ -145,7 +145,4 @@ class markdown_writer:
 
             print(detail_text,file=self.file)
             print("[top](#instructions-by-opcode)",end="\n\n",file=self.file)
-
-
-            
-    
+            print("---\n",file=self.file)

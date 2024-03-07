@@ -1,5 +1,5 @@
 
-# Appendix C: The 65C02 Processor
+# Appendix E: The 65C816 Processor
 
 [Click here for the opcode listing](#instruction-tables)
 
@@ -103,6 +103,39 @@ addresses (although they would be the same if .DP is set to $00.
 | Relative Address (8 bit signed) | $1234     | Branches can only jump by -128 to 127 bytes.                       |
 | 16 bit relative address         | 1234      | BRL can jump by 32K bytes.                                         |
 | Block Move                      | #$12,#$34 | Operands are the bank numbers for block move/copy.                 |
+
+## Vectors
+
+The 65816 has two different sets of interrupt vectors. In emulation mode, the
+vectors are the same as the 65C02. In native mode (.e = 0), the native vectors
+are used. This allows you to switch to the desired operation mode, based on the
+operating mode of your interrupt handlers.
+
+The Commander X16 operates mostly in emulation mode, so native mode interrupts
+on the X16 will switch to emulation mode, then simply call the 8-bit interrupt
+handlers.
+
+The vectors are:
+
+| Name  | Emu   | Native |
+|-------|-------|--------|
+| COP   | FFF4  | 00FFE4 |
+| BRK   | FFFE  | 00FFE6 |
+| ABORT | FFF8  | 00FFE8 |
+| NMI   | FFFA  | 00FFEA |
+| RESET | FFFC  | 00FFFC |
+| IRQ   | FFFE  | 00FFEE |
+
+The 65C02 shares the same interrupt for BRK and IRQ, so the 65C816 mirrors this
+behavior. The .b flag will be set when a BRK instruction is executed, allowing
+the IRQ handler to decide how to handle the interrupt.
+
+On the 65C816, BRK has its own vector (00FFE6), so the .b flag is not used.
+Instead, the .b flag is swapped out for the 16-bit index register flag (.x).
+
+Also, note that the CPU starts up in emulation mode, so after a RESET, the CPU
+will always execute the FFFC vector, no matter what state the CPU was in when
+RESET was asserted.
 
 ## Instruction Tables
 

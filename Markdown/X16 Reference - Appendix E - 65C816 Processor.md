@@ -1,5 +1,5 @@
 
-# Appendix C: The 65C02 Processor
+# Appendix E: The 65C816 Processor
 
 [Click here for the opcode listing](#instruction-tables)
 
@@ -103,6 +103,40 @@ addresses (although they would be the same if .DP is set to $00.
 | Relative Address (8 bit signed) | $1234     | Branches can only jump by -128 to 127 bytes.                       |
 | 16 bit relative address         | 1234      | BRL can jump by 32K bytes.                                         |
 | Block Move                      | #$12,#$34 | Operands are the bank numbers for block move/copy.                 |
+
+## Vectors
+
+The 65816 has two different sets of interrupt vectors.
+
+In emulation mode (.e = 1), the vectors are the same as the 65C02. In native
+mode (.e = 0), the native vectors are used. This allows you to switch to the
+desired operation mode, based on the operating mode of your interrupt handlers.
+
+The Commander X16 is designed for a 65C02 CPU, so the KERNAL ROM is written for
+emulation mode. So native mode interrupts on the X16 will switch to emulation
+mode and call the 8-bit interrupt handlers.
+
+The vectors are:
+
+| Name  | Emu   | Native |
+|-------|-------|--------|
+| COP   | FFF4  | 00FFE4 |
+| BRK   | FFFE  | 00FFE6 |
+| ABORT | FFF8  | 00FFE8 |
+| NMI   | FFFA  | 00FFEA |
+| RESET | FFFC  | 00FFFC |
+| IRQ   | FFFE  | 00FFEE |
+
+The 65C02 shares the same interrupt for BRK and IRQ, so the 65C816 mirrors this
+behavior. The .b flag will be set when a BRK instruction is executed, allowing
+the IRQ handler to decide how to handle the interrupt.
+
+On the 65C816, BRK has its own vector (00FFE6), so the .b flag is not used.
+Instead, the .b flag is swapped out for the 16-bit index register flag (.x).
+
+Also, note that the CPU starts up in emulation mode, so after a RESET, the CPU
+will always execute the FFFC vector, no matter what state the CPU was in when
+RESET was asserted.
 
 ## Instruction Tables
 
@@ -241,7 +275,11 @@ BRK
 
 [top](#instructions-by-opcode)
 
+---
+
 ### AND
+
+**Logical AND**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -262,9 +300,36 @@ AND [$10]      [dir]         27  2   7-m+w       n.....z. .
 AND [$10],Y    [dir],Y       37  2   7-m+w       n.....z. .
 ```
 
+Perform a logical AND operation with the operand and .A
+
+AND compares each bit of the operands and sets the result bit to 1 only when the
+matching bit of each operand is 1.
+
+Truth table for AND:
+
+```text
+Operand 1: 1100
+Operand 2: 1010
+Result:    1000
+```
+
+Flags:
+
+* .n is set when the high bit of the result is 1
+* .z is set when the result is Zero
+
+AND does not set the overflow or carry flags.
+
+See also: [ORA](#ora), [EOR](#eor)
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### ASL
+
+**Arithmetic Shift Left**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -275,36 +340,82 @@ ASL $9876      abs           0E  3   8-2*m       n.....zc .
 ASL $9876,X    abs,X         1E  3   9-2*m       n.....zc .
 ```
 
+ASL shifts the target left one place. It shifts the high bit of the operand into
+the Carry flag and a zero into the low bit.
+
+See also: [LSR](#lsr), [ROL](#rol), [ROR](#ror)
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BCC
+
+**Branch on Carry Clear**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BCC LABEL      rel8          90  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Carry flag (.c) is Zero. This is useful in
+multi-byte math, where you will use the Carry flag to decide whether to add or
+subtract the higher bytes in a 16 or 32-bit number.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BCS
+
+**Branch on Carry Set**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BCS LABEL      rel8          B0  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Carry flag is 1. This is useful in
+multi-byte math, where you will use the Carry flag to decide whether to add or
+subtract the higher bytes in a 16 or 32-bit number.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BEQ
+
+**Branch on Equal.**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BEQ LABEL      rel8          F0  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Zero flag is 1. While this is most commonly
+used after a compare (CMP) operation, it's also useful to test if a number is
+zero after a Load operation, or to test if a loop is complete after a DEC
+operation.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BIT
+
+**Bit Test**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -315,52 +426,135 @@ BIT $9876      abs           2C  3   5-m         nv....z. .
 BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 ```
 
+Tests the operand against the Accumulator. The ALU does an AND operation
+internally, and The .n, .v, and .z flags are set accordingly. The Accumulator is
+*not* modified after the operation.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BMI
+
+**Branch on Minus**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BMI LABEL      rel8          30  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the specified address when the Negative flag (.n) is set.
+
+.n is set when ALU operations result in a negative number, or when the high bit
+of an ALU operation is 1.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BNE
+
+**Branch on Not Equal.**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BNE LABEL      rel8          D0  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Zero flag is 0. While this is most commonly
+used after a compare (CMP) operation, it's also useful to test if a number is
+zero after a Load operation, or to test if a loop is complete after a DEC
+operation.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BPL
+
+**Branch on Plus**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BPL LABEL      rel8          10  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the specified address when the Negative flag (.n) is clear.
+
+.n is clear when ALU operations result in a positive number, or when the high bit
+of an ALU operation is 0.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BRA
+
+**Branch Always**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BRA LABEL      rel8          80  2   3+e*p       ........ .
 ```
 
+Jumps to the specified address.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BRK
+
+**Break**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BRK            imp           00  1   8-e         ....di.. .
 ```
 
+Perform a break interrupt. The exact behavior changes slightly, based on whether
+the CPU is in native or emulation mode. (.e is 1 in emulation mode.)
+
+In emulation mode:
+
+1. PC (Program Counter) is incremented by 2 bytes.
+1. PC is pushed onto the stack.
+1. P (flags) is pushed to the stack.
+1. The B flag is set.
+1. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+1. The CPU reads the address from the IRQ vector at $FFFE and jumps there.
+
+In native mode:
+
+1. PC is incremented by 2 bytes
+1. PBR (Program Bank) is pushed the stack
+1. PC is pushed to the stack
+1. P (flags) is pushed to the stack
+1. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+1. The CPU reads the address from the BRK vector at $00FFE6 and jumps there.
+
+See the [Vectors](#vectors) section for the break vector.
+
 [top](#instructions-by-opcode)
+
+---
 
 ### BRL
 
@@ -371,6 +565,8 @@ BRL LABEL      rel16         82  3   4           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### BVC
 
 ```text
@@ -379,6 +575,8 @@ BVC LABEL      rel8          50  2   2+t+t*e*p   ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### BVS
 
@@ -389,6 +587,8 @@ BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CLC
 
 ```text
@@ -397,6 +597,8 @@ CLC            imp           18  1   2           .......c .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### CLD
 
@@ -407,6 +609,8 @@ CLD            imp           D8  1   2           ....d... .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CLI
 
 ```text
@@ -416,6 +620,8 @@ CLI            imp           58  1   2           .....i.. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CLV
 
 ```text
@@ -424,6 +630,8 @@ CLV            imp           B8  1   2           .v...... .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### CMP
 
@@ -448,6 +656,8 @@ CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### COP
 
 ```text
@@ -456,6 +666,8 @@ COP #$12       imm           02  2   8-e         ....di.. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### CPX
 
@@ -468,6 +680,8 @@ CPX $9876      abs           EC  3   5-x         n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CPY
 
 ```text
@@ -478,6 +692,8 @@ CPY $9876      abs           CC  3   5-x         n.....zc .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### DEC
 
@@ -492,6 +708,8 @@ DEC $9876,X    abs,X         DE  3   9-2*m       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### DEX
 
 ```text
@@ -501,6 +719,8 @@ DEX            imp           CA  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### DEY
 
 ```text
@@ -509,6 +729,8 @@ DEY            imp           88  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### EOR
 
@@ -533,6 +755,8 @@ EOR [$10],Y    [dir],Y       57  2   7-m+w       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### INC
 
 ```text
@@ -546,6 +770,8 @@ INC $9876,X    abs,X         FE  3   9-2*m       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### INX
 
 ```text
@@ -555,6 +781,8 @@ INX            imp           E8  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### INY
 
 ```text
@@ -563,6 +791,8 @@ INY            imp           C8  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### JMP
 
@@ -577,6 +807,8 @@ JMP [$1234]    [abs]         DC  3   6           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### JSL
 
 ```text
@@ -585,6 +817,8 @@ JSL $123456    long          22  4   8           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### JSR
 
@@ -596,157 +830,12 @@ JSR ($1234,X)  (abs,X)       FC  3   8           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### LDA
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LDA #$54       imm           A9  3-m 3-m         n.....z. .
-LDA $10        dir           A5  2   4-m+w       n.....z. .
-LDA $10,X      dir,X         B5  2   5-m+w       n.....z. .
-LDA $32,S      stk,S         A3  2   5-m         n.....z. .
-LDA $9876      abs           AD  3   5-m         n.....z. .
-LDA $9876,X    abs,X         BD  3   6-m-x+x*p   n.....z. .
-LDA $9876,Y    abs,Y         B9  3   6-m-x+x*p   n.....z. .
-LDA $FEDBCA    long          AF  4   6-m         n.....z. .
-LDA $FEDCBA,X  long,X        BF  4   6-m         n.....z. .
-LDA ($10)      (dir)         B2  2   6-m+w       n.....z. .
-LDA ($10),Y    (dir),Y       B1  2   7-m+w-x+x*p n.....z. .
-LDA ($10,X)    (dir,X)       A1  2   7-m+w       n.....z. .
-LDA ($32,S),Y  (stk,S),Y     B3  2   8-m         n.....z. .
-LDA [$10]      [dir]         A7  2   7-m+w       n.....z. .
-LDA [$10],Y    [dir],Y       B7  2   7-m+w       n.....z. .
-```
-
-[top](#instructions-by-opcode)
-
-### LDX
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LDX #$54       imm           A2  3-x 3-x         n.....z. .
-LDX $10        dir           A6  2   4-x+w       n.....z. .
-LDX $10,Y      dir,Y         B6  2   5-x+w       n.....z. .
-LDX $9876      abs           AE  3   5-x         n.....z. .
-LDX $9876,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
-```
-
-[top](#instructions-by-opcode)
-
-### LDY
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LDY #$54       imm           A0  3-x 3-x         n.....z. .
-LDY $10        dir           A4  2   4-x+w       n.....z. .
-LDY $10,X      dir,X         B4  2   5-x+w       n.....z. .
-LDY $9876      abs           AC  3   5-x         n.....z. .
-LDY $9876,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
-```
-
-[top](#instructions-by-opcode)
-
-### LSR
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LSR            acc           4A  1   2           n.....zc .
-LSR $10        dir           46  2   7-2*m+w     n.....zc .
-LSR $10,X      dir,X         56  2   8-2*m+w     n.....zc .
-LSR $9876      abs           4E  3   8-2*m       n.....zc .
-LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
-```
-
-[top](#instructions-by-opcode)
-
-### MVN
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-MVN #$12,#$34  src,dest      54  3   7           ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### MVP
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-MVP #$12,#$34  src,dest      44  3   7           ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### NOP
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-NOP            imp           EA  1   2           ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### ORA
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-ORA #$54       imm           09  3-m 3-m         n.....z. .
-ORA $10        dir           05  2   4-m+w       n.....z. .
-ORA $10,X      dir,X         15  2   5-m+w       n.....z. .
-ORA $32,S      stk,S         03  2   5-m         n.....z. .
-ORA $9876      abs           0D  3   5-m         n.....z. .
-ORA $9876,X    abs,X         1D  3   6-m-x+x*p   n.....z. .
-ORA $9876,Y    abs,Y         19  3   6-m-x+x*p   n.....z. .
-ORA $FEDBCA    long          0F  4   6-m         n.....z. .
-ORA $FEDCBA,X  long,X        1F  4   6-m         n.....z. .
-ORA ($10)      (dir)         12  2   6-m+w       n.....z. .
-ORA ($10),Y    (dir),Y       11  2   7-m+w-x+x*p n.....z. .
-ORA ($10,X)    (dir,X)       01  2   7-m+w       n.....z. .
-ORA ($32,S),Y  (stk,S),Y     13  2   8-m         n.....z. .
-ORA [$10]      [dir]         07  2   7-m+w       n.....z. .
-ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
-```
-
-[top](#instructions-by-opcode)
-
-### PEA
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PEA #$1234     imm           F4  3   5           ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### PEI
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PEI $12        dir           D4  2   6+w         ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### PER
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PER LABEL      imm           62  3   6           ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### PHA
-
-```text
-SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PHA            imp           48  1   4-m         ........ .
-```
-
-[top](#instructions-by-opcode)
-
-### PHB
-
-```text
-SYNTAX         
+LDA #$54       imm           A9  3-m 
 <!-- For PDF formatting -->
 <div class="page-break"></div>

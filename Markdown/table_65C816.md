@@ -133,7 +133,11 @@ BRK
 
 [top](#instructions-by-opcode)
 
+---
+
 ### AND
+
+**Logical AND**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -154,9 +158,36 @@ AND [$10]      [dir]         27  2   7-m+w       n.....z. .
 AND [$10],Y    [dir],Y       37  2   7-m+w       n.....z. .
 ```
 
+Perform a logical AND operation with the operand and .A
+
+AND compares each bit of the operands and sets the result bit to 1 only when the
+matching bit of each operand is 1.
+
+Truth table for AND:
+
+```text
+Operand 1: 1100
+Operand 2: 1010
+Result:    1000
+```
+
+Flags:
+
+* .n is set when the high bit of the result is 1
+* .z is set when the result is Zero
+
+AND does not set the overflow or carry flags.
+
+See also: [ORA](#ora), [EOR](#eor)
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### ASL
+
+**Arithmetic Shift Left**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -167,36 +198,82 @@ ASL $9876      abs           0E  3   8-2*m       n.....zc .
 ASL $9876,X    abs,X         1E  3   9-2*m       n.....zc .
 ```
 
+ASL shifts the target left one place. It shifts the high bit of the operand into
+the Carry flag and a zero into the low bit.
+
+See also: [LSR](#lsr), [ROL](#rol), [ROR](#ror)
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BCC
+
+**Branch on Carry Clear**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BCC LABEL      rel8          90  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Carry flag (.c) is Zero. This is useful in
+multi-byte math, where you will use the Carry flag to decide whether to add or
+subtract the higher bytes in a 16 or 32-bit number.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BCS
+
+**Branch on Carry Set**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BCS LABEL      rel8          B0  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Carry flag is 1. This is useful in
+multi-byte math, where you will use the Carry flag to decide whether to add or
+subtract the higher bytes in a 16 or 32-bit number.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BEQ
+
+**Branch on Equal.**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BEQ LABEL      rel8          F0  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Zero flag is 1. While this is most commonly
+used after a compare (CMP) operation, it's also useful to test if a number is
+zero after a Load operation, or to test if a loop is complete after a DEC
+operation.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BIT
+
+**Bit Test**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -207,52 +284,135 @@ BIT $9876      abs           2C  3   5-m         nv....z. .
 BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 ```
 
+Tests the operand against the Accumulator. The ALU does an AND operation
+internally, and The .n, .v, and .z flags are set accordingly. The Accumulator is
+*not* modified after the operation.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BMI
+
+**Branch on Minus**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BMI LABEL      rel8          30  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the specified address when the Negative flag (.n) is set.
+
+.n is set when ALU operations result in a negative number, or when the high bit
+of an ALU operation is 1.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BNE
+
+**Branch on Not Equal.**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BNE LABEL      rel8          D0  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the target address when the Zero flag is 0. While this is most commonly
+used after a compare (CMP) operation, it's also useful to test if a number is
+zero after a Load operation, or to test if a loop is complete after a DEC
+operation.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BPL
+
+**Branch on Plus**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BPL LABEL      rel8          10  2   2+t+t*e*p   ........ .
 ```
 
+Jumps to the specified address when the Negative flag (.n) is clear.
+
+.n is clear when ALU operations result in a positive number, or when the high bit
+of an ALU operation is 0.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BRA
+
+**Branch Always**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BRA LABEL      rel8          80  2   3+e*p       ........ .
 ```
 
+Jumps to the specified address.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+
 [top](#instructions-by-opcode)
 
+---
+
 ### BRK
+
+**Break**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BRK            imp           00  1   8-e         ....di.. .
 ```
 
+Perform a break interrupt. The exact behavior changes slightly, based on whether
+the CPU is in native or emulation mode. (.e is 1 in emulation mode.)
+
+In emulation mode:
+
+1. PC (Program Counter) is incremented by 2 bytes.
+1. PC is pushed onto the stack.
+1. P (flags) is pushed to the stack.
+1. The B flag is set.
+1. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+1. The CPU reads the address from the IRQ vector at $FFFE and jumps there.
+
+In native mode:
+
+1. PC is incremented by 2 bytes
+1. PBR (Program Bank) is pushed the stack
+1. PC is pushed to the stack
+1. P (flags) is pushed to the stack
+1. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+1. The CPU reads the address from the BRK vector at $00FFE6 and jumps there.
+
+See the [Vectors](#vectors) section for the break vector.
+
 [top](#instructions-by-opcode)
+
+---
 
 ### BRL
 
@@ -263,6 +423,8 @@ BRL LABEL      rel16         82  3   4           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### BVC
 
 ```text
@@ -271,6 +433,8 @@ BVC LABEL      rel8          50  2   2+t+t*e*p   ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### BVS
 
@@ -281,6 +445,8 @@ BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CLC
 
 ```text
@@ -289,6 +455,8 @@ CLC            imp           18  1   2           .......c .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### CLD
 
@@ -299,6 +467,8 @@ CLD            imp           D8  1   2           ....d... .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CLI
 
 ```text
@@ -308,6 +478,8 @@ CLI            imp           58  1   2           .....i.. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CLV
 
 ```text
@@ -316,6 +488,8 @@ CLV            imp           B8  1   2           .v...... .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### CMP
 
@@ -340,6 +514,8 @@ CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### COP
 
 ```text
@@ -348,6 +524,8 @@ COP #$12       imm           02  2   8-e         ....di.. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### CPX
 
@@ -360,6 +538,8 @@ CPX $9876      abs           EC  3   5-x         n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### CPY
 
 ```text
@@ -370,6 +550,8 @@ CPY $9876      abs           CC  3   5-x         n.....zc .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### DEC
 
@@ -384,6 +566,8 @@ DEC $9876,X    abs,X         DE  3   9-2*m       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### DEX
 
 ```text
@@ -393,6 +577,8 @@ DEX            imp           CA  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### DEY
 
 ```text
@@ -401,6 +587,8 @@ DEY            imp           88  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### EOR
 
@@ -425,6 +613,8 @@ EOR [$10],Y    [dir],Y       57  2   7-m+w       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### INC
 
 ```text
@@ -438,6 +628,8 @@ INC $9876,X    abs,X         FE  3   9-2*m       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### INX
 
 ```text
@@ -447,6 +639,8 @@ INX            imp           E8  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### INY
 
 ```text
@@ -455,6 +649,8 @@ INY            imp           C8  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### JMP
 
@@ -469,6 +665,8 @@ JMP [$1234]    [abs]         DC  3   6           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### JSL
 
 ```text
@@ -477,6 +675,8 @@ JSL $123456    long          22  4   8           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### JSR
 
@@ -487,6 +687,8 @@ JSR ($1234,X)  (abs,X)       FC  3   8           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### LDA
 
@@ -511,6 +713,8 @@ LDA [$10],Y    [dir],Y       B7  2   7-m+w       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### LDX
 
 ```text
@@ -523,6 +727,8 @@ LDX $9876,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### LDY
 
@@ -537,6 +743,8 @@ LDY $9876,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### LSR
 
 ```text
@@ -550,6 +758,8 @@ LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### MVN
 
 ```text
@@ -558,6 +768,8 @@ MVN #$12,#$34  src,dest      54  3   7           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### MVP
 
@@ -568,6 +780,8 @@ MVP #$12,#$34  src,dest      44  3   7           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### NOP
 
 ```text
@@ -576,6 +790,8 @@ NOP            imp           EA  1   2           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### ORA
 
@@ -600,6 +816,8 @@ ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PEA
 
 ```text
@@ -608,6 +826,8 @@ PEA #$1234     imm           F4  3   5           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PEI
 
@@ -618,6 +838,8 @@ PEI $12        dir           D4  2   6+w         ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PER
 
 ```text
@@ -626,6 +848,8 @@ PER LABEL      imm           62  3   6           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PHA
 
@@ -636,6 +860,8 @@ PHA            imp           48  1   4-m         ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PHB
 
 ```text
@@ -644,6 +870,8 @@ PHB            imp           8B  1   3           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PHD
 
@@ -654,6 +882,8 @@ PHD            imp           0B  1   4           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PHK
 
 ```text
@@ -662,6 +892,8 @@ PHK            imp           4B  1   3           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PHP
 
@@ -672,6 +904,8 @@ PHP            imp           08  1   3           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PHX
 
 ```text
@@ -680,6 +914,8 @@ PHX            imp           DA  1   4-x         ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PHY
 
@@ -690,6 +926,8 @@ PHY            imp           5A  1   4-x         ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PLA
 
 ```text
@@ -698,6 +936,8 @@ PLA            imp           68  1   5-m         n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PLB
 
@@ -708,6 +948,8 @@ PLB            imp           AB  1   4           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PLD
 
 ```text
@@ -716,6 +958,8 @@ PLD            imp           2B  1   5           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PLP
 
@@ -726,6 +970,8 @@ PLP            imp           28  1   4           nvmxdizc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### PLX
 
 ```text
@@ -734,6 +980,8 @@ PLX            imp           FA  1   5-x         n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### PLY
 
@@ -744,6 +992,8 @@ PLY            imp           7A  1   5-x         n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### REP
 
 ```text
@@ -752,6 +1002,8 @@ REP #$12       imm           C2  2   3           nvmxdizc .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### ROL
 
@@ -766,6 +1018,8 @@ ROL $9876,X    abs,X         3E  3   9-2*m       n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### ROR
 
 ```text
@@ -779,6 +1033,8 @@ ROR $9876,X    abs,X         7E  3   9-2*m       n.....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### RTI
 
 ```text
@@ -787,6 +1043,8 @@ RTI            imp           40  1   7-e         nvmxdizc .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### RTL
 
@@ -797,6 +1055,8 @@ RTL            imp           6B  1   6           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### RTS
 
 ```text
@@ -805,6 +1065,8 @@ RTS            imp           60  1   6           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### SBC
 
@@ -829,6 +1091,8 @@ SBC [$10],Y    [dir],Y       F7  2   7-m+w       nv....zc .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### SEC
 
 ```text
@@ -837,6 +1101,8 @@ SEC            imp           38  1   2           .......c .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### SED
 
@@ -847,6 +1113,8 @@ SED            imp           F8  1   2           ....d... .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### SEI
 
 ```text
@@ -856,6 +1124,8 @@ SEI            imp           78  1   2           .....i.. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### SEP
 
 ```text
@@ -864,6 +1134,8 @@ SEP #$12       imm           E2  2   3           nvmxdizc .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### STA
 
@@ -887,6 +1159,8 @@ STA [$10],Y    [dir],Y       97  2   7-m+w       ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### STP
 
 ```text
@@ -895,6 +1169,8 @@ STP            imp           DB  1   3           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### STX
 
@@ -907,6 +1183,8 @@ STX $9876      abs           8E  3   5-x         ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### STY
 
 ```text
@@ -917,6 +1195,8 @@ STY $9876      abs           8C  3   5-x         ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### STZ
 
@@ -930,6 +1210,8 @@ STZ $9876,X    abs,X         9E  3   6-m         ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TAX
 
 ```text
@@ -938,6 +1220,8 @@ TAX            imp           AA  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### TAY
 
@@ -948,6 +1232,8 @@ TAY            imp           A8  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TCD
 
 ```text
@@ -956,6 +1242,8 @@ TCD            imp           5B  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### TCS
 
@@ -966,6 +1254,8 @@ TCS            imp           1B  1   2           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TDC
 
 ```text
@@ -974,6 +1264,8 @@ TDC            imp           7B  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### TRB
 
@@ -985,6 +1277,8 @@ TRB $9876      abs           1C  3   8-2*m       ......z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TSB
 
 ```text
@@ -995,6 +1289,8 @@ TSB $9876      abs           0C  3   8-2*m       ......z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TSC
 
 ```text
@@ -1003,6 +1299,8 @@ TSC            imp           3B  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### TSX
 
@@ -1013,6 +1311,8 @@ TSX            imp           BA  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TXA
 
 ```text
@@ -1021,6 +1321,8 @@ TXA            imp           8A  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### TXS
 
@@ -1031,6 +1333,8 @@ TXS            imp           9A  1   2           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TXY
 
 ```text
@@ -1039,6 +1343,8 @@ TXY            imp           9B  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### TYA
 
@@ -1049,6 +1355,8 @@ TYA            imp           98  1   2           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### TYX
 
 ```text
@@ -1057,6 +1365,8 @@ TYX            imp           BB  1   2           n.....z. .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### WAI
 
@@ -1067,6 +1377,8 @@ WAI            imp           CB  1   3           ........ .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### WDM
 
 ```text
@@ -1075,6 +1387,8 @@ WDM            imm           42  2   2           ........ .
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
 ### XBA
 
@@ -1085,6 +1399,8 @@ XBA            imp           EB  1   3           n.....z. .
 
 [top](#instructions-by-opcode)
 
+---
+
 ### XCE
 
 ```text
@@ -1093,4 +1409,6 @@ XCE            imp           FB  1   2           .......c e
 ```
 
 [top](#instructions-by-opcode)
+
+---
 
