@@ -16,11 +16,11 @@ class Cpu:
         # Address modes: Immediate, Indirect, etc.
         self.address_modes = Address_Modes()
 
-    def load(self, opcode_file, category_file, modes_file,details_file):
+    def load(self, opcode_file:str, category_file:str, modes_file:str, details_file:str):
         self.load_address_modes(modes_file)
         self.load_groups(category_file)
         self.load_opcodes(opcode_file)
-        self.load_details(defails_file)
+        self.load_details(details_file)
 
     def load_address_modes(self, filename, start_row = 0):
         csv = CsvFile(filename)
@@ -77,4 +77,23 @@ class Cpu:
     # ## Catgegory
     # Information  about category.
     def load_details(self, filename):
-        pass
+        file = open(filename)
+        det_name:str = None
+        det_text:str = ""
+        first_line:bool = False
+
+        lc = 0
+        for line in file:
+            lc += 1
+            if line.startswith("### "):
+                if det_name:
+                    self.details[det_name] = det_text
+                det_name = line.strip()[4:]
+                det_text = ""
+            else:
+                det_text += line.strip() + "\n"
+        if det_name:
+            self.details[det_name] = det_text
+
+        file.close()
+        print(filename,"read",lc,"lines.")

@@ -20,6 +20,7 @@ class markdown_writer:
         self.opcode_file="CSV/Opcodes65C816.csv"
         self.category_file="CSV/Groups65C816.csv"
         self.modes_file="CSV/Modes65C816.csv"
+        self.details_file="CSV/Details65C816.md"
         self.output_file="Markdown/table_65C816.md"
         self.output_merged_filename="Markdown/X16 Reference - Appendix E - 65C816 Processor.md"
 
@@ -28,7 +29,7 @@ class markdown_writer:
 
     def generate_tables(self):
         self.cpu = Cpu()
-        self.cpu.load(self.opcode_file, self.category_file, self.modes_file)
+        self.cpu.load(self.opcode_file, self.category_file, self.modes_file, self.details_file)
 
         self.file = open(self.output_file, "w")
         self.write_opcodes_by_number()
@@ -49,8 +50,7 @@ class markdown_writer:
             for x in self.hex_digits:
                 n = y + x
                 if n in self.cpu.opcodes:
-                    print("[" + self.cpu.opcodes[n].mnemonic + "](#" + 
-                          self.cpu.opcodes[n].mnemonic + ")",
+                    print(self.anchor(self.cpu.opcodes[n].mnemonic),
                           end="|",file=self.file)
                 else:
                     print("",end="|",file=self.file)
@@ -94,8 +94,8 @@ class markdown_writer:
             print("|" + "-".ljust(col_width,"-"),file=self.file,end="")
         print("|", file=self.file)
 
-    def anchor(self, mnemonic):
-        return "[" + mnemonic + "](#" + mnemonic + ")"
+    def anchor(self, mnemonic:str):
+        return "[" + mnemonic + "](#" + mnemonic.lower() + ")"
 
     def write_header_pre(self, items:list, col_width:list):
         for i in range(0,len(items)):
@@ -128,7 +128,9 @@ class markdown_writer:
 
                 print(file=self.file)
             print("```",end="\n\n",file=self.file)
-            print("details go here",end="\n\n",file=self.file)
+            if name in self.cpu.details:
+                print(self.cpu.details[name],file=self.file)
+            print("[top](#instructions-by-opcode)",end="\n\n",file=self.file)
 
 
             

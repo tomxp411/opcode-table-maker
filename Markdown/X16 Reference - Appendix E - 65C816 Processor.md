@@ -110,57 +110,57 @@ addresses (although they would be the same if .DP is set to $00.
 
 |           |x0         |x1         |x2         |x3         |x4         |x5         |x6         |x7         |x8         |x9         |xA         |xB         |xC         |xD         |xE         |xF         |
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-|        0x |[BRK](#BRK)|[ORA](#ORA)|[COP](#COP)|[ORA](#ORA)|[TSB](#TSB)|[ORA](#ORA)|[ASL](#ASL)|[ORA](#ORA)|[PHP](#PHP)|[ORA](#ORA)|[ASL](#ASL)|[PHD](#PHD)|[TSB](#TSB)|[ORA](#ORA)|[ASL](#ASL)|[ORA](#ORA)|
-|        1x |[BPL](#BPL)|[ORA](#ORA)|[ORA](#ORA)|[ORA](#ORA)|[TRB](#TRB)|[ORA](#ORA)|[ASL](#ASL)|[ORA](#ORA)|[CLC](#CLC)|[ORA](#ORA)|[INC](#INC)|[TCS](#TCS)|[TRB](#TRB)|[ORA](#ORA)|[ASL](#ASL)|[ORA](#ORA)|
-|        2x |[JSR](#JSR)|[AND](#AND)|[JSL](#JSL)|[AND](#AND)|[BIT](#BIT)|[AND](#AND)|[ROL](#ROL)|[AND](#AND)|[PLP](#PLP)|[AND](#AND)|[ROL](#ROL)|[PLD](#PLD)|[BIT](#BIT)|[AND](#AND)|[ROL](#ROL)|[AND](#AND)|
-|        3x |[BMI](#BMI)|[AND](#AND)|[AND](#AND)|[AND](#AND)|[BIT](#BIT)|[AND](#AND)|[ROL](#ROL)|[AND](#AND)|[SEC](#SEC)|[AND](#AND)|[DEC](#DEC)|[TSC](#TSC)|[BIT](#BIT)|[AND](#AND)|[ROL](#ROL)|[AND](#AND)|
-|        4x |[RTI](#RTI)|[EOR](#EOR)|[WDM](#WDM)|[EOR](#EOR)|[MVP](#MVP)|[EOR](#EOR)|[LSR](#LSR)|[EOR](#EOR)|[PHA](#PHA)|[EOR](#EOR)|[LSR](#LSR)|[PHK](#PHK)|[JMP](#JMP)|[EOR](#EOR)|[LSR](#LSR)|[EOR](#EOR)|
-|        5x |[BVC](#BVC)|[EOR](#EOR)|[EOR](#EOR)|[EOR](#EOR)|[MVN](#MVN)|[EOR](#EOR)|[LSR](#LSR)|[EOR](#EOR)|[CLI](#CLI)|[EOR](#EOR)|[PHY](#PHY)|[TCD](#TCD)|[JMP](#JMP)|[EOR](#EOR)|[LSR](#LSR)|[EOR](#EOR)|
-|        6x |[RTS](#RTS)|[ADC](#ADC)|[PER](#PER)|[ADC](#ADC)|[STZ](#STZ)|[ADC](#ADC)|[ROR](#ROR)|[ADC](#ADC)|[PLA](#PLA)|[ADC](#ADC)|[ROR](#ROR)|[RTL](#RTL)|[JMP](#JMP)|[ADC](#ADC)|[ROR](#ROR)|[ADC](#ADC)|
-|        7x |[BVS](#BVS)|[ADC](#ADC)|[ADC](#ADC)|[ADC](#ADC)|[STZ](#STZ)|[ADC](#ADC)|[ROR](#ROR)|[ADC](#ADC)|[SEI](#SEI)|[ADC](#ADC)|[PLY](#PLY)|[TDC](#TDC)|[JMP](#JMP)|[ADC](#ADC)|[ROR](#ROR)|[ADC](#ADC)|
-|        8x |[BRA](#BRA)|[STA](#STA)|[BRL](#BRL)|[STA](#STA)|[STY](#STY)|[STA](#STA)|[STX](#STX)|[STA](#STA)|[DEY](#DEY)|[BIT](#BIT)|[TXA](#TXA)|[PHB](#PHB)|[STY](#STY)|[STA](#STA)|[STX](#STX)|[STA](#STA)|
-|        9x |[BCC](#BCC)|[STA](#STA)|[STA](#STA)|[STA](#STA)|[STY](#STY)|[STA](#STA)|[STX](#STX)|[STA](#STA)|[TYA](#TYA)|[STA](#STA)|[TXS](#TXS)|[TXY](#TXY)|[STZ](#STZ)|[STA](#STA)|[STZ](#STZ)|[STA](#STA)|
-|        Ax |[LDY](#LDY)|[LDA](#LDA)|[LDX](#LDX)|[LDA](#LDA)|[LDY](#LDY)|[LDA](#LDA)|[LDX](#LDX)|[LDA](#LDA)|[TAY](#TAY)|[LDA](#LDA)|[TAX](#TAX)|[PLB](#PLB)|[LDY](#LDY)|[LDA](#LDA)|[LDX](#LDX)|[LDA](#LDA)|
-|        Bx |[BCS](#BCS)|[LDA](#LDA)|[LDA](#LDA)|[LDA](#LDA)|[LDY](#LDY)|[LDA](#LDA)|[LDX](#LDX)|[LDA](#LDA)|[CLV](#CLV)|[LDA](#LDA)|[TSX](#TSX)|[TYX](#TYX)|[LDY](#LDY)|[LDA](#LDA)|[LDX](#LDX)|[LDA](#LDA)|
-|        Cx |[CPY](#CPY)|[CMP](#CMP)|[REP](#REP)|[CMP](#CMP)|[CPY](#CPY)|[CMP](#CMP)|[DEC](#DEC)|[CMP](#CMP)|[INY](#INY)|[CMP](#CMP)|[DEX](#DEX)|[WAI](#WAI)|[CPY](#CPY)|[CMP](#CMP)|[DEC](#DEC)|[CMP](#CMP)|
-|        Dx |[BNE](#BNE)|[CMP](#CMP)|[CMP](#CMP)|[CMP](#CMP)|[PEI](#PEI)|[CMP](#CMP)|[DEC](#DEC)|[CMP](#CMP)|[CLD](#CLD)|[CMP](#CMP)|[PHX](#PHX)|[STP](#STP)|[JMP](#JMP)|[CMP](#CMP)|[DEC](#DEC)|[CMP](#CMP)|
-|        Ex |[CPX](#CPX)|[SBC](#SBC)|[SEP](#SEP)|[SBC](#SBC)|[CPX](#CPX)|[SBC](#SBC)|[INC](#INC)|[SBC](#SBC)|[INX](#INX)|[SBC](#SBC)|[NOP](#NOP)|[XBA](#XBA)|[CPX](#CPX)|[SBC](#SBC)|[INC](#INC)|[SBC](#SBC)|
-|        Fx |[BEQ](#BEQ)|[SBC](#SBC)|[SBC](#SBC)|[SBC](#SBC)|[PEA](#PEA)|[SBC](#SBC)|[INC](#INC)|[SBC](#SBC)|[SED](#SED)|[SBC](#SBC)|[PLX](#PLX)|[XCE](#XCE)|[JSR](#JSR)|[SBC](#SBC)|[INC](#INC)|[SBC](#SBC)|
+|        0x |[BRK](#brk)|[ORA](#ora)|[COP](#cop)|[ORA](#ora)|[TSB](#tsb)|[ORA](#ora)|[ASL](#asl)|[ORA](#ora)|[PHP](#php)|[ORA](#ora)|[ASL](#asl)|[PHD](#phd)|[TSB](#tsb)|[ORA](#ora)|[ASL](#asl)|[ORA](#ora)|
+|        1x |[BPL](#bpl)|[ORA](#ora)|[ORA](#ora)|[ORA](#ora)|[TRB](#trb)|[ORA](#ora)|[ASL](#asl)|[ORA](#ora)|[CLC](#clc)|[ORA](#ora)|[INC](#inc)|[TCS](#tcs)|[TRB](#trb)|[ORA](#ora)|[ASL](#asl)|[ORA](#ora)|
+|        2x |[JSR](#jsr)|[AND](#and)|[JSL](#jsl)|[AND](#and)|[BIT](#bit)|[AND](#and)|[ROL](#rol)|[AND](#and)|[PLP](#plp)|[AND](#and)|[ROL](#rol)|[PLD](#pld)|[BIT](#bit)|[AND](#and)|[ROL](#rol)|[AND](#and)|
+|        3x |[BMI](#bmi)|[AND](#and)|[AND](#and)|[AND](#and)|[BIT](#bit)|[AND](#and)|[ROL](#rol)|[AND](#and)|[SEC](#sec)|[AND](#and)|[DEC](#dec)|[TSC](#tsc)|[BIT](#bit)|[AND](#and)|[ROL](#rol)|[AND](#and)|
+|        4x |[RTI](#rti)|[EOR](#eor)|[WDM](#wdm)|[EOR](#eor)|[MVP](#mvp)|[EOR](#eor)|[LSR](#lsr)|[EOR](#eor)|[PHA](#pha)|[EOR](#eor)|[LSR](#lsr)|[PHK](#phk)|[JMP](#jmp)|[EOR](#eor)|[LSR](#lsr)|[EOR](#eor)|
+|        5x |[BVC](#bvc)|[EOR](#eor)|[EOR](#eor)|[EOR](#eor)|[MVN](#mvn)|[EOR](#eor)|[LSR](#lsr)|[EOR](#eor)|[CLI](#cli)|[EOR](#eor)|[PHY](#phy)|[TCD](#tcd)|[JMP](#jmp)|[EOR](#eor)|[LSR](#lsr)|[EOR](#eor)|
+|        6x |[RTS](#rts)|[ADC](#adc)|[PER](#per)|[ADC](#adc)|[STZ](#stz)|[ADC](#adc)|[ROR](#ror)|[ADC](#adc)|[PLA](#pla)|[ADC](#adc)|[ROR](#ror)|[RTL](#rtl)|[JMP](#jmp)|[ADC](#adc)|[ROR](#ror)|[ADC](#adc)|
+|        7x |[BVS](#bvs)|[ADC](#adc)|[ADC](#adc)|[ADC](#adc)|[STZ](#stz)|[ADC](#adc)|[ROR](#ror)|[ADC](#adc)|[SEI](#sei)|[ADC](#adc)|[PLY](#ply)|[TDC](#tdc)|[JMP](#jmp)|[ADC](#adc)|[ROR](#ror)|[ADC](#adc)|
+|        8x |[BRA](#bra)|[STA](#sta)|[BRL](#brl)|[STA](#sta)|[STY](#sty)|[STA](#sta)|[STX](#stx)|[STA](#sta)|[DEY](#dey)|[BIT](#bit)|[TXA](#txa)|[PHB](#phb)|[STY](#sty)|[STA](#sta)|[STX](#stx)|[STA](#sta)|
+|        9x |[BCC](#bcc)|[STA](#sta)|[STA](#sta)|[STA](#sta)|[STY](#sty)|[STA](#sta)|[STX](#stx)|[STA](#sta)|[TYA](#tya)|[STA](#sta)|[TXS](#txs)|[TXY](#txy)|[STZ](#stz)|[STA](#sta)|[STZ](#stz)|[STA](#sta)|
+|        Ax |[LDY](#ldy)|[LDA](#lda)|[LDX](#ldx)|[LDA](#lda)|[LDY](#ldy)|[LDA](#lda)|[LDX](#ldx)|[LDA](#lda)|[TAY](#tay)|[LDA](#lda)|[TAX](#tax)|[PLB](#plb)|[LDY](#ldy)|[LDA](#lda)|[LDX](#ldx)|[LDA](#lda)|
+|        Bx |[BCS](#bcs)|[LDA](#lda)|[LDA](#lda)|[LDA](#lda)|[LDY](#ldy)|[LDA](#lda)|[LDX](#ldx)|[LDA](#lda)|[CLV](#clv)|[LDA](#lda)|[TSX](#tsx)|[TYX](#tyx)|[LDY](#ldy)|[LDA](#lda)|[LDX](#ldx)|[LDA](#lda)|
+|        Cx |[CPY](#cpy)|[CMP](#cmp)|[REP](#rep)|[CMP](#cmp)|[CPY](#cpy)|[CMP](#cmp)|[DEC](#dec)|[CMP](#cmp)|[INY](#iny)|[CMP](#cmp)|[DEX](#dex)|[WAI](#wai)|[CPY](#cpy)|[CMP](#cmp)|[DEC](#dec)|[CMP](#cmp)|
+|        Dx |[BNE](#bne)|[CMP](#cmp)|[CMP](#cmp)|[CMP](#cmp)|[PEI](#pei)|[CMP](#cmp)|[DEC](#dec)|[CMP](#cmp)|[CLD](#cld)|[CMP](#cmp)|[PHX](#phx)|[STP](#stp)|[JMP](#jmp)|[CMP](#cmp)|[DEC](#dec)|[CMP](#cmp)|
+|        Ex |[CPX](#cpx)|[SBC](#sbc)|[SEP](#sep)|[SBC](#sbc)|[CPX](#cpx)|[SBC](#sbc)|[INC](#inc)|[SBC](#sbc)|[INX](#inx)|[SBC](#sbc)|[NOP](#nop)|[XBA](#xba)|[CPX](#cpx)|[SBC](#sbc)|[INC](#inc)|[SBC](#sbc)|
+|        Fx |[BEQ](#beq)|[SBC](#sbc)|[SBC](#sbc)|[SBC](#sbc)|[PEA](#pea)|[SBC](#sbc)|[INC](#inc)|[SBC](#sbc)|[SED](#sed)|[SBC](#sbc)|[PLX](#plx)|[XCE](#xce)|[JSR](#jsr)|[SBC](#sbc)|[INC](#inc)|[SBC](#sbc)|
 
 ## Instructions By Name
 
 |             |             |             |             |             |             |             |             |             |             |
 |-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| [ADC](#ADC) | [AND](#AND) | [ASL](#ASL) | [BCC](#BCC) | [BCS](#BCS) | [BEQ](#BEQ) | [BIT](#BIT) | [BMI](#BMI) | [BNE](#BNE) | [BPL](#BPL) |
-| [BRA](#BRA) | [BRK](#BRK) | [BRL](#BRL) | [BVC](#BVC) | [BVS](#BVS) | [CLC](#CLC) | [CLD](#CLD) | [CLI](#CLI) | [CLV](#CLV) | [CMP](#CMP) |
-| [COP](#COP) | [CPX](#CPX) | [CPY](#CPY) | [DEC](#DEC) | [DEX](#DEX) | [DEY](#DEY) | [EOR](#EOR) | [INC](#INC) | [INX](#INX) | [INY](#INY) |
-| [JMP](#JMP) | [JSL](#JSL) | [JSR](#JSR) | [LDA](#LDA) | [LDX](#LDX) | [LDY](#LDY) | [LSR](#LSR) | [MVN](#MVN) | [MVP](#MVP) | [NOP](#NOP) |
-| [ORA](#ORA) | [PEA](#PEA) | [PEI](#PEI) | [PER](#PER) | [PHA](#PHA) | [PHB](#PHB) | [PHD](#PHD) | [PHK](#PHK) | [PHP](#PHP) | [PHX](#PHX) |
-| [PHY](#PHY) | [PLA](#PLA) | [PLB](#PLB) | [PLD](#PLD) | [PLP](#PLP) | [PLX](#PLX) | [PLY](#PLY) | [REP](#REP) | [ROL](#ROL) | [ROR](#ROR) |
-| [RTI](#RTI) | [RTL](#RTL) | [RTS](#RTS) | [SBC](#SBC) | [SEC](#SEC) | [SED](#SED) | [SEI](#SEI) | [SEP](#SEP) | [STA](#STA) | [STP](#STP) |
-| [STX](#STX) | [STY](#STY) | [STZ](#STZ) | [TAX](#TAX) | [TAY](#TAY) | [TCD](#TCD) | [TCS](#TCS) | [TDC](#TDC) | [TRB](#TRB) | [TSB](#TSB) |
-| [TSC](#TSC) | [TSX](#TSX) | [TXA](#TXA) | [TXS](#TXS) | [TXY](#TXY) | [TYA](#TYA) | [TYX](#TYX) | [WAI](#WAI) | [WDM](#WDM) | [XBA](#XBA) |
-| [XCE](#XCE) |
+| [ADC](#adc) | [AND](#and) | [ASL](#asl) | [BCC](#bcc) | [BCS](#bcs) | [BEQ](#beq) | [BIT](#bit) | [BMI](#bmi) | [BNE](#bne) | [BPL](#bpl) |
+| [BRA](#bra) | [BRK](#brk) | [BRL](#brl) | [BVC](#bvc) | [BVS](#bvs) | [CLC](#clc) | [CLD](#cld) | [CLI](#cli) | [CLV](#clv) | [CMP](#cmp) |
+| [COP](#cop) | [CPX](#cpx) | [CPY](#cpy) | [DEC](#dec) | [DEX](#dex) | [DEY](#dey) | [EOR](#eor) | [INC](#inc) | [INX](#inx) | [INY](#iny) |
+| [JMP](#jmp) | [JSL](#jsl) | [JSR](#jsr) | [LDA](#lda) | [LDX](#ldx) | [LDY](#ldy) | [LSR](#lsr) | [MVN](#mvn) | [MVP](#mvp) | [NOP](#nop) |
+| [ORA](#ora) | [PEA](#pea) | [PEI](#pei) | [PER](#per) | [PHA](#pha) | [PHB](#phb) | [PHD](#phd) | [PHK](#phk) | [PHP](#php) | [PHX](#phx) |
+| [PHY](#phy) | [PLA](#pla) | [PLB](#plb) | [PLD](#pld) | [PLP](#plp) | [PLX](#plx) | [PLY](#ply) | [REP](#rep) | [ROL](#rol) | [ROR](#ror) |
+| [RTI](#rti) | [RTL](#rtl) | [RTS](#rts) | [SBC](#sbc) | [SEC](#sec) | [SED](#sed) | [SEI](#sei) | [SEP](#sep) | [STA](#sta) | [STP](#stp) |
+| [STX](#stx) | [STY](#sty) | [STZ](#stz) | [TAX](#tax) | [TAY](#tay) | [TCD](#tcd) | [TCS](#tcs) | [TDC](#tdc) | [TRB](#trb) | [TSB](#tsb) |
+| [TSC](#tsc) | [TSX](#tsx) | [TXA](#txa) | [TXS](#txs) | [TXY](#txy) | [TYA](#tya) | [TYX](#tyx) | [WAI](#wai) | [WDM](#wdm) | [XBA](#xba) |
+| [XCE](#xce) |
 
 ## Instructions By Category
 
 |Category       |Instructions   |
 |---------------|---------------|
-| Arithmetic    | [ADC](#ADC) , [SBC](#SBC) |
-| Boolean       | [AND](#AND) , [EOR](#EOR) , [ORA](#ORA) |
-| Shift         | [ASL](#ASL) , [LSR](#LSR) , [ROL](#ROL) , [ROR](#ROR) |
-| Branch        | [BCC](#BCC) , [BCS](#BCS) , [BEQ](#BEQ) , [BMI](#BMI) , [BNE](#BNE) , [BPL](#BPL) , [BRA](#BRA) , [BRK](#BRK) , [BRL](#BRL) , [BVC](#BVC) , [BVS](#BVS) |
-| Test          | [BIT](#BIT) , [TRB](#TRB) , [TSB](#TSB) |
-| Flags         | [CLC](#CLC) , [CLD](#CLD) , [CLI](#CLI) , [CLV](#CLV) , [REP](#REP) , [SEC](#SEC) , [SED](#SED) , [SEI](#SEI) , [SEP](#SEP) |
-| Compare       | [CMP](#CMP) , [CPX](#CPX) , [CPY](#CPY) |
-| Interrupt     | [COP](#COP) , [WAI](#WAI) |
-| Inc/Dec       | [DEC](#DEC) , [DEX](#DEX) , [DEY](#DEY) , [INC](#INC) , [INX](#INX) , [INY](#INY) |
-| Flow          | [JMP](#JMP) , [JSL](#JSL) , [JSR](#JSR) , [NOP](#NOP) , [RTI](#RTI) , [RTL](#RTL) , [RTS](#RTS) , [WDM](#WDM) |
-| Load          | [LDA](#LDA) , [LDX](#LDX) , [LDY](#LDY) |
-| Block Move    | [MVN](#MVN) , [MVP](#MVP) |
-| Stack         | [PEA](#PEA) , [PEI](#PEI) , [PER](#PER) , [PHA](#PHA) , [PHB](#PHB) , [PHD](#PHD) , [PHK](#PHK) , [PHP](#PHP) , [PHX](#PHX) , [PHY](#PHY) , [PLA](#PLA) , [PLB](#PLB) , [PLD](#PLD) , [PLP](#PLP) , [PLX](#PLX) , [PLY](#PLY) |
-| Store         | [STA](#STA) , [STP](#STP) , [STX](#STX) , [STY](#STY) , [STZ](#STZ) |
-| Register Swap | [TAX](#TAX) , [TAY](#TAY) , [TCD](#TCD) , [TCS](#TCS) , [TDC](#TDC) , [TSC](#TSC) , [TSX](#TSX) , [TXA](#TXA) , [TXS](#TXS) , [TXY](#TXY) , [TYA](#TYA) , [TYX](#TYX) , [XBA](#XBA) , [XCE](#XCE) |
+| Arithmetic    | [ADC](#adc) , [SBC](#sbc) |
+| Boolean       | [AND](#and) , [EOR](#eor) , [ORA](#ora) |
+| Shift         | [ASL](#asl) , [LSR](#lsr) , [ROL](#rol) , [ROR](#ror) |
+| Branch        | [BCC](#bcc) , [BCS](#bcs) , [BEQ](#beq) , [BMI](#bmi) , [BNE](#bne) , [BPL](#bpl) , [BRA](#bra) , [BRK](#brk) , [BRL](#brl) , [BVC](#bvc) , [BVS](#bvs) |
+| Test          | [BIT](#bit) , [TRB](#trb) , [TSB](#tsb) |
+| Flags         | [CLC](#clc) , [CLD](#cld) , [CLI](#cli) , [CLV](#clv) , [REP](#rep) , [SEC](#sec) , [SED](#sed) , [SEI](#sei) , [SEP](#sep) |
+| Compare       | [CMP](#cmp) , [CPX](#cpx) , [CPY](#cpy) |
+| Interrupt     | [COP](#cop) , [WAI](#wai) |
+| Inc/Dec       | [DEC](#dec) , [DEX](#dex) , [DEY](#dey) , [INC](#inc) , [INX](#inx) , [INY](#iny) |
+| Flow          | [JMP](#jmp) , [JSL](#jsl) , [JSR](#jsr) , [NOP](#nop) , [RTI](#rti) , [RTL](#rtl) , [RTS](#rts) , [WDM](#wdm) |
+| Load          | [LDA](#lda) , [LDX](#ldx) , [LDY](#ldy) |
+| Block Move    | [MVN](#mvn) , [MVP](#mvp) |
+| Stack         | [PEA](#pea) , [PEI](#pei) , [PER](#per) , [PHA](#pha) , [PHB](#phb) , [PHD](#phd) , [PHK](#phk) , [PHP](#php) , [PHX](#phx) , [PHY](#phy) , [PLA](#pla) , [PLB](#plb) , [PLD](#pld) , [PLP](#plp) , [PLX](#plx) , [PLY](#ply) |
+| Store         | [STA](#sta) , [STP](#stp) , [STX](#stx) , [STY](#sty) , [STZ](#stz) |
+| Register Swap | [TAX](#tax) , [TAY](#tay) , [TCD](#tcd) , [TCS](#tcs) , [TDC](#tdc) , [TSC](#tsc) , [TSX](#tsx) , [TXA](#txa) , [TXS](#txs) , [TXY](#txy) , [TYA](#tya) , [TYX](#tyx) , [XBA](#xba) , [XCE](#xce) |
 
 ### ADC
 
@@ -183,7 +183,64 @@ ADC [$10]      [dir]         67  2   7-m+w       nv....zc .
 ADC [$10],Y    [dir],Y       77  2   7-m+w       nv....zc .
 ```
 
-details go here
+Add with Carry
+
+ADC adds the accumulator (.A), the supplied operand, and the Carry bit (0 or 1).
+The result is stored in .A.
+
+Since Carry is always added in, you should always remember to use CLC (Clear
+Carry) before performing an addition operation. When adding larger numbers (16,
+24, 32, or more bits), you can use the Carry flag to chain additions.
+
+Here is an example of a 16-bit add, when in 8 bit mode:
+
+```asm
+CLC
+LDA Addend1
+ADC Addend2
+STA Result1
+BCC done
+LDA Addend1+1  ; Reads the high byte of the addend
+ADC Addend2+1  ; (the +1 refers to the *address* of Addend, not the value)
+STA Result1+1  ;
+done:
+; the final result is at Result1
+```
+
+Flags:
+
+* .n is set when the high bit of .A is set. This indicates a negative number
+when using Two's Complement signed values.
+* .v (overflow) is set when the sum exceeds the maximum *signed* value for .A.
+(More on that below). * .n is set when the high bit is 1.
+* .z is set when the result is zero. This is useful for loop counters and can be
+tested with BEQ and BNE. (BEQ and BNE test the Zero bit, which is also the
+"equal" bit when performing subtraction or Compare operations.)
+* .c is set when the unsigned result exceeds the register's capacity (255 or
+65535).
+
+
+#### Overflow vs Carry
+
+The CPU detects addition that goes past the 7 or 15 bit boundary of a signed
+number, as well as the 8 bit boundary of an unsigned number.
+
+In 8-bit mode, when you add two positive numbers that result in a sum
+higher than 127 or add two negative numbers that result in a sum below -128, you
+will get a signed overflow, and the v flag will be set.
+
+When the sum of the two numbers exceeeds 255 or 65535, then the Carry flag will
+be set. This bit can be added to the next higher byte with ADC #0.
+
+```asm
+CLC
+LDA #$7F
+ADC #$10
+BRK
+```
+
+
+[top](#instructions-by-opcode)
 
 ### AND
 
@@ -206,7 +263,8 @@ AND [$10]      [dir]         27  2   7-m+w       n.....z. .
 AND [$10],Y    [dir],Y       37  2   7-m+w       n.....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### ASL
 
@@ -219,7 +277,8 @@ ASL $9876      abs           0E  3   8-2*m       n.....zc .
 ASL $9876,X    abs,X         1E  3   9-2*m       n.....zc .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BCC
 
@@ -228,7 +287,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BCC LABEL      rel8          90  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BCS
 
@@ -237,7 +297,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BCS LABEL      rel8          B0  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BEQ
 
@@ -246,7 +307,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BEQ LABEL      rel8          F0  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BIT
 
@@ -259,7 +321,8 @@ BIT $9876      abs           2C  3   5-m         nv....z. .
 BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BMI
 
@@ -268,7 +331,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BMI LABEL      rel8          30  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BNE
 
@@ -277,7 +341,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BNE LABEL      rel8          D0  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BPL
 
@@ -286,7 +351,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BPL LABEL      rel8          10  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BRA
 
@@ -295,7 +361,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BRA LABEL      rel8          80  2   3+e*p       ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BRK
 
@@ -304,7 +371,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BRK            imp           00  1   8-e         ....di.. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BRL
 
@@ -313,7 +381,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BRL LABEL      rel16         82  3   4           ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BVC
 
@@ -322,7 +391,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BVC LABEL      rel8          50  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### BVS
 
@@ -331,7 +401,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CLC
 
@@ -340,7 +411,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 CLC            imp           18  1   2           .......c .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CLD
 
@@ -349,7 +421,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 CLD            imp           D8  1   2           ....d... .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CLI
 
@@ -358,7 +431,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 CLI            imp           58  1   2           .....i.. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CLV
 
@@ -367,7 +441,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 CLV            imp           B8  1   2           .v...... .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CMP
 
@@ -390,7 +465,8 @@ CMP [$10]      [dir]         C7  2   7-m+w       n.....zc .
 CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### COP
 
@@ -399,7 +475,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 COP #$12       imm           02  2   8-e         ....di.. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CPX
 
@@ -410,7 +487,8 @@ CPX $10        dir           E4  2   4-x+w       n.....zc .
 CPX $9876      abs           EC  3   5-x         n.....zc .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### CPY
 
@@ -421,7 +499,8 @@ CPY $10        dir           C4  2   4-x+w       n.....zc .
 CPY $9876      abs           CC  3   5-x         n.....zc .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### DEC
 
@@ -434,7 +513,8 @@ DEC $9876      abs           CE  3   8-2*m       n.....z. .
 DEC $9876,X    abs,X         DE  3   9-2*m       n.....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### DEX
 
@@ -443,7 +523,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 DEX            imp           CA  1   2           n.....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### DEY
 
@@ -452,7 +533,8 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 DEY            imp           88  1   2           n.....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### EOR
 
@@ -475,7 +557,8 @@ EOR [$10]      [dir]         47  2   7-m+w       n.....z. .
 EOR [$10],Y    [dir],Y       57  2   7-m+w       n.....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### INC
 
@@ -488,11 +571,218 @@ INC $9876      abs           EE  3   8-2*m       n.....z. .
 INC $9876,X    abs,X         FE  3   9-2*m       n.....z. .
 ```
 
-details go here
+
+[top](#instructions-by-opcode)
 
 ### INX
 
 ```text
-SYNTAX         MODE          HEX 
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+INX            imp           E8  1   2           n.....z. .
+```
+
+
+[top](#instructions-by-opcode)
+
+### INY
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+INY            imp           C8  1   2           n.....z. .
+```
+
+
+[top](#instructions-by-opcode)
+
+### JMP
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+JMP $1234      abs           4C  3   3           ........ .
+JMP $FEDCBA    long          5C  4   4           ........ .
+JMP ($1234)    (abs)         6C  3   5           ........ .
+JMP ($1234,X)  (abs,X)       7C  3   6           ........ .
+JMP [$1234]    [abs]         DC  3   6           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### JSL
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+JSL $123456    long          22  4   8           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### JSR
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+JSR $1234      abs           20  3   6           ........ .
+JSR ($1234,X)  (abs,X)       FC  3   8           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### LDA
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+LDA #$54       imm           A9  3-m 3-m         n.....z. .
+LDA $10        dir           A5  2   4-m+w       n.....z. .
+LDA $10,X      dir,X         B5  2   5-m+w       n.....z. .
+LDA $32,S      stk,S         A3  2   5-m         n.....z. .
+LDA $9876      abs           AD  3   5-m         n.....z. .
+LDA $9876,X    abs,X         BD  3   6-m-x+x*p   n.....z. .
+LDA $9876,Y    abs,Y         B9  3   6-m-x+x*p   n.....z. .
+LDA $FEDBCA    long          AF  4   6-m         n.....z. .
+LDA $FEDCBA,X  long,X        BF  4   6-m         n.....z. .
+LDA ($10)      (dir)         B2  2   6-m+w       n.....z. .
+LDA ($10),Y    (dir),Y       B1  2   7-m+w-x+x*p n.....z. .
+LDA ($10,X)    (dir,X)       A1  2   7-m+w       n.....z. .
+LDA ($32,S),Y  (stk,S),Y     B3  2   8-m         n.....z. .
+LDA [$10]      [dir]         A7  2   7-m+w       n.....z. .
+LDA [$10],Y    [dir],Y       B7  2   7-m+w       n.....z. .
+```
+
+
+[top](#instructions-by-opcode)
+
+### LDX
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+LDX #$54       imm           A2  3-x 3-x         n.....z. .
+LDX $10        dir           A6  2   4-x+w       n.....z. .
+LDX $10,Y      dir,Y         B6  2   5-x+w       n.....z. .
+LDX $9876      abs           AE  3   5-x         n.....z. .
+LDX $9876,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
+```
+
+
+[top](#instructions-by-opcode)
+
+### LDY
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+LDY #$54       imm           A0  3-x 3-x         n.....z. .
+LDY $10        dir           A4  2   4-x+w       n.....z. .
+LDY $10,X      dir,X         B4  2   5-x+w       n.....z. .
+LDY $9876      abs           AC  3   5-x         n.....z. .
+LDY $9876,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
+```
+
+
+[top](#instructions-by-opcode)
+
+### LSR
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+LSR            acc           4A  1   2           n.....zc .
+LSR $10        dir           46  2   7-2*m+w     n.....zc .
+LSR $10,X      dir,X         56  2   8-2*m+w     n.....zc .
+LSR $9876      abs           4E  3   8-2*m       n.....zc .
+LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
+```
+
+
+[top](#instructions-by-opcode)
+
+### MVN
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+MVN #$12,#$34  src,dest      54  3   7           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### MVP
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+MVP #$12,#$34  src,dest      44  3   7           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### NOP
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+NOP            imp           EA  1   2           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### ORA
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+ORA #$54       imm           09  3-m 3-m         n.....z. .
+ORA $10        dir           05  2   4-m+w       n.....z. .
+ORA $10,X      dir,X         15  2   5-m+w       n.....z. .
+ORA $32,S      stk,S         03  2   5-m         n.....z. .
+ORA $9876      abs           0D  3   5-m         n.....z. .
+ORA $9876,X    abs,X         1D  3   6-m-x+x*p   n.....z. .
+ORA $9876,Y    abs,Y         19  3   6-m-x+x*p   n.....z. .
+ORA $FEDBCA    long          0F  4   6-m         n.....z. .
+ORA $FEDCBA,X  long,X        1F  4   6-m         n.....z. .
+ORA ($10)      (dir)         12  2   6-m+w       n.....z. .
+ORA ($10),Y    (dir),Y       11  2   7-m+w-x+x*p n.....z. .
+ORA ($10,X)    (dir,X)       01  2   7-m+w       n.....z. .
+ORA ($32,S),Y  (stk,S),Y     13  2   8-m         n.....z. .
+ORA [$10]      [dir]         07  2   7-m+w       n.....z. .
+ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
+```
+
+
+[top](#instructions-by-opcode)
+
+### PEA
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PEA #$1234     imm           F4  3   5           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### PEI
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PEI $12        dir           D4  2   6+w         ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### PER
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PER LABEL      imm           62  3   6           ........ .
+```
+
+
+[top](#instructions-by-opcode)
+
+### PHA
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PHA            imp           48  
 <!-- For PDF formatting -->
 <div class="page-break"></div>
