@@ -32,7 +32,9 @@ class markdown_writer:
 
         self.file = open(self.output_file, "w")
         self.write_opcodes_by_number()
+        self.write_opcodes_by_name()
         self.write_opcodes_by_category()
+        self.write_opcode_details()
 
     def write_opcodes_by_number(self):
         print("## Instructions By Opcode",file=self.file)
@@ -53,6 +55,22 @@ class markdown_writer:
                 else:
                     print("",end="|",file=self.file)
             print(file=self.file)
+        print("",file=self.file)
+
+    def write_opcodes_by_name(self):
+        print("## Instructions By Name",file=self.file)
+        print("",file=self.file)
+
+        header = ["","","","","","","","","",""]
+        self.write_header(header,13)
+        c = 0
+        for name,grp in self.cpu.groups.items():
+            print("|",self.anchor(name), end=" ", file=self.file)
+            c += 1
+            if c % len(header) == 0:
+                print("|",file=self.file)
+        if c % len(header) != 0:
+            print("|",file=self.file)
         print("",file=self.file)
 
     def write_opcodes_by_category(self):
@@ -78,3 +96,40 @@ class markdown_writer:
 
     def anchor(self, mnemonic):
         return "[" + mnemonic + "](#" + mnemonic + ")"
+
+    def write_header_pre(self, items:list, col_width:list):
+        for i in range(0,len(items)):
+            print(items[i].ljust(col_width[i]," "),file=self.file,end="")
+        print(file=self.file)
+
+    def write_opcode_details(self):
+        column_names = ["SYNTAX","MODE","HEX","LEN","CYCLES","FLAGS"]
+        column_width = [15,      14,     4,    4,    12,       8]
+
+        for name,grp in self.cpu.groups.items():
+            print("###",name, end="\n\n", file=self.file)
+            print("```text",file=self.file)
+            self.write_header_pre(column_names, column_width)
+            for oc in grp.opcodes:
+                col = 0
+                print(oc.syntax.ljust(column_width[col]," "),end="", file=self.file)
+                col += 1
+                print(oc.address_mode.ljust(column_width[col]," "),end="", file=self.file)
+                col += 1
+                print(oc.opcode.ljust(column_width[col]," "),end="", file=self.file)
+                col += 1
+                print(oc.bytes.ljust(column_width[col]," "),end="", file=self.file)
+                col += 1
+                print(oc.cycles.ljust(column_width[col]," "),end="", file=self.file)
+                col += 1
+                print(oc.flags.ljust(column_width[col]," "),end="", file=self.file)
+                col += 1
+                print(oc.comment,end="", file=self.file)
+
+                print(file=self.file)
+            print("```",end="\n\n",file=self.file)
+            print("details go here",end="\n\n",file=self.file)
+
+
+            
+    

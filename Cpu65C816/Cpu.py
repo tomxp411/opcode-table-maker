@@ -16,10 +16,11 @@ class Cpu:
         # Address modes: Immediate, Indirect, etc.
         self.address_modes = Address_Modes()
 
-    def load(self, opcode_file, category_file, modes_file):
+    def load(self, opcode_file, category_file, modes_file,details_file):
         self.load_address_modes(modes_file)
         self.load_groups(category_file)
         self.load_opcodes(opcode_file)
+        self.load_details(defails_file)
 
     def load_address_modes(self, filename, start_row = 0):
         csv = CsvFile(filename)
