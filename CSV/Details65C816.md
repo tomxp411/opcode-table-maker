@@ -35,7 +35,6 @@ when using Two's Complement signed values.
 * .c is set when the unsigned result exceeds the register's capacity (255 or
 65535).
 
-
 #### Overflow vs Carry
 
 The CPU detects addition that goes past the 7 or 15 bit boundary of a signed

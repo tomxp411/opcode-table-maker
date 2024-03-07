@@ -66,12 +66,13 @@ class markdown_writer:
         c = 0
         for name,grp in self.cpu.groups.items():
             print("|",self.anchor(name), end=" ", file=self.file)
-            c += 1
-            if c % len(header) == 0:
+            c = (c + 1) % len(header)
+            if c == 0:
                 print("|",file=self.file)
-        if c % len(header) != 0:
-            print("|",file=self.file)
-        print("",file=self.file)
+                
+        for i in range(c,len(header)):
+            print("|".ljust(14),end="",file=self.file)
+        print("|\n",file=self.file)
 
     def write_opcodes_by_category(self):
         print("## Instructions By Category",file=self.file)
@@ -107,7 +108,20 @@ class markdown_writer:
         column_width = [15,      14,     4,    4,    12,       8]
 
         for name,grp in self.cpu.groups.items():
+            if name in self.cpu.details:
+                t:str = self.cpu.details[name]
+                subpos = t.find("\n")
+                if subpos < 0:
+                    subtitle = None
+                    detail_text = t
+                else:
+                    subtitle = t[0:subpos]
+                    detail_text = t[subpos+1:]
+            detail_text = detail_text.replace("\n\n\n","\n\n")
+
             print("###",name, end="\n\n", file=self.file)
+            if subtitle:
+                print("**" + subtitle + "**",end="\n\n",file=self.file)
             print("```text",file=self.file)
             self.write_header_pre(column_names, column_width)
             for oc in grp.opcodes:
@@ -127,9 +141,9 @@ class markdown_writer:
                 print(oc.comment,end="", file=self.file)
 
                 print(file=self.file)
-            print("```",end="\n\n",file=self.file)
-            if name in self.cpu.details:
-                print(self.cpu.details[name],file=self.file)
+            print("```",file=self.file)
+
+            print(detail_text,file=self.file)
             print("[top](#instructions-by-opcode)",end="\n\n",file=self.file)
 
 

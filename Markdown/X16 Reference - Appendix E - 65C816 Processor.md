@@ -140,7 +140,7 @@ addresses (although they would be the same if .DP is set to $00.
 | [RTI](#rti) | [RTL](#rtl) | [RTS](#rts) | [SBC](#sbc) | [SEC](#sec) | [SED](#sed) | [SEI](#sei) | [SEP](#sep) | [STA](#sta) | [STP](#stp) |
 | [STX](#stx) | [STY](#sty) | [STZ](#stz) | [TAX](#tax) | [TAY](#tay) | [TCD](#tcd) | [TCS](#tcs) | [TDC](#tdc) | [TRB](#trb) | [TSB](#tsb) |
 | [TSC](#tsc) | [TSX](#tsx) | [TXA](#txa) | [TXS](#txs) | [TXY](#txy) | [TYA](#tya) | [TYX](#tyx) | [WAI](#wai) | [WDM](#wdm) | [XBA](#xba) |
-| [XCE](#xce) |
+| [XCE](#xce) |             |             |             |             |             |             |             |             |             |
 
 ## Instructions By Category
 
@@ -164,6 +164,8 @@ addresses (although they would be the same if .DP is set to $00.
 
 ### ADC
 
+**Add with Carry**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 ADC #$54       imm           69  3-m 3-m         nv....zc .
@@ -182,8 +184,6 @@ ADC ($32,S),Y  (stk,S),Y     73  2   8-m         nv....zc .
 ADC [$10]      [dir]         67  2   7-m+w       nv....zc .
 ADC [$10],Y    [dir],Y       77  2   7-m+w       nv....zc .
 ```
-
-Add with Carry
 
 ADC adds the accumulator (.A), the supplied operand, and the Carry bit (0 or 1).
 The result is stored in .A.
@@ -218,7 +218,6 @@ tested with BEQ and BNE. (BEQ and BNE test the Zero bit, which is also the
 "equal" bit when performing subtraction or Compare operations.)
 * .c is set when the unsigned result exceeds the register's capacity (255 or
 65535).
-
 
 #### Overflow vs Carry
 
@@ -263,7 +262,6 @@ AND [$10]      [dir]         27  2   7-m+w       n.....z. .
 AND [$10],Y    [dir],Y       37  2   7-m+w       n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### ASL
@@ -277,7 +275,6 @@ ASL $9876      abs           0E  3   8-2*m       n.....zc .
 ASL $9876,X    abs,X         1E  3   9-2*m       n.....zc .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### BCC
@@ -286,7 +283,6 @@ ASL $9876,X    abs,X         1E  3   9-2*m       n.....zc .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BCC LABEL      rel8          90  2   2+t+t*e*p   ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -297,7 +293,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BCS LABEL      rel8          B0  2   2+t+t*e*p   ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### BEQ
@@ -306,7 +301,6 @@ BCS LABEL      rel8          B0  2   2+t+t*e*p   ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BEQ LABEL      rel8          F0  2   2+t+t*e*p   ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -321,7 +315,6 @@ BIT $9876      abs           2C  3   5-m         nv....z. .
 BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### BMI
@@ -330,7 +323,6 @@ BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BMI LABEL      rel8          30  2   2+t+t*e*p   ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -341,7 +333,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BNE LABEL      rel8          D0  2   2+t+t*e*p   ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### BPL
@@ -350,7 +341,6 @@ BNE LABEL      rel8          D0  2   2+t+t*e*p   ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BPL LABEL      rel8          10  2   2+t+t*e*p   ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -361,7 +351,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BRA LABEL      rel8          80  2   3+e*p       ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### BRK
@@ -370,7 +359,6 @@ BRA LABEL      rel8          80  2   3+e*p       ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BRK            imp           00  1   8-e         ....di.. .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -381,7 +369,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BRL LABEL      rel16         82  3   4           ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### BVC
@@ -390,7 +377,6 @@ BRL LABEL      rel16         82  3   4           ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BVC LABEL      rel8          50  2   2+t+t*e*p   ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -401,7 +387,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### CLC
@@ -410,7 +395,6 @@ BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 CLC            imp           18  1   2           .......c .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -421,7 +405,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 CLD            imp           D8  1   2           ....d... .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### CLI
@@ -431,7 +414,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 CLI            imp           58  1   2           .....i.. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### CLV
@@ -440,7 +422,6 @@ CLI            imp           58  1   2           .....i.. .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 CLV            imp           B8  1   2           .v...... .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -465,7 +446,6 @@ CMP [$10]      [dir]         C7  2   7-m+w       n.....zc .
 CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### COP
@@ -474,7 +454,6 @@ CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 COP #$12       imm           02  2   8-e         ....di.. .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -487,7 +466,6 @@ CPX $10        dir           E4  2   4-x+w       n.....zc .
 CPX $9876      abs           EC  3   5-x         n.....zc .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### CPY
@@ -498,7 +476,6 @@ CPY #$54       imm           C0  3-x 3-x         n.....zc .
 CPY $10        dir           C4  2   4-x+w       n.....zc .
 CPY $9876      abs           CC  3   5-x         n.....zc .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -513,7 +490,6 @@ DEC $9876      abs           CE  3   8-2*m       n.....z. .
 DEC $9876,X    abs,X         DE  3   9-2*m       n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### DEX
@@ -523,7 +499,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 DEX            imp           CA  1   2           n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### DEY
@@ -532,7 +507,6 @@ DEX            imp           CA  1   2           n.....z. .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 DEY            imp           88  1   2           n.....z. .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -557,7 +531,6 @@ EOR [$10]      [dir]         47  2   7-m+w       n.....z. .
 EOR [$10],Y    [dir],Y       57  2   7-m+w       n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### INC
@@ -571,7 +544,6 @@ INC $9876      abs           EE  3   8-2*m       n.....z. .
 INC $9876,X    abs,X         FE  3   9-2*m       n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### INX
@@ -581,7 +553,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 INX            imp           E8  1   2           n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### INY
@@ -590,7 +561,6 @@ INX            imp           E8  1   2           n.....z. .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 INY            imp           C8  1   2           n.....z. .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -605,7 +575,6 @@ JMP ($1234,X)  (abs,X)       7C  3   6           ........ .
 JMP [$1234]    [abs]         DC  3   6           ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### JSL
@@ -614,7 +583,6 @@ JMP [$1234]    [abs]         DC  3   6           ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 JSL $123456    long          22  4   8           ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -625,7 +593,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 JSR $1234      abs           20  3   6           ........ .
 JSR ($1234,X)  (abs,X)       FC  3   8           ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -650,7 +617,6 @@ LDA [$10]      [dir]         A7  2   7-m+w       n.....z. .
 LDA [$10],Y    [dir],Y       B7  2   7-m+w       n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### LDX
@@ -663,7 +629,6 @@ LDX $10,Y      dir,Y         B6  2   5-x+w       n.....z. .
 LDX $9876      abs           AE  3   5-x         n.....z. .
 LDX $9876,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -678,7 +643,6 @@ LDY $9876      abs           AC  3   5-x         n.....z. .
 LDY $9876,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### LSR
@@ -692,7 +656,6 @@ LSR $9876      abs           4E  3   8-2*m       n.....zc .
 LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### MVN
@@ -701,7 +664,6 @@ LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 MVN #$12,#$34  src,dest      54  3   7           ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -712,7 +674,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 MVP #$12,#$34  src,dest      44  3   7           ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### NOP
@@ -721,7 +682,6 @@ MVP #$12,#$34  src,dest      44  3   7           ........ .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 NOP            imp           EA  1   2           ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -746,7 +706,6 @@ ORA [$10]      [dir]         07  2   7-m+w       n.....z. .
 ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### PEA
@@ -755,7 +714,6 @@ ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 PEA #$1234     imm           F4  3   5           ........ .
 ```
-
 
 [top](#instructions-by-opcode)
 
@@ -766,7 +724,6 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 PEI $12        dir           D4  2   6+w         ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### PER
@@ -776,13 +733,20 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 PER LABEL      imm           62  3   6           ........ .
 ```
 
-
 [top](#instructions-by-opcode)
 
 ### PHA
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PHA            imp           48  
+PHA            imp           48  1   4-m         ........ .
+```
+
+[top](#instructions-by-opcode)
+
+### PHB
+
+```text
+SYNTAX         
 <!-- For PDF formatting -->
 <div class="page-break"></div>
