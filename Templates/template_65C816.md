@@ -10,16 +10,7 @@
 5. [16 bit modes]
 6. [Address Modes]
 7. [Vectors]
-8. [Instruction Tables]
-
-
-[Click here for the opcode listing](#instruction-tables)
-
-This is not meant to be a complete manual on the 65C816 processor. This is a
-reference. Much of this information comes from 6502.org, undisbeliever.net, and
-[Programming the 65816: Including the 6502, 65C02, and
-65802](https://www.amazon.com/Programming-65816-Including-65C02-65802/dp/0893037893)
-by David Eyes and Ron Lichty.
+8. [Instruction Tables](#instruction-tables)
 
 ## Overview
 
