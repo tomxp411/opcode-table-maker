@@ -21,7 +21,7 @@ reference. Much of this information comes from 6502.org, undisbeliever.net, and
 65802](https://www.amazon.com/Programming-65816-Including-65C02-65802/dp/0893037893)
 by David Eyes and Ron Lichty.
 
-## Overviewv
+## Overview
 
 The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 6502 processor. All
 of the familiar 6502 instructions and address modes are retained, and some new
