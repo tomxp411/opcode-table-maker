@@ -1,6 +1,18 @@
 
 # Appendix E: The 65C816 Processor
 
+**Table of Contents**
+
+1. [Overview](#overview)
+2. [Compatibility with the 65C02](#compatibility-with-the-65c02)
+3. [Registers](#)
+4. [Status Flags](#)
+5. [16 bit modes]
+6. [Address Modes]
+7. [Vectors]
+8. [Instruction Tables]
+
+
 [Click here for the opcode listing](#instruction-tables)
 
 This is not meant to be a complete manual on the 65C816 processor. This is a
@@ -11,28 +23,39 @@ by David Eyes and Ron Lichty.
 
 ## Overviewv
 
-The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 6502 processor. It
-uses the same basic instructions, with additional 16-bit instructions and
-several new address modes. It also includes two block move instructions, which
-are handy for copying large amounts of memory around the system.
+The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 6502 processor. All
+of the familiar 6502 instructions and address modes are retained, and some new
+ones are added. 
 
-The CPU has 16-bit wide registers. In addition, Zero Page has been renamed to
-Direct Page and, along with the Stack, can be moved anywhere in the first 64K of
-RAM.
+The CPU now also operates in 16-bit mode when required. This allows the Accumulator
+to hold 16-bit values, and the CPU reads and writes 2 bytes at a time in this mode.
+
+The .X and .Y registers, also known as the Index registers, can also be separately
+set to 16-bit mode, which allows for indexed operations up to 64KB. 
+
+Zero Page has been renamed to Direct Page, and Direct Page can now be relocated
+anywhere in the first 64K of RAM. As a result, all of the Zero Page instructions
+are now "Direct" instructions and can operate anywhere in the X16's address range.
+
+Likewise, the Stack can also be relocated, and the stack pointer is now 16 bits.
+This allows for a much larger stack, and the combination of stack and DP relocation
+offer interesting multitasking opportunities.
+
+The 65C816 also extends the address bus to 24 bits, but the X16 is not equipped to
+decode the bask address; as a result, the 65C816 is still limited to the same 16-bit
+address space as the 65C02. 
 
 ## Compatibility with the 65C02
 
 The 65C916 CPU is generally compatible with the 65C02 instruction set, with the
-exception  of the `BBRx`, `BBSx`, `RMBx`, and `SMBx` instructions.
+exception  of the `BBRx`, `BBSx`, `RMBx`, and `SMBx` instructions. We recommend
+programmers avoid these instructions when writing X16 softwware, using the more
+conventional Boolean logic instructions, instead.
 
 ## Registers
 
-The 65C816 has some additional registers, mostly dealing with banking. The .A,
-.X, and .Y registers are also upgrade to 16 bits when in native mode and the .m
-and .x flags are clear.
-
-| Notation   | Name             | Description     |
-|------------|------------------|-----------------|
+| Notation  | Name             | Description     |
+|-----------|------------------|-----------------|
 | A         | Accumulator      | The accumulator. It stores the result of moth math and logical operations.  |
 | X         | X Index          | .X is mostly used as a counter and to offset addresses with X indexed modes |
 | Y         | Y Index          | .Y is mostly used as a counter and to offset addresses with Y indexed modes |
@@ -42,20 +65,16 @@ and .x flags are clear.
 | P         | Processor Status | The flags. |
 | PC        | Program Counter  | The address of the current CPU instruction |
 
+.A, .X, and .Y can be 8 or 16 bits wide, based on the flag settings (see below).
+
+The Stack Pointer (.S) is also relocatable to any 16-bit address. 
+
+.DB and .K are the bank registers, allowing programs and data to occupy separate
+64K banks on properly equipped computers.
+
 ## Status Flags
 
-Flags are stored as the P register. PHP, PLP, SEP, and REP instructions can
-modify the flags. They can be tested with the various Branch instructions
-
-The e flag can only be set with the XCE instruction, which swaps the Carry flag
-and the Emulation flag.
-
-Depending on the CPU mode, there are two configurations. (Note that on the
-65C816, the flag names are written in *lower case*, to avoid confusion with
-overlapping CPU register names.)
-
-In Emulation mode, the flags follow the 65C02 convention. In Native mode (e=1),
-the flags are as follows:
+The native mode flags are as follows:
 
 `nvmx dizc e`
 
@@ -68,6 +87,53 @@ the flags are as follows:
   z = Zero  
   c = Carry  
   e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
+
+The emulation mode flags are the same as the 65C02:
+
+`nv1b dizc e`
+
+  n = Negative  
+  v = oVerflow  
+  1 = this bit is always 1
+  b = brk: set during a BRK instruction interrupt
+  d = Decimal Mode  
+  i = Interupts Disabled  
+  z = Zero  
+  c = Carry  
+  e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
+
+**e** can only accessed via the XCE instruction, which swaps Carry and
+the Emulation flag. 
+
+The other flags can all be manipulated with SEP and REP, and the various
+branch instructions (BEQ, BCS, etc) test some of the flags. The rest
+can only be tested indirectly through the stack. 
+
+## 16 bit modes
+
+To enable 16-bit operation, the CPU must be placed in native mode. This means
+clearing the **e** flag, which is a two step process. 
+
+```
+CLC  ; clear the Carry bit
+XCE  ; swap the Emulation and Carry bit
+```
+
+Once **e** is cleared, the **m** and **x** flags are visible. These can be set
+to 1 or 0 to control the register width. Use SEP and REP to toggle these bits.
+
+When the **m** flag is *clear*, Accumulator operations and memory reads and writes
+will be 16-bit operations. This allows for 16-bit math when **m** is 0. 
+
+Likewise, whenn **x** is clear, the .X and .Y index registers are 16 bits wide.
+INX and INY will now count up to 65535, and indexed instructions like LDA addr,X
+can now cover 64K without changing the base address.
+
+To make it easy to remember the modes, **e**, **m**, and **x** all operate 
+consistently: Set to 1, they _emulate_ 65C02 behavior, and set to 0, they 
+allow _native_ behavior.
+
+****
 
 ## Address Modes
 
