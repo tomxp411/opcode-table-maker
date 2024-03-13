@@ -67,7 +67,7 @@ the flags are as follows:
   i = Interupts Disabled  
   z = Zero  
   c = Carry  
-  e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
+  e = Emulation Mode (1=65C02 mode, 0=65C816 mode)
 
 ## Address Modes
 
