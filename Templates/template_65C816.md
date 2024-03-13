@@ -5,7 +5,7 @@
 
 1. [Overview](#overview)
 2. [Compatibility with the 65C02](#compatibility-with-the-65c02)
-3. [Registers](#)
+3. [Registers](#status-registers)
 4. [Status Flags](#)
 5. [16 bit modes]
 6. [Address Modes]
@@ -34,7 +34,9 @@ offer interesting multitasking opportunities.
 
 The 65C816 also extends the address bus to 24 bits, but the X16 is not equipped to
 decode the bask address; as a result, the 65C816 is still limited to the same 16-bit
-address space as the 65C02. 
+address space as the 65C02.
+
+In the X16 community, we are currently 
 
 ## Compatibility with the 65C02
 
@@ -79,14 +81,16 @@ The native mode flags are as follows:
   c = Carry  
   e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
 
-The emulation mode flags are the same as the 65C02:
+In emulation mode, the **m** and **x** flags are always set to 1. 
+
+Here are the 6502 and 65C02 registers, for comparison:
 
 `nv1b dizc e`
 
   n = Negative  
   v = oVerflow  
-  1 = this bit is always 1
-  b = brk: set during a BRK instruction interrupt
+  1 = this bit is always 1  
+  b = brk: set during a BRK instruction interrupt  
   d = Decimal Mode  
   i = Interupts Disabled  
   z = Zero  
@@ -100,29 +104,91 @@ The other flags can all be manipulated with SEP and REP, and the various
 branch instructions (BEQ, BCS, etc) test some of the flags. The rest
 can only be tested indirectly through the stack. 
 
+When a BRK or IRQ is triggered in _emulation_ mode, a ghost **b** flag
+will be pushed to the stack instead of the **x** flag. This can be used
+to test for a BRK vs IRQ in the Interrupt handler. 
+
 ## 16 bit modes
 
-To enable 16-bit operation, the CPU must be placed in native mode. This means
-clearing the **e** flag, which is a two step process. 
+The 65C816 CPU boots up in emulation mode. This locks the register width to
+8 bits and locks out certain operations.
+
+If you want to use the '816 features, including 16-bit operation, you will
+need to enable _native_ mode. Clearing **e** switches the CPU to native mode.
+However, it's not as simple as just setting a flag. The **e** flag can only
+be accessed through the XCE instruction, which swaps the Carry and Emulation
+flags.
+
+To switch to native mode, use the following steps:
 
 ```
 CLC  ; clear the Carry bit
 XCE  ; swap the Emulation and Carry bit
 ```
 
-Once **e** is cleared, the **m** and **x** flags are visible. These can be set
-to 1 or 0 to control the register width. Use SEP and REP to toggle these bits.
+To switch back to emulation mode, _set_ the Carry flag and perform an XCE again.
+
+```
+SEC  ; Set Carry
+XCE  ; and push the 1 into the Emulation flag.
+```
+
+Once **e** is cleared, the **m** and **x** flags can be set to 1 or 0 to control
+the register width.
 
 When the **m** flag is *clear*, Accumulator operations and memory reads and writes
-will be 16-bit operations. This allows for 16-bit math when **m** is 0. 
+will be 16-bit operations. The CPU reads two bytes at a time with LDA, writes
+two bytes at a time with STA, and all math involving .A is 16 bits wide.
 
 Likewise, whenn **x** is clear, the .X and .Y index registers are 16 bits wide.
-INX and INY will now count up to 65535, and indexed instructions like LDA addr,X
-can now cover 64K without changing the base address.
+INX and INY will now count up to 65535, and indexed instructions like `LDA addr,X`
+can now cover 64K.
+
+You can use `REP #$10` to enable 16-bit index registers, and `REP #$20` to enable
+16-bit memory and Accumulator. `SEP #$20` or `SEP #$40` will switch back to 8-bit
+operation. You can also combine the operand and use `SEP #$30` to flip both bits
+at once. 
+
+And now we reach the 16-bit assembly trap: the actual assembly opcodes are the
+same, regardless of the **x** and **m** flags. This means the assembler needs
+to track the state of these flags internally, so it can correctly write one or
+two bytes when assembling immediate mode instructions like LDA #$01.
+
+You can help the assembler out by using _hints_. Different assemblers have different
+hinting systems, so we will focus on 64TASS and cc65.
+
+[64TASS](https://sourceforge.net/projects/tass64/) accepts `.as` (.A short) and 
+`.al` (.A long) to  tell the assembler to store 8 bits or 16 bits in an immediate
+mode operand. For LDX and LDY, use the `.xs` and `.xl` hints. 
+
+Note that this has no effect on _absolute_ or _indirect_ addressing modes, such
+as `LDA $1234` and `LDA ($1000)`, since the operand for these modes is always
+16 bits.
+
+This macro will set **m** for 8 bits and also set the assembler hint.
+
+```
+.macro setm8
+    sep #$20
+    .as
+.endmacro
+```
+
+The hints for [ca65](https://cc65.github.io/) are `.a8`, `.a16`, `.i8`, and `.i16`
+
+Here is a simple macro for ca65 that will help you remember to use the hint (and which
+bits to set):
+
+```
+.macro setm8
+    sep #$20
+    .a8
+.endmacro
+```
 
 To make it easy to remember the modes, **e**, **m**, and **x** all operate 
 consistently: Set to 1, they _emulate_ 65C02 behavior, and set to 0, they 
-allow _native_ behavior.
+allow _native_ or 16-bit behavior.
 
 ****
 
