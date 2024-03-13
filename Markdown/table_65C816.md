@@ -91,7 +91,6 @@ CLC
 LDA Addend1
 ADC Addend2
 STA Result1
-BCC done
 LDA Addend1+1  ; Reads the high byte of the addend
 ADC Addend2+1  ; (the +1 refers to the *address* of Addend, not the value)
 STA Result1+1  ;
@@ -101,14 +100,14 @@ done:
 
 Flags:
 
-* .n is set when the high bit of .A is set. This indicates a negative number
+* **n** is set when the high bit of .A is set. This indicates a negative number
 when using Two's Complement signed values.
-* .v (overflow) is set when the sum exceeds the maximum *signed* value for .A.
-(More on that below). * .n is set when the high bit is 1.
-* .z is set when the result is zero. This is useful for loop counters and can be
+* **v** (overflow) is set when the sum exceeds the maximum *signed* value for .A.
+(More on that below). * **n** is set when the high bit is 1.
+* **z** is set when the result is zero. This is useful for loop counters and can be
 tested with BEQ and BNE. (BEQ and BNE test the Zero bit, which is also the
 "equal" bit when performing subtraction or Compare operations.)
-* .c is set when the unsigned result exceeds the register's capacity (255 or
+* **c** is set when the unsigned result exceeds the register's capacity (255 or
 65535).
 
 #### Overflow vs Carry
@@ -173,8 +172,8 @@ Result:    1000
 
 Flags:
 
-* .n is set when the high bit of the result is 1
-* .z is set when the result is Zero
+* **n** is set when the high bit of the result is 1
+* **z** is set when the result is Zero
 
 AND does not set the overflow or carry flags.
 
@@ -217,7 +216,7 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BCC LABEL      rel8          90  2   2+t+t*e*p   ........ .
 ```
 
-Jumps to the target address when the Carry flag (.c) is Zero. This is useful in
+Jumps to the target address when the Carry flag (**c**) is Zero. This is useful in
 multi-byte math, where you will use the Carry flag to decide whether to add or
 subtract the higher bytes in a 16 or 32-bit number.
 
@@ -284,9 +283,9 @@ BIT $9876      abs           2C  3   5-m         nv....z. .
 BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 ```
 
-Tests the operand against the Accumulator. The ALU does an AND operation
-internally, and The .n, .v, and .z flags are set accordingly. The Accumulator is
-*not* modified after the operation.
+Tests the operand against the Accumulator. The ALU does an AND
+operation internally, and The **n**, **v**, and **z** flags are set accordingly.
+The Accumulator is *not* modified after the operation.
 
 
 [top](#instructions-by-opcode)
@@ -302,9 +301,9 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BMI LABEL      rel8          30  2   2+t+t*e*p   ........ .
 ```
 
-Jumps to the specified address when the Negative flag (.n) is set.
+Jumps to the specified address when the Negative flag (**n**) is set.
 
-.n is set when ALU operations result in a negative number, or when the high bit
+**n** is set when ALU operations result in a negative number, or when the high bit
 of an ALU operation is 1.
 
 A branch operation uses an 8 bit signed value internally, starting from the
@@ -348,9 +347,9 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 BPL LABEL      rel8          10  2   2+t+t*e*p   ........ .
 ```
 
-Jumps to the specified address when the Negative flag (.n) is clear.
+Jumps to the specified address when the Negative flag (**n**) is clear.
 
-.n is clear when ALU operations result in a positive number, or when the high bit
+**n** is clear when ALU operations result in a positive number, or when the high bit
 of an ALU operation is 0.
 
 
@@ -388,27 +387,28 @@ BRK            imp           00  1   8-e         ....di.. .
 ```
 
 Perform a break interrupt. The exact behavior changes slightly, based on whether
-the CPU is in native or emulation mode. (.e is 1 in emulation mode.)
+the CPU is in native or emulation mode. (e is 1 in emulation mode.)
 
 In emulation mode:
 
-1. PC (Program Counter) is incremented by 2 bytes.
-1. PC is pushed onto the stack.
-1. P (flags) is pushed to the stack.
-1. The B flag is set.
-1. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+1. .PC (Program Counter) is incremented by 2 bytes.
+1. .PC is pushed onto the stack.
+1. .P (flags) is pushed to the stack.
+1. The **b** flag is set.
+1. The **d** (Decimal) flag is cleared, forcing the CPU into binary mode.
 1. The CPU reads the address from the IRQ vector at $FFFE and jumps there.
 
 In native mode:
 
-1. PC is incremented by 2 bytes
-1. PBR (Program Bank) is pushed the stack
-1. PC is pushed to the stack
-1. P (flags) is pushed to the stack
-1. The D (Decimal) flag is cleared, forcing the CPU into binary mode.
+1. .PC is incremented by 2 bytes
+1. .X (Program Bank) is pushed the stack
+1. .PC is pushed to the stack
+1. .P (flags) is pushed to the stack
+1. The **d** (Decimal) flag is cleared, forcing the CPU into binary mode.
 1. The CPU reads the address from the BRK vector at $00FFE6 and jumps there.
 
 See the [Vectors](#vectors) section for the break vector.
+
 
 [top](#instructions-by-opcode)
 
@@ -416,10 +416,23 @@ See the [Vectors](#vectors) section for the break vector.
 
 ### BRL
 
+**Branch Long**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BRL LABEL      rel16         82  3   4           ........ .
 ```
+
+BRL is a 16 bit _branch_ instruction, meaning assembly creates a relative
+address. Unlike BRA and the other branch instructions, BRL uses a 16-bit
+address, which allows for an offset of -32768 to 32767 bytes away from the
+instruction _following_ The BRL.
+
+Note that when assembling code, you will supply an absolute address to the
+assembler. The assembler will subtract the supplied address from the Program
+Counter and generate a relative address. This is true for all branch
+instructions.
+
 
 [top](#instructions-by-opcode)
 
@@ -427,10 +440,15 @@ BRL LABEL      rel16         82  3   4           ........ .
 
 ### BVC
 
+**Branch on Overflow Clear**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BVC LABEL      rel8          50  2   2+t+t*e*p   ........ .
 ```
+
+Branches to the specified address when the Overflow bit is 0.
+
 
 [top](#instructions-by-opcode)
 
@@ -438,10 +456,15 @@ BVC LABEL      rel8          50  2   2+t+t*e*p   ........ .
 
 ### BVS
 
+**Branch on Overflow Set**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 ```
+
+Branches to the specified address when the Overflow bit is 0.
+
 
 [top](#instructions-by-opcode)
 
@@ -449,10 +472,17 @@ BVS LABEL      rel8          70  2   2+t+t*e*p   ........ .
 
 ### CLC
 
+**Clear Carry**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 CLC            imp           18  1   2           .......c .
 ```
+
+Clears the Carry bit in the flags. You'll usually use CLC before addition and
+SEC before subtraction. You'll also want to use CLC or SEC appropriately before
+calling certain KERNAL routines that use the **c** bit as an input value.
+
 
 [top](#instructions-by-opcode)
 
@@ -460,10 +490,19 @@ CLC            imp           18  1   2           .......c .
 
 ### CLD
 
+**Clear Decimal**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 CLD            imp           D8  1   2           ....d... .
 ```
+
+Clears the Decimal flag, returning the CPU to 8-bit or 16-bit binary operation.
+
+When Decimal is set, the CPU will store numbers in Binary Coded Decimal format.
+Clearing this flag restores the CPU to binary \(base 16\) operation. See
+[Decimal Mode](#decimal-mode) for more information.
+
 
 [top](#instructions-by-opcode)
 
@@ -471,10 +510,20 @@ CLD            imp           D8  1   2           ....d... .
 
 ### CLI
 
+**Clear Interrupt Flag**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 CLI            imp           58  1   2           .....i.. .
 ```
+
+The Interrupt flag (**i**) _stops_ the CPU from servicing IRQ interrupts. When
+**i** is set, the CPU will not respond to to the IRQ pin. When **i** is clear,
+the CPU will respond to the IRQ pin going low by jumping to the address stored
+in the IRQ vector.
+
+See [BRK}(#brk) for more information on interrupt handling.
+
 
 [top](#instructions-by-opcode)
 
@@ -482,16 +531,27 @@ CLI            imp           58  1   2           .....i.. .
 
 ### CLV
 
+**Clear Overflow**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 CLV            imp           B8  1   2           .v...... .
 ```
+
+Overflow is _set_ when the result of an addition operation goes up through $80
+or subtraction goes down through $80.
+
+CLV clears the overflow flag. There is no "SEV" instruction, but overflow can be
+set with SEP #$40.
+
 
 [top](#instructions-by-opcode)
 
 ---
 
 ### CMP
+
+**Compare**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -512,22 +572,75 @@ CMP [$10]      [dir]         C7  2   7-m+w       n.....zc .
 CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 ```
 
+Compares the Accumulator with memory. This sets the **n**, **z**, and **c**
+flags as follows:
+
+* A = Operand, **z** is set.
+* A < Operand, **n** is set.
+* A >= Operand, **c** is set.
+
+You can use teh Branch instructions (BEQ, BNE, BPL, BMI, BCC, BCS) to jump to
+different parts of your program based on the results of CMP. Here are some BASIC
+comparisons and the equivalent assembly language steps:
+
+```asm65816
+; IF A = N THEN 1000
+CMP N
+BEQ $1000
+
+; IF A <> N THEN 1000
+CMP N
+BNE $1000
+
+; IF A < N THEN 1000
+CMP N
+BMI $1000
+
+; IF A >= N THEN 1000
+CMP N
+BPL $1000
+
+; IF A > N THEN 1000
+CMP N
+BEQ skip
+BCS $1000
+skip:
+
+; IF A <= N THEN 1000
+CMP N
+BEQ $1000
+BMI $1000
+```
+
+As you can see, a > test and a <= test both require two branches, since **c**
+can be set by both equal and greater-than results.
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### COP
 
+**COP interrupt.**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 COP #$12       imm           02  2   8-e         ....di.. .
 ```
+
+COP is another from of interrupt, which uses a unique vector. The intent
+COP is to switch to a Co-Processor, which would be activated by the code at
+(FFE4) or (FFF4).
+
 
 [top](#instructions-by-opcode)
 
 ---
 
 ### CPX
+
+**Compare X Register**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -536,11 +649,18 @@ CPX $10        dir           E4  2   4-x+w       n.....zc .
 CPX $9876      abs           EC  3   5-x         n.....zc .
 ```
 
+This compares the X register to an operand and sets the flags accordingly.
+
+See [CMP](#cmp) for more information.
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### CPY
+
+**Compare Y Register**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -548,6 +668,11 @@ CPY #$54       imm           C0  3-x 3-x         n.....zc .
 CPY $10        dir           C4  2   4-x+w       n.....zc .
 CPY $9876      abs           CC  3   5-x         n.....zc .
 ```
+
+This compares the Y register to an operand and sets the flags accordingly.
+
+See [CMP](#cmp) for more information.
+
 
 [top](#instructions-by-opcode)
 
