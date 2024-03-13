@@ -161,34 +161,14 @@ hinting systems, so we will focus on 64TASS and cc65.
 `.al` (.A long) to  tell the assembler to store 8 bits or 16 bits in an immediate
 mode operand. For LDX and LDY, use the `.xs` and `.xl` hints. 
 
+The hints for [ca65](https://cc65.github.io/) are `.a8`, `.a16`, `.i8`, and `.i16`
+
 Note that this has no effect on _absolute_ or _indirect_ addressing modes, such
 as `LDA $1234` and `LDA ($1000)`, since the operand for these modes is always
 16 bits.
 
-This macro will set **m** for 8 bits and also set the assembler hint.
-
-```
-.macro setm8
-    sep #$20
-    .as
-.endmacro
-```
-
-The hints for [ca65](https://cc65.github.io/) are `.a8`, `.a16`, `.i8`, and `.i16`
-
-Here is a simple macro for ca65 that will help you remember to use the hint (and which
-bits to set):
-
-```
-.macro setm8
-    sep #$20
-    .a8
-.endmacro
-```
-
-To make it easy to remember the modes, **e**, **m**, and **x** all operate 
-consistently: Set to 1, they _emulate_ 65C02 behavior, and set to 0, they 
-allow _native_ or 16-bit behavior.
+To make it easy to remember the modes, just remember that **e**, **m**, and **x** 
+all _emulate_ 65C02 behavior when _set_. 
 
 ****
 
