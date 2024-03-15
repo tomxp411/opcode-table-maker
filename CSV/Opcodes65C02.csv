@@ -655,7 +655,7 @@ or return certain information.
 Sets the Decimal flag. This will put the CPU in BCD mode, which affects the
 behavior of ADC and SBC.
 
-In binary mode, adding 1 to $09 will set the Accumulator to $0F.;
+In binary mode, adding 1 to $09 will set the Accumulator to $0A.;
 In BCD mode, adding 1 to $09 will set the Accumulator to $10.;
 
 Using BCD allows for easier conversion of binary numbers to decimal. BCD also

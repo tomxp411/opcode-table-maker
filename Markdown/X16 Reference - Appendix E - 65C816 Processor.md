@@ -1,28 +1,34 @@
 
-# Appendix E: The 65C816 Processor
+# Appendix F: The 65C816 Processor
 
 **Table of Contents**
 
 1. [Overview](#overview)
 2. [Compatibility with the 65C02](#compatibility-with-the-65c02)
-3. [Registers](#)
-4. [Status Flags](#)
-5. [16 bit modes]
-6. [Address Modes]
-7. [Vectors]
+3. [Registers](#registers)
+4. [Status Flags](#status-flags)
+5. [16 bit mode](#16-bit-mode)
+6. [Address Modes](#address-modes)
+7. [Vectors](#vectors)
 8. [Instruction Tables](#instruction-tables)
 
 ## Overview
 
+This document is a brief introduction and quick reference for the 65816 and
+65C816 Microprocessor. For more details, see the [65C816 data
+sheet](https://www.westerndesigncenter.com/wdc/documentation/w65c816s.pdf) or
+[Programming the
+6565816](https://www.amazon.com/Programming-65816-Including-65C02-65802-ebook/dp/B01855HL7Q).
+
 The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 6502 processor. All
 of the familiar 6502 instructions and address modes are retained, and some new
-ones are added. 
+ones are added.
 
 The CPU now also operates in 16-bit mode when required. This allows the Accumulator
 to hold 16-bit values, and the CPU reads and writes 2 bytes at a time in this mode.
 
 The .X and .Y registers, also known as the Index registers, can also be separately
-set to 16-bit mode, which allows for indexed operations up to 64KB. 
+set to 16-bit mode, which allows for indexed operations up to 64KB.
 
 Zero Page has been renamed to Direct Page, and Direct Page can now be relocated
 anywhere in the first 64K of RAM. As a result, all of the Zero Page instructions
@@ -34,7 +40,9 @@ offer interesting multitasking opportunities.
 
 The 65C816 also extends the address bus to 24 bits, but the X16 is not equipped to
 decode the bask address; as a result, the 65C816 is still limited to the same 16-bit
-address space as the 65C02. 
+address space as the 65C02.
+
+In the X16 community, we are currently
 
 ## Compatibility with the 65C02
 
@@ -58,10 +66,12 @@ conventional Boolean logic instructions, instead.
 
 .A, .X, and .Y can be 8 or 16 bits wide, based on the flag settings (see below).
 
-The Stack Pointer (.S) is also relocatable to any 16-bit address. 
+The Stack Pointer (.S) is 16 bits wide in Native mode and 8 bits wide (and fixed
+to the $100-1FF range) in Emulation mode.
 
 .DB and .K are the bank registers, allowing programs and data to occupy separate
-64K banks on properly equipped computers.
+64K banks on computers with more than 64K of RAM. (The X16 does not use the bank
+registers, instead using addresses $00 and $01 for banking.)
 
 ## Status Flags
 
@@ -79,14 +89,16 @@ The native mode flags are as follows:
   c = Carry  
   e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
 
-The emulation mode flags are the same as the 65C02:
+In emulation mode, the **m** and **x** flags are always set to 1.
+
+Here are the 6502 and 65C02 registers, for comparison:
 
 `nv1b dizc e`
 
   n = Negative  
   v = oVerflow  
-  1 = this bit is always 1
-  b = brk: set during a BRK instruction interrupt
+  1 = this bit is always 1  
+  b = brk: set during a BRK instruction interrupt  
   d = Decimal Mode  
   i = Interupts Disabled  
   z = Zero  
@@ -94,35 +106,77 @@ The emulation mode flags are the same as the 65C02:
   e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
 
 **e** can only accessed via the XCE instruction, which swaps Carry and
-the Emulation flag. 
+the Emulation flag.
 
 The other flags can all be manipulated with SEP and REP, and the various
 branch instructions (BEQ, BCS, etc) test some of the flags. The rest
-can only be tested indirectly through the stack. 
+can only be tested indirectly through the stack.
 
-## 16 bit modes
+When a BRK or IRQ is triggered in _emulation_ mode, a ghost **b** flag
+will be pushed to the stack instead of the **x** flag. This can be used
+to test for a BRK vs IRQ in the Interrupt handler.
 
-To enable 16-bit operation, the CPU must be placed in native mode. This means
-clearing the **e** flag, which is a two step process. 
+## 16 bit mode
+
+The 65C816 CPU boots up in emulation mode. This locks the register width to
+8 bits and locks out certain operations.
+
+If you want to use the '816 features, including 16-bit operation, you will
+need to enable _native_ mode. Clearing **e** switches the CPU to native mode.
+However, it's not as simple as just setting a flag. The **e** flag can only
+be accessed through the XCE instruction, which swaps the Carry and Emulation
+flags.
+
+To switch to native mode, use the following steps:
 
 ```
 CLC  ; clear the Carry bit
 XCE  ; swap the Emulation and Carry bit
 ```
 
-Once **e** is cleared, the **m** and **x** flags are visible. These can be set
-to 1 or 0 to control the register width. Use SEP and REP to toggle these bits.
+To switch back to emulation mode, _set_ the Carry flag and perform an XCE again.
+
+```
+SEC  ; Set Carry
+XCE  ; and push the 1 into the Emulation flag.
+```
+
+Once **e** is cleared, the **m** and **x** flags can be set to 1 or 0 to control
+the register width.
 
 When the **m** flag is *clear*, Accumulator operations and memory reads and writes
-will be 16-bit operations. This allows for 16-bit math when **m** is 0. 
+will be 16-bit operations. The CPU reads two bytes at a time with LDA, writes
+two bytes at a time with STA, and all math involving .A is 16 bits wide.
 
 Likewise, whenn **x** is clear, the .X and .Y index registers are 16 bits wide.
-INX and INY will now count up to 65535, and indexed instructions like LDA addr,X
-can now cover 64K without changing the base address.
+INX and INY will now count up to 65535, and indexed instructions like `LDA addr,X`
+can now cover 64K.
 
-To make it easy to remember the modes, **e**, **m**, and **x** all operate 
-consistently: Set to 1, they _emulate_ 65C02 behavior, and set to 0, they 
-allow _native_ behavior.
+You can use `REP #$10` to enable 16-bit index registers, and `REP #$20` to enable
+16-bit memory and Accumulator. `SEP #$20` or `SEP #$40` will switch back to 8-bit
+operation. You can also combine the operand and use `SEP #$30` to flip both bits
+at once.
+
+And now we reach the 16-bit assembly trap: the actual assembly opcodes are the
+same, regardless of the **x** and **m** flags. This means the assembler needs
+to track the state of these flags internally, so it can correctly write one or
+two bytes when assembling immediate mode instructions like LDA #$01.
+
+You can help the assembler out by using _hints_. Different assemblers have different
+hinting systems, so we will focus on 64TASS and cc65.
+
+[64TASS](https://sourceforge.net/projects/tass64/) accepts `.as` (.A short) and
+`.al` (.A long) to  tell the assembler to store 8 bits or 16 bits in an immediate
+mode operand. For LDX and LDY, use the `.xs` and `.xl` hints.
+
+The hints for [ca65](https://cc65.github.io/) are `.a8`, `.a16`, `.i8`, and `.i16`
+
+Note that this has no effect on _absolute_ or _indirect_ addressing modes, such
+as `LDA $1234` and `LDA ($1000)`, since the operand for these modes is always
+16 bits.
+
+To make it easy to remember the modes, just remember that **e**, **m**, and **x**
+all _emulate_ 65C02 behavior when _set_.
 
 ****
 
@@ -334,7 +388,7 @@ BRK
 
 ### AND
 
-**Logical AND**
+**Boolean AND**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -359,6 +413,9 @@ Perform a logical AND operation with the operand and .A
 
 AND compares each bit of the operands and sets the result bit to 1 only when the
 matching bit of each operand is 1.
+
+AND is useful for reading a group of bits from a byte. For example, `AND #$0F`
+will clear the top nibble of .A, returning the bits from the lower nibble.
 
 Truth table for AND:
 
@@ -455,9 +512,9 @@ BEQ LABEL      rel8          F0  2   2+t+t*e*p   ........ .
 ```
 
 Jumps to the target address when the Zero flag is 1. While this is most commonly
-used after a compare (CMP) operation, it's also useful to test if a number is
-zero after a Load operation, or to test if a loop is complete after a DEC
-operation.
+used after a compare (see [CMP](#cmp) ) operation, it's also useful to test if a
+number is zero after a Load operation, or to test if a loop is complete after a
+DEC operation.
 
 A branch operation uses an 8 bit signed value internally, starting from the
 instruction after the branch. So the branch destination can be 126 bytes before
@@ -590,11 +647,18 @@ the CPU is in native or emulation mode. (e is 1 in emulation mode.)
 In emulation mode:
 
 1. .PC (Program Counter) is incremented by 2 bytes.
+1. If the CPU is in Native mode, the Program Bank is pushed to the stack.
 1. .PC is pushed onto the stack.
-1. .P (flags) is pushed to the stack.
-1. The **b** flag is set.
+1. .P (flags) is pushed to the stack. (the **b** bit, bit 4, is set to 1.)
 1. The **d** (Decimal) flag is cleared, forcing the CPU into binary mode.
 1. The CPU reads the address from the IRQ vector at $FFFE and jumps there.
+
+An IRQ is similar, except that IRQ clears bit 4 (**b**) during the push to the
+stack. So an Interrupt Service Routine can read the last byte on the stack to
+determine whether an emulation-mode interrupt is a BRK or IRQ.
+
+On the X16, the IRQ services the keyboard, mouse, game pads, updates the clock,
+blinks the cursor, and updates the LEDs.
 
 In native mode:
 
@@ -604,6 +668,9 @@ In native mode:
 1. .P (flags) is pushed to the stack
 1. The **d** (Decimal) flag is cleared, forcing the CPU into binary mode.
 1. The CPU reads the address from the BRK vector at $00FFE6 and jumps there.
+
+Since the Native Mode has a distinct BRK vector, you do not need to query the
+stack to dispatch a BRK vs IRQ interrupt. You can just handle each immediately.
 
 See the [Vectors](#vectors) section for the break vector.
 
@@ -626,10 +693,12 @@ address. Unlike BRA and the other branch instructions, BRL uses a 16-bit
 address, which allows for an offset of -32768 to 32767 bytes away from the
 instruction _following_ The BRL.
 
-Note that when assembling code, you will supply an absolute address to the
-assembler. The assembler will subtract the supplied address from the Program
-Counter and generate a relative address. This is true for all branch
-instructions.
+Of course, due to wrapping of the 64K bank, this means that the entire 64K
+region is accessible. Values below 0 will simply wrap around and start from
+$FFFF, and values above $FFFF will wrap around to 0.
+
+Since this is a _relatve_ branch, that means code assembled with BRL, instead of
+JMP, can be moved around in memory without the need for re-assembly.
 
 
 [top](#instructions-by-opcode)
@@ -770,16 +839,21 @@ CMP [$10]      [dir]         C7  2   7-m+w       n.....zc .
 CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 ```
 
-Compares the Accumulator with memory. This sets the **n**, **z**, and **c**
-flags as follows:
+Compares the Accumulator with memory. This performs a subtract operation
+between .A and the operand and sets the **n**, **z**, and **c** flags based on
+the result. The Accumulator is not altered.
 
-* A = Operand, **z** is set.
-* A < Operand, **n** is set.
-* A >= Operand, **c** is set.
+* WHen A = Operand, **z** is set.
+* When A < Operand, **c** is clear.
+* When A <> Operand, **z** is clear.
+* When A >= Operand, **c** is set.
+
+The exception to this rule is when A would be $80 or above as the result of the
+subtraction ($80 - 1).
 
 You can use teh Branch instructions (BEQ, BNE, BPL, BMI, BCC, BCS) to jump to
 different parts of your program based on the results of CMP. Here are some BASIC
-comparisons and the equivalent assembly language steps:
+comparisons and the equivalent assembly language steps.
 
 ```asm65816
 ; IF A = N THEN 1000
@@ -792,11 +866,11 @@ BNE $1000
 
 ; IF A < N THEN 1000
 CMP N
-BMI $1000
+BCC $1000
 
 ; IF A >= N THEN 1000
 CMP N
-BPL $1000
+BCS $1000
 
 ; IF A > N THEN 1000
 CMP N
@@ -807,11 +881,31 @@ skip:
 ; IF A <= N THEN 1000
 CMP N
 BEQ $1000
-BMI $1000
+BCC $1000
 ```
 
-As you can see, a > test and a <= test both require two branches, since **c**
-can be set by both equal and greater-than results.
+As you can see, some comparisons will require two distinct branch instructions.
+
+Also, note that the Branch instructions (except BRL) require that the target
+address be within 128 bytes of the instruciton after the branch. If you need to
+branch further, the usual method is to invert the branch instruction and use a
+JMP to take the branch.
+
+For example, the following two branches behave the same, but the second one can
+jump to any address on the computer, whereas the first can only jump -128/+127
+bytes away:
+
+```asm65816
+short_branch:
+CMP N
+BEQ target
+
+longer_branch:
+CMP N
+BNE skip
+JMP target
+skip:
+```
 
 
 [top](#instructions-by-opcode)
@@ -827,9 +921,9 @@ SYNTAX         MODE          HEX LEN CYCLES      FLAGS
 COP #$12       imm           02  2   8-e         ....di.. .
 ```
 
-COP is another from of interrupt, which uses a unique vector. The intent
-COP is to switch to a Co-Processor, which would be activated by the code at
-(FFE4) or (FFF4).
+COP is similar to BRK, but uses the FFE4 or FFF4 vectors. The intent is to COP
+is to switch to a Co-Processor, but this can be used for any purpose on the X16
+(including triggering a DMA controller, if that's what you want to do.)
 
 
 [top](#instructions-by-opcode)
@@ -878,6 +972,8 @@ See [CMP](#cmp) for more information.
 
 ### DEC
 
+**Decrement**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 DEC            acc           3A  1   2           n.....z. .
@@ -887,16 +983,34 @@ DEC $9876      abs           CE  3   8-2*m       n.....z. .
 DEC $9876,X    abs,X         DE  3   9-2*m       n.....z. .
 ```
 
+Decrement .A or memory. The **z** flag is set when the value reaches zero. This
+makes DEC, DEX, and DEY useful as a loop counter, by setting the number of
+iterations, the repeated operation, then DEX followed by BNE.
+
+**z** is set when the counter reaches zero.
+**n** is set when the high bit gets set.
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### DEX
 
+**Decrement .X**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 DEX            imp           CA  1   2           n.....z. .
 ```
+
+Decrement .X The **z** flag is set when the value reaches zero. This
+makes DEC, DEX, and DEY useful as a loop counter, by setting the number of
+iterations, the repeated operation, then DEX followed by BNE.
+
+**z** is set when the counter reaches zero.
+**n** is set when the high bit gets set.
+
 
 [top](#instructions-by-opcode)
 
@@ -904,16 +1018,28 @@ DEX            imp           CA  1   2           n.....z. .
 
 ### DEY
 
+**Decrement .Y**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 DEY            imp           88  1   2           n.....z. .
 ```
+
+Decrement .X The **z** flag is set when the value reaches zero. This
+makes DEC, DEX, and DEY useful as a loop counter, by setting the number of
+iterations, the repeated operation, then DEX followed by BNE.
+
+**z** is set when the counter reaches zero.
+**n** is set when the high bit gets set.
+
 
 [top](#instructions-by-opcode)
 
 ---
 
 ### EOR
+
+**Exclusive OR**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -934,11 +1060,31 @@ EOR [$10]      [dir]         47  2   7-m+w       n.....z. .
 EOR [$10],Y    [dir],Y       57  2   7-m+w       n.....z. .
 ```
 
+Perform an Exclusive OR operation with the operand and .A
+
+EOR compares each bit of the operands and sets the result bit to 1 if one of the
+two bits is 1. If both bits are 1, the result is 0. If both bits are 0, the
+result is 0.
+
+EOR is useful for _inverting_ the bits in a byte. `EOR #$FF` will flip an entire
+byte.
+
+Truth table for EOR:
+
+```text
+Operand 1: 1100
+Operand 2: 1010
+Result:    0110
+```
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### INC
+
+**Increment**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -949,16 +1095,46 @@ INC $9876      abs           EE  3   8-2*m       n.....z. .
 INC $9876,X    abs,X         FE  3   9-2*m       n.....z. .
 ```
 
+Increment .A or memory
+
+Adds 1 to the value in .A or the specified memory address. The **n** and **z**
+flags are set, based on the resultant value.
+
+INC is useful for reading strings and operating on large areas of memory,
+especially ith indirect and indexed addressing modes.
+
+The following routine prints a null-terminated string (**a** should be 1. **x**
+can be 1 or 0):
+
+```asm65816
+LDX #$0
+loop:
+LDA string_addr
+BEQ done
+JSR CHROUT
+INX
+BRA loop
+done:
+```
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### INX
 
+**Increment .X**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 INX            imp           E8  1   2           n.....z. .
 ```
+
+Increment the X register.
+
+See [INC}(#inc)
+
 
 [top](#instructions-by-opcode)
 
@@ -966,16 +1142,25 @@ INX            imp           E8  1   2           n.....z. .
 
 ### INY
 
+**Increment .Y**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 INY            imp           C8  1   2           n.....z. .
 ```
+
+Increment the Y register.
+
+See [INC}(#inc)
+
 
 [top](#instructions-by-opcode)
 
 ---
 
 ### JMP
+
+**Jump**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -986,16 +1171,31 @@ JMP ($1234,X)  (abs,X)       7C  3   6           ........ .
 JMP [$1234]    [abs]         DC  3   6           ........ .
 ```
 
+Jump to a differnent address in memory, continuing program execution at the
+specified address.
+
+Instructions like `JMP ($1234,X)` make it possible to branch to a selectable
+subroutine by setting X to the indesx into the vector table.
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### JSL
 
+**Jmp to Subroutine Long**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 JSL $123456    long          22  4   8           ........ .
 ```
+
+This is a 24-bit instruction, which can jump to a subroutine located in another
+program bank.
+
+Use the [RTL](#rtl) instruction to return to the instruction following the JSL.
+
 
 [top](#instructions-by-opcode)
 
@@ -1003,17 +1203,32 @@ JSL $123456    long          22  4   8           ........ .
 
 ### JSR
 
+**Jump to Subroutine**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 JSR $1234      abs           20  3   6           ........ .
 JSR ($1234,X)  (abs,X)       FC  3   8           ........ .
 ```
 
+Jumps to a new operating address in memory. Also pushes the return address to
+the stack, allowing an RTS insruction to pick up at the address following the
+JSR.
+
+The [RTS](#rts) instruction returns to the instruction following RTS.
+
+The actual address pushed to the stack is the _before_ the next instruction.
+This means that the CPU still needs to increment the PC by 1 step during the
+RTS.
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### LDA
+
+**Load Accumulator**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -1034,11 +1249,17 @@ LDA [$10]      [dir]         A7  2   7-m+w       n.....z. .
 LDA [$10],Y    [dir],Y       B7  2   7-m+w       n.....z. .
 ```
 
+Reads a value from memory into .A. This sets **n** and **z** appropriately,
+allowing you to use BMI, BPL, BEQ, and BNE to act based on the value being read.
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### LDX
+
+**Load X Register**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -1049,11 +1270,16 @@ LDX $9876      abs           AE  3   5-x         n.....z. .
 LDX $9876,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
 ```
 
+Read a value into .X
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### LDY
+
+**Load X Register**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -1064,11 +1290,16 @@ LDY $9876      abs           AC  3   5-x         n.....z. .
 LDY $9876,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
 ```
 
+Read a value into .Y
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### LSR
+
+**Logical Shift Right**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -1079,16 +1310,42 @@ LSR $9876      abs           4E  3   8-2*m       n.....zc .
 LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
 ```
 
+Shifts all bits to the right by one position.
+
+Bit 0 is shifted into Carry.;
+0 shifted into the high bit (7 or 15, depending on the **m** flag.)
+
+**Similar instructions:**;
+[ASL](#asl) is the opposite instruction, shifting to the left.;
+[ROR](#ror) rotates bit 0 through Carry to bit 7.;
+
++p Adds a cycle if ,X crosses a page boundary.;
++c New for the 65C02;
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### MVN
 
+**Block Copy/Move Negative**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 MVN #$12,#$34  src,dest      54  3   7           ........ .
 ```
+
+This performs a block copy. Use MVN when the source and destination ranges
+overlap and dest < source.
+
+As this requires 16 bit values in the index registers, set **x** with `rep #$30`
+
+* Set .X to the source address
+* Set .Y to the destination address
+* Set .A to size-1
+* MVN #source_bank, #dest_bank
+
 
 [top](#instructions-by-opcode)
 
@@ -1096,10 +1353,23 @@ MVN #$12,#$34  src,dest      54  3   7           ........ .
 
 ### MVP
 
+**Block Copy/Move Positive**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 MVP #$12,#$34  src,dest      44  3   7           ........ .
 ```
+
+This performs a block copy. Use MVP when the source and destination ranges
+overlap and dest > source.
+
+As this requires 16 bit values in the index registers, set **x** with `rep #$30`
+
+* Set .X to the source_address + size - 1
+* Set .Y to the destination_address
+* Set .A to size-1
+* MVP #source_bank, #dest_bank
+
 
 [top](#instructions-by-opcode)
 
@@ -1107,16 +1377,24 @@ MVP #$12,#$34  src,dest      44  3   7           ........ .
 
 ### NOP
 
+**No Operation**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 NOP            imp           EA  1   2           ........ .
 ```
+
+The CPU performs no operation. This is useful when blocking out instructionsor
+reserving space for later use.
+
 
 [top](#instructions-by-opcode)
 
 ---
 
 ### ORA
+
+**Boolean OR**
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
@@ -1137,16 +1415,41 @@ ORA [$10]      [dir]         07  2   7-m+w       n.....z. .
 ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
 ```
 
+Perform a Boolean OR operation with the operand and .A
+
+ORA compares each bit of the operands and sets the result bit to 1 if either or
+both of the two bits is 1. If both bits are 0, the result is 0.
+
+ORA is useful for *setting* a specific bit in a byte.
+
+Truth table for ORA:
+
+```text
+Operand 1: 1100
+Operand 2: 1010
+Result:    1110
+```
+
+
 [top](#instructions-by-opcode)
 
 ---
 
 ### PEA
 
+**Push Absolute**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 PEA #$1234     imm           F4  3   5           ........ .
 ```
+
+PEA, PEI, and PER push values to the stack *without* affecting registers.
+
+PEA pushes the operand value onto the stack. The literal operand is used, rather
+than an address. This will normally be written in teh form `PEA #1234`, and in
+this instance, the actual value pushed onto the stack is $1234.
+
 
 [top](#instructions-by-opcode)
 
@@ -1154,10 +1457,23 @@ PEA #$1234     imm           F4  3   5           ........ .
 
 ### PEI
 
+**Push Effecive Indirect Address**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 PEI $12        dir           D4  2   6+w         ........ .
 ```
+
+PEI takes a _pointer_ as an operand. The value written to the stack is the two
+bytes at the supplied address.
+
+Example:
+```
+; data at $20 is $1234
+PEI ($20)
+; pushes $1234 onto the stack.
+```
+
 
 [top](#instructions-by-opcode)
 
@@ -1165,10 +1481,31 @@ PEI $12        dir           D4  2   6+w         ........ .
 
 ### PER
 
+**Push Effective PC Relative Indirect Address**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 PER LABEL      imm           62  3   6           ........ .
 ```
+
+PER pushes the address _relative to the program counter_. This allows you to
+mark the current executing location and push that to the stack.
+
+When used in conjunctin with BRL, PER can form a reloatable JSR instruction.
+
+Consider the following ca65 macro:
+
+```asm65816
+.macro bsr addr
+per .loword(:+ - 1)
+brl addr
+:
+.endmacro
+```
+
+This gets the address following the BRL instruction and pushes that to the
+stack. See [JSR}(#jsr) to understand why the -1 is required.
+
 
 [top](#instructions-by-opcode)
 
@@ -1176,10 +1513,23 @@ PER LABEL      imm           62  3   6           ........ .
 
 ### PHA
 
+**Push Accumulator**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 PHA            imp           48  1   4-m         ........ .
 ```
+
+Pushes the Accumulator to the stack. This will push 1 byte when **m** is 1 and
+two bytes when **m** is 0 (16-bit memory/.A mode.)
+
+An 8-bit stack push writes data at the Stack Pointer address, then moves SP down
+by 1 byte. A 16-bit stack push moves the stack pointer down 2 bytes.
+
+In Emulation mode, the Stack Pointer will always be an address in the $100-$1FF
+range, so there is only room for 256 bytes on the stack. In native mode, the
+stack can live anywhere in RAM.
+
 
 [top](#instructions-by-opcode)
 
@@ -1187,10 +1537,18 @@ PHA            imp           48  1   4-m         ........ .
 
 ### PHB
 
+**Push Data Bank register.**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 PHB            imp           8B  1   3           ........ .
 ```
+
+The data bank register sets the top 8 bits used when reading data with LDA, LDX,
+and LDY.
+
+This is always an 8-bit operation.
+
 
 [top](#instructions-by-opcode)
 
@@ -1198,8 +1556,270 @@ PHB            imp           8B  1   3           ........ .
 
 ### PHD
 
+**Push Direct Page**
+
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PHD            imp           0B  1   
+PHD            imp           0B  1   4           ........ .
+```
+
+Pushes the 16-bit Direct Page register to the stack. This is useful for
+preserving the location of .D before relocating Direct Page for another use
+(such as an operating system routine.)
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PHK
+
+**Push Program Bank**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PHK            imp           4B  1   3           ........ .
+```
+
+Pushes the Program Bank register to the stack. The Program Bank is the top 8
+bits of the 24-bit Program Counter address.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PHP
+
+**Push Program Status (Flags)**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PHP            imp           08  1   3           ........ .
+```
+
+The CPU writes the flags in the order `nvmx dizc`. (**e** does
+not get written to the stack.)
+
+Note: the 6502 and 65C02 use bit 4 (**x** on the '816) for the Break flag. While
+**b** does get written to the stack in a BRK operation, bit 4 in .P always
+reflects the state of the 8-bit-index flag. Since the flags differ slightly in
+behavior, make sure your Interrupt handler code reads from the stack, not the .P
+bits, when dispatching a IRQ/BRK interrupt.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PHX
+
+**Push X Register**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PHX            imp           DA  1   4-x         ........ .
+```
+
+Pushes the X register to the stack. This will push 1 byte when **x** is 1 and
+two bytes when **x** is 0 (16-bit index mode.)
+
+An 8-bit stack push writes data at the Stack Pointer address, then moves SP down
+by 1 byte. A 16-bit stack push moves the stack pointer down 2 bytes.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PHY
+
+**Push Y Register**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PHY            imp           5A  1   4-x         ........ .
+```
+
+Pushes the Y register to the stack. This will push 1 byte when **y** is 1 and
+two bytes when **y** is 0 (16-bit index mode.)
+
+An 8-bit stack push writes data at the Stack Pointer address, then moves SP down
+by 1 byte. A 16-bit stack push moves the stack pointer down 2 bytes.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PLA
+
+**Pull Accumulator**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PLA            imp           68  1   5-m         n.....z. .
+```
+
+Pulls the Accumulator from the stack.
+
+In the opposite of PHA, the PLA instruction reads the current value from the
+stack and _increments_ the stack pointer by 1 or 2 bytes.
+
+The number of bytes read is based on the value of the **m** flag.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PLB
+
+**Pull Data Bank Register**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PLB            imp           AB  1   4           n.....z. .
+```
+
+Pull the Data Bank register from the stack.
+
+In the opposite of PHB, the PLB instruction reads the current value from the
+stack and _increments_ the stack pointer by 1 byte.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PLD
+
+**Pull Direct Page Register**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PLD            imp           2B  1   5           n.....z. .
+```
+
+This sets the Direct Page address based on the value on the stack. You will
+commonly set the Direct Page through a PEA/PLD or PHX/PLX combo.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PLP
+
+**Pull Prgram Status Byte (flags)**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PLP            imp           28  1   4           nvmxdizc .
+```
+
+This reads the flags back from the stack. Since the flags affect the state of
+the **m** and **x** register-width flags, this should be performed *before* a
+PLA, PLX, or PLY operation.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PLX
+
+**Pull X Register**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PLX            imp           FA  1   5-x         n.....z. .
+```
+
+Pulls the X Register from the stack.
+
+In the opposite of PHX, the PLX instruction reads the current value from the
+stack and _increments_ the stack pointer by 1 or 2 bytes.
+
+The number of bytes read is based on the value of the **x** flag.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### PLY
+
+**Pull Y Register**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+PLY            imp           7A  1   5-x         n.....z. .
+```
+
+Pulls the Y Register from the stack.
+
+In the opposite of PHY, the PLY instruction reads the current value from the
+stack and _increments_ the stack pointer by 1 or 2 bytes.
+
+The number of bytes read is based on the value of the **x** flag.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### REP
+
+**Reset Program Status Bit**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+REP #$12       imm           C2  2   3           nvmxdizc .
+```
+
+This clears (to 0) flags in the Program Status Byte. The 1 bits in the will be
+cleard in the flags, so REP #$30 will set the **a** and **x** bits low.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### ROL
+
+**Rotate Left**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+ROL            acc           2A  1   2           n.....zc .
+ROL $10        dir           26  2   7-2*m+w     n.....zc .
+ROL $10,X      dir,X         36  2   8-2*m+w     n.....zc .
+ROL $9876      abs           2E  3   8-2*m       n.....zc .
+ROL $9876,X    abs,X         3E  3   9-2*m       n.....zc .
+```
+
+Shifts bits in the accumulator or memory left one bit. The Carry bit (**c**) is
+shifted in to bit 0. The high bit (7 or 15) is copied to **c**. So this is
+effectively a 9 bit shift.
+
+
+[top](#instructions-by-opcode)
+
+---
+
+### ROR
+
+**Rotate Right**
+
+```text
+SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
+ROR            acc           6A  1   2           n.....zc .
+ROR $10        dir           66  2   7-2*m+w     n.....zc .
+ROR $10,X      dir,X         76  2   8-2*m+w     n.....zc .
+ROR $9876      abs           6E  3   8-2*m       n.....zc .
+ROR $9876,X    abs,X         7E  3   9-2*m       n.....zc .
+```
+
 <!-- For PDF formatting -->
 <div class="page-break"></div>

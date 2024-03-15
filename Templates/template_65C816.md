@@ -1,28 +1,34 @@
 
-# Appendix E: The 65C816 Processor
+# Appendix F: The 65C816 Processor
 
 **Table of Contents**
 
 1. [Overview](#overview)
 2. [Compatibility with the 65C02](#compatibility-with-the-65c02)
-3. [Registers](#status-registers)
-4. [Status Flags](#)
-5. [16 bit modes]
-6. [Address Modes]
-7. [Vectors]
+3. [Registers](#registers)
+4. [Status Flags](#status-flags)
+5. [16 bit mode](#16-bit-mode)
+6. [Address Modes](#address-modes)
+7. [Vectors](#vectors)
 8. [Instruction Tables](#instruction-tables)
 
 ## Overview
 
+This document is a brief introduction and quick reference for the 65816 and
+65C816 Microprocessor. For more details, see the [65C816 data
+sheet](https://www.westerndesigncenter.com/wdc/documentation/w65c816s.pdf) or
+[Programming the
+6565816](https://www.amazon.com/Programming-65816-Including-65C02-65802-ebook/dp/B01855HL7Q).
+
 The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 6502 processor. All
 of the familiar 6502 instructions and address modes are retained, and some new
-ones are added. 
+ones are added.
 
 The CPU now also operates in 16-bit mode when required. This allows the Accumulator
 to hold 16-bit values, and the CPU reads and writes 2 bytes at a time in this mode.
 
 The .X and .Y registers, also known as the Index registers, can also be separately
-set to 16-bit mode, which allows for indexed operations up to 64KB. 
+set to 16-bit mode, which allows for indexed operations up to 64KB.
 
 Zero Page has been renamed to Direct Page, and Direct Page can now be relocated
 anywhere in the first 64K of RAM. As a result, all of the Zero Page instructions
@@ -36,7 +42,7 @@ The 65C816 also extends the address bus to 24 bits, but the X16 is not equipped 
 decode the bask address; as a result, the 65C816 is still limited to the same 16-bit
 address space as the 65C02.
 
-In the X16 community, we are currently 
+In the X16 community, we are currently
 
 ## Compatibility with the 65C02
 
@@ -60,10 +66,12 @@ conventional Boolean logic instructions, instead.
 
 .A, .X, and .Y can be 8 or 16 bits wide, based on the flag settings (see below).
 
-The Stack Pointer (.S) is also relocatable to any 16-bit address. 
+The Stack Pointer (.S) is 16 bits wide in Native mode and 8 bits wide (and fixed
+to the $100-1FF range) in Emulation mode.
 
 .DB and .K are the bank registers, allowing programs and data to occupy separate
-64K banks on properly equipped computers.
+64K banks on computers with more than 64K of RAM. (The X16 does not use the bank
+registers, instead using addresses $00 and $01 for banking.)
 
 ## Status Flags
 
@@ -81,7 +89,7 @@ The native mode flags are as follows:
   c = Carry  
   e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
 
-In emulation mode, the **m** and **x** flags are always set to 1. 
+In emulation mode, the **m** and **x** flags are always set to 1.
 
 Here are the 6502 and 65C02 registers, for comparison:
 
@@ -98,17 +106,17 @@ Here are the 6502 and 65C02 registers, for comparison:
   e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
 
 **e** can only accessed via the XCE instruction, which swaps Carry and
-the Emulation flag. 
+the Emulation flag.
 
 The other flags can all be manipulated with SEP and REP, and the various
 branch instructions (BEQ, BCS, etc) test some of the flags. The rest
-can only be tested indirectly through the stack. 
+can only be tested indirectly through the stack.
 
 When a BRK or IRQ is triggered in _emulation_ mode, a ghost **b** flag
 will be pushed to the stack instead of the **x** flag. This can be used
-to test for a BRK vs IRQ in the Interrupt handler. 
+to test for a BRK vs IRQ in the Interrupt handler.
 
-## 16 bit modes
+## 16 bit mode
 
 The 65C816 CPU boots up in emulation mode. This locks the register width to
 8 bits and locks out certain operations.
@@ -147,7 +155,7 @@ can now cover 64K.
 You can use `REP #$10` to enable 16-bit index registers, and `REP #$20` to enable
 16-bit memory and Accumulator. `SEP #$20` or `SEP #$40` will switch back to 8-bit
 operation. You can also combine the operand and use `SEP #$30` to flip both bits
-at once. 
+at once.
 
 And now we reach the 16-bit assembly trap: the actual assembly opcodes are the
 same, regardless of the **x** and **m** flags. This means the assembler needs
@@ -157,9 +165,9 @@ two bytes when assembling immediate mode instructions like LDA #$01.
 You can help the assembler out by using _hints_. Different assemblers have different
 hinting systems, so we will focus on 64TASS and cc65.
 
-[64TASS](https://sourceforge.net/projects/tass64/) accepts `.as` (.A short) and 
+[64TASS](https://sourceforge.net/projects/tass64/) accepts `.as` (.A short) and
 `.al` (.A long) to  tell the assembler to store 8 bits or 16 bits in an immediate
-mode operand. For LDX and LDY, use the `.xs` and `.xl` hints. 
+mode operand. For LDX and LDY, use the `.xs` and `.xl` hints.
 
 The hints for [ca65](https://cc65.github.io/) are `.a8`, `.a16`, `.i8`, and `.i16`
 
@@ -167,8 +175,8 @@ Note that this has no effect on _absolute_ or _indirect_ addressing modes, such
 as `LDA $1234` and `LDA ($1000)`, since the operand for these modes is always
 16 bits.
 
-To make it easy to remember the modes, just remember that **e**, **m**, and **x** 
-all _emulate_ 65C02 behavior when _set_. 
+To make it easy to remember the modes, just remember that **e**, **m**, and **x**
+all _emulate_ 65C02 behavior when _set_.
 
 ****
 
