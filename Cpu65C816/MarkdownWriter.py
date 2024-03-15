@@ -22,7 +22,7 @@ class markdown_writer:
         self.details_file="CSV/Details65C816.md"
         self.output_file="Markdown/table_65C816.md"
         self.template_filename="Templates/template_65C816.md"
-        self.output_merged_filename="Markdown/X16 Reference - Appendix E - 65C816 Processor.md"
+        self.output_merged_filename="Markdown/X16 Reference - Appendix F - 65C816 Processor.md"
 
         self.cpu = None
         self.file = None
