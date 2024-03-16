@@ -60,21 +60,21 @@
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-ADC #$54       imm           69  3-m 3-m         nv....zc .
-ADC $10        dir           65  2   4-m+w       nv....zc .
-ADC $10,X      dir,X         75  2   5-m+w       nv....zc .
-ADC $32,S      stk,S         63  2   5-m         nv....zc .
-ADC $9876      abs           6D  3   5-m         nv....zc .
-ADC $9876,X    abs,X         7D  3   6-m-x+x*p   nv....zc .
-ADC $9876,Y    abs,Y         79  3   6-m-x+x*p   nv....zc .
+ADC #$20       imm           69  3-m 3-m         nv....zc .
+ADC $20        dir           65  2   4-m+w       nv....zc .
+ADC $20,X      dir,X         75  2   5-m+w       nv....zc .
+ADC $20,S      stk,S         63  2   5-m         nv....zc .
+ADC $1234      abs           6D  3   5-m         nv....zc .
+ADC $1234,X    abs,X         7D  3   6-m-x+x*p   nv....zc .
+ADC $1234,Y    abs,Y         79  3   6-m-x+x*p   nv....zc .
 ADC $FEDBCA    long          6F  4   6-m         nv....zc .
 ADC $FEDCBA,X  long,X        7F  4   6-m         nv....zc .
-ADC ($10)      (dir)         72  2   6-m+w       nv....zc .
-ADC ($10),Y    (dir),Y       71  2   7-m+w-x+x*p nv....zc .
-ADC ($10,X)    (dir,X)       61  2   7-m+w       nv....zc .
-ADC ($32,S),Y  (stk,S),Y     73  2   8-m         nv....zc .
-ADC [$10]      [dir]         67  2   7-m+w       nv....zc .
-ADC [$10],Y    [dir],Y       77  2   7-m+w       nv....zc .
+ADC ($20)      (dir)         72  2   6-m+w       nv....zc .
+ADC ($20),Y    (dir),Y       71  2   7-m+w-x+x*p nv....zc .
+ADC ($20,X)    (dir,X)       61  2   7-m+w       nv....zc .
+ADC ($20,S),Y  (stk,S),Y     73  2   8-m         nv....zc .
+ADC [$20]      [dir]         67  2   7-m+w       nv....zc .
+ADC [$20],Y    [dir],Y       77  2   7-m+w       nv....zc .
 ```
 
 ADC adds the accumulator (.A), the supplied operand, and the Carry bit (0 or 1).
@@ -140,21 +140,21 @@ BRK
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-AND #$54       imm           29  3-m 3-m         n.....z. .
-AND $10        dir           25  2   4-m+w       n.....z. .
-AND $10,X      dir,X         35  2   5-m+w       n.....z. .
-AND $32,S      stk,S         23  2   5-m         n.....z. .
-AND $9876      abs           2D  3   5-m         n.....z. .
-AND $9876,X    abs,X         3D  3   6-m-x+x*p   n.....z. .
-AND $9876,Y    abs,Y         39  3   6-m-x+x*p   n.....z. .
+AND #$20       imm           29  3-m 3-m         n.....z. .
+AND $20        dir           25  2   4-m+w       n.....z. .
+AND $20,X      dir,X         35  2   5-m+w       n.....z. .
+AND $20,S      stk,S         23  2   5-m         n.....z. .
+AND $1234      abs           2D  3   5-m         n.....z. .
+AND $1234,X    abs,X         3D  3   6-m-x+x*p   n.....z. .
+AND $1234,Y    abs,Y         39  3   6-m-x+x*p   n.....z. .
 AND $FEDBCA    long          2F  4   6-m         n.....z. .
 AND $FEDCBA,X  long,X        3F  4   6-m         n.....z. .
-AND ($10)      (dir)         32  2   6-m+w       n.....z. .
-AND ($10),Y    (dir),Y       31  2   7-m+w-x+x*p n.....z. .
-AND ($10,X)    (dir,X)       21  2   7-m+w       n.....z. .
-AND ($32,S),Y  (stk,S),Y     33  2   8-m         n.....z. .
-AND [$10]      [dir]         27  2   7-m+w       n.....z. .
-AND [$10],Y    [dir],Y       37  2   7-m+w       n.....z. .
+AND ($20)      (dir)         32  2   6-m+w       n.....z. .
+AND ($20),Y    (dir),Y       31  2   7-m+w-x+x*p n.....z. .
+AND ($20,X)    (dir,X)       21  2   7-m+w       n.....z. .
+AND ($20,S),Y  (stk,S),Y     33  2   8-m         n.....z. .
+AND [$20]      [dir]         27  2   7-m+w       n.....z. .
+AND [$20],Y    [dir],Y       37  2   7-m+w       n.....z. .
 ```
 
 Perform a logical AND operation with the operand and .A
@@ -194,10 +194,10 @@ See also: [ORA](#ora), [EOR](#eor)
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 ASL            acc           0A  1   2           n.....zc .
-ASL $10        dir           06  2   7-2*m+w     n.....zc .
-ASL $10,X      dir,X         16  2   8-2*m+w     n.....zc .
-ASL $9876      abs           0E  3   8-2*m       n.....zc .
-ASL $9876,X    abs,X         1E  3   9-2*m       n.....zc .
+ASL $20        dir           06  2   7-2*m+w     n.....zc .
+ASL $20,X      dir,X         16  2   8-2*m+w     n.....zc .
+ASL $1234      abs           0E  3   8-2*m       n.....zc .
+ASL $1234,X    abs,X         1E  3   9-2*m       n.....zc .
 ```
 
 ASL shifts the target left one place. It shifts the high bit of the operand into
@@ -279,11 +279,11 @@ or 128 bytes after the branch instruction.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-BIT #$54       imm           89  3-m 3-m         ......z. .
-BIT $10        dir           24  2   4-m+w       nv....z. .
-BIT $10,X      dir,X         34  2   5-m+w       nv....z. .
-BIT $9876      abs           2C  3   5-m         nv....z. .
-BIT $9876,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
+BIT #$20       imm           89  3-m 3-m         ......z. .
+BIT $20        dir           24  2   4-m+w       nv....z. .
+BIT $20,X      dir,X         34  2   5-m+w       nv....z. .
+BIT $1234      abs           2C  3   5-m         nv....z. .
+BIT $1234,X    abs,X         3C  3   6-m-x+x*p   nv....z. .
 ```
 
 Tests the operand against the Accumulator. The ALU does an AND
@@ -570,21 +570,21 @@ set with SEP #$40.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-CMP #$54       imm           C9  3-m 3-m         n.....zc .
-CMP $10        dir           C5  2   4-m+w       n.....zc .
-CMP $10,X      dir,X         D5  2   5-m+w       n.....zc .
-CMP $32,S      stk,S         C3  2   5-m         n.....zc .
-CMP $9876      abs           CD  3   5-m         n.....zc .
-CMP $9876,X    abs,X         DD  3   6-m-x+x*p   n.....zc .
-CMP $9876,Y    abs,Y         D9  3   6-m-x+x*p   n.....zc .
+CMP #$20       imm           C9  3-m 3-m         n.....zc .
+CMP $20        dir           C5  2   4-m+w       n.....zc .
+CMP $20,X      dir,X         D5  2   5-m+w       n.....zc .
+CMP $20,S      stk,S         C3  2   5-m         n.....zc .
+CMP $1234      abs           CD  3   5-m         n.....zc .
+CMP $1234,X    abs,X         DD  3   6-m-x+x*p   n.....zc .
+CMP $1234,Y    abs,Y         D9  3   6-m-x+x*p   n.....zc .
 CMP $FEDBCA    long          CF  4   6-m         n.....zc .
 CMP $FEDCBA,X  long,X        DF  4   6-m         n.....zc .
-CMP ($10)      (dir)         D2  2   6-m+w       n.....zc .
-CMP ($10),Y    (dir),Y       D1  2   7-m+w-x+x*p n.....zc .
-CMP ($10,X)    (dir,X)       C1  2   7-m+w       n.....zc .
-CMP ($32,S),Y  (stk,S),Y     D3  2   8-m         n.....zc .
-CMP [$10]      [dir]         C7  2   7-m+w       n.....zc .
-CMP [$10],Y    [dir],Y       D7  2   7-m+w       n.....zc .
+CMP ($20)      (dir)         D2  2   6-m+w       n.....zc .
+CMP ($20),Y    (dir),Y       D1  2   7-m+w-x+x*p n.....zc .
+CMP ($20,X)    (dir,X)       C1  2   7-m+w       n.....zc .
+CMP ($20,S),Y  (stk,S),Y     D3  2   8-m         n.....zc .
+CMP [$20]      [dir]         C7  2   7-m+w       n.....zc .
+CMP [$20],Y    [dir],Y       D7  2   7-m+w       n.....zc .
 ```
 
 Compares the Accumulator with memory. This performs a subtract operation
@@ -666,7 +666,7 @@ skip:
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-COP #$12       imm           02  2   8-e         ....di.. .
+COP #$20       imm           02  2   8-e         ....di.. .
 ```
 
 COP is similar to BRK, but uses the FFE4 or FFF4 vectors. The intent is to COP
@@ -684,9 +684,9 @@ is to switch to a Co-Processor, but this can be used for any purpose on the X16
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-CPX #$54       imm           E0  3-x 3-x         n.....zc .
-CPX $10        dir           E4  2   4-x+w       n.....zc .
-CPX $9876      abs           EC  3   5-x         n.....zc .
+CPX #$20       imm           E0  3-x 3-x         n.....zc .
+CPX $20        dir           E4  2   4-x+w       n.....zc .
+CPX $1234      abs           EC  3   5-x         n.....zc .
 ```
 
 This compares the X register to an operand and sets the flags accordingly.
@@ -704,9 +704,9 @@ See [CMP](#cmp) for more information.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-CPY #$54       imm           C0  3-x 3-x         n.....zc .
-CPY $10        dir           C4  2   4-x+w       n.....zc .
-CPY $9876      abs           CC  3   5-x         n.....zc .
+CPY #$20       imm           C0  3-x 3-x         n.....zc .
+CPY $20        dir           C4  2   4-x+w       n.....zc .
+CPY $1234      abs           CC  3   5-x         n.....zc .
 ```
 
 This compares the Y register to an operand and sets the flags accordingly.
@@ -725,10 +725,10 @@ See [CMP](#cmp) for more information.
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 DEC            acc           3A  1   2           n.....z. .
-DEC $10        dir           C6  2   7-2*m+w     n.....z. .
-DEC $10,X      dir,X         D6  2   8-2*m+w     n.....z. .
-DEC $9876      abs           CE  3   8-2*m       n.....z. .
-DEC $9876,X    abs,X         DE  3   9-2*m       n.....z. .
+DEC $20        dir           C6  2   7-2*m+w     n.....z. .
+DEC $20,X      dir,X         D6  2   8-2*m+w     n.....z. .
+DEC $1234      abs           CE  3   8-2*m       n.....z. .
+DEC $1234,X    abs,X         DE  3   9-2*m       n.....z. .
 ```
 
 Decrement .A or memory. The **z** flag is set when the value reaches zero. This
@@ -791,21 +791,21 @@ iterations, the repeated operation, then DEX followed by BNE.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-EOR #$54       imm           49  3-m 3-m         n.....z. .
-EOR $10        dir           45  2   4-m+w       n.....z. .
-EOR $10,X      dir,X         55  2   5-m+w       n.....z. .
-EOR $32,S      stk,S         43  2   5-m         n.....z. .
-EOR $9876      abs           4D  3   5-m         n.....z. .
-EOR $9876,X    abs,X         5D  3   6-m-x+x*p   n.....z. .
-EOR $9876,Y    abs,Y         59  3   6-m-x+x*p   n.....z. .
+EOR #$20       imm           49  3-m 3-m         n.....z. .
+EOR $20        dir           45  2   4-m+w       n.....z. .
+EOR $20,X      dir,X         55  2   5-m+w       n.....z. .
+EOR $20,S      stk,S         43  2   5-m         n.....z. .
+EOR $1234      abs           4D  3   5-m         n.....z. .
+EOR $1234,X    abs,X         5D  3   6-m-x+x*p   n.....z. .
+EOR $1234,Y    abs,Y         59  3   6-m-x+x*p   n.....z. .
 EOR $FEDBCA    long          4F  4   6-m         n.....z. .
 EOR $FEDCBA,X  long,X        5F  4   6-m         n.....z. .
-EOR ($10)      (dir)         52  2   6-m+w       n.....z. .
-EOR ($10),Y    (dir),Y       51  2   7-m+w-x+x*p n.....z. .
-EOR ($10,X)    (dir,X)       41  2   7-m+w       n.....z. .
-EOR ($32,S),Y  (stk,S),Y     53  2   8-m         n.....z. .
-EOR [$10]      [dir]         47  2   7-m+w       n.....z. .
-EOR [$10],Y    [dir],Y       57  2   7-m+w       n.....z. .
+EOR ($20)      (dir)         52  2   6-m+w       n.....z. .
+EOR ($20),Y    (dir),Y       51  2   7-m+w-x+x*p n.....z. .
+EOR ($20,X)    (dir,X)       41  2   7-m+w       n.....z. .
+EOR ($20,S),Y  (stk,S),Y     53  2   8-m         n.....z. .
+EOR [$20]      [dir]         47  2   7-m+w       n.....z. .
+EOR [$20],Y    [dir],Y       57  2   7-m+w       n.....z. .
 ```
 
 Perform an Exclusive OR operation with the operand and .A
@@ -837,10 +837,10 @@ Result:    0110
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 INC            acc           1A  1   2           n.....z. .
-INC $10        dir           E6  2   7-2*m+w     n.....z. .
-INC $10,X      dir,X         F6  2   8-2*m+w     n.....z. .
-INC $9876      abs           EE  3   8-2*m       n.....z. .
-INC $9876,X    abs,X         FE  3   9-2*m       n.....z. .
+INC $20        dir           E6  2   7-2*m+w     n.....z. .
+INC $20,X      dir,X         F6  2   8-2*m+w     n.....z. .
+INC $1234      abs           EE  3   8-2*m       n.....z. .
+INC $1234,X    abs,X         FE  3   9-2*m       n.....z. .
 ```
 
 Increment .A or memory
@@ -912,11 +912,11 @@ See [INC}(#inc)
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-JMP $1234      abs           4C  3   3           ........ .
+JMP $2034      abs           4C  3   3           ........ .
 JMP $FEDCBA    long          5C  4   4           ........ .
-JMP ($1234)    (abs)         6C  3   5           ........ .
-JMP ($1234,X)  (abs,X)       7C  3   6           ........ .
-JMP [$1234]    [abs]         DC  3   6           ........ .
+JMP ($2034)    (abs)         6C  3   5           ........ .
+JMP ($2034,X)  (abs,X)       7C  3   6           ........ .
+JMP [$2034]    [abs]         DC  3   6           ........ .
 ```
 
 Jump to a differnent address in memory, continuing program execution at the
@@ -936,7 +936,7 @@ subroutine by setting X to the indesx into the vector table.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-JSL $123456    long          22  4   8           ........ .
+JSL $203456    long          22  4   8           ........ .
 ```
 
 This is a 24-bit instruction, which can jump to a subroutine located in another
@@ -955,8 +955,8 @@ Use the [RTL](#rtl) instruction to return to the instruction following the JSL.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-JSR $1234      abs           20  3   6           ........ .
-JSR ($1234,X)  (abs,X)       FC  3   8           ........ .
+JSR $2034      abs           20  3   6           ........ .
+JSR ($2034,X)  (abs,X)       FC  3   8           ........ .
 ```
 
 Jumps to a new operating address in memory. Also pushes the return address to
@@ -980,21 +980,21 @@ RTS.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LDA #$54       imm           A9  3-m 3-m         n.....z. .
-LDA $10        dir           A5  2   4-m+w       n.....z. .
-LDA $10,X      dir,X         B5  2   5-m+w       n.....z. .
-LDA $32,S      stk,S         A3  2   5-m         n.....z. .
-LDA $9876      abs           AD  3   5-m         n.....z. .
-LDA $9876,X    abs,X         BD  3   6-m-x+x*p   n.....z. .
-LDA $9876,Y    abs,Y         B9  3   6-m-x+x*p   n.....z. .
+LDA #$20       imm           A9  3-m 3-m         n.....z. .
+LDA $20        dir           A5  2   4-m+w       n.....z. .
+LDA $20,X      dir,X         B5  2   5-m+w       n.....z. .
+LDA $20,S      stk,S         A3  2   5-m         n.....z. .
+LDA $1234      abs           AD  3   5-m         n.....z. .
+LDA $1234,X    abs,X         BD  3   6-m-x+x*p   n.....z. .
+LDA $1234,Y    abs,Y         B9  3   6-m-x+x*p   n.....z. .
 LDA $FEDBCA    long          AF  4   6-m         n.....z. .
 LDA $FEDCBA,X  long,X        BF  4   6-m         n.....z. .
-LDA ($10)      (dir)         B2  2   6-m+w       n.....z. .
-LDA ($10),Y    (dir),Y       B1  2   7-m+w-x+x*p n.....z. .
-LDA ($10,X)    (dir,X)       A1  2   7-m+w       n.....z. .
-LDA ($32,S),Y  (stk,S),Y     B3  2   8-m         n.....z. .
-LDA [$10]      [dir]         A7  2   7-m+w       n.....z. .
-LDA [$10],Y    [dir],Y       B7  2   7-m+w       n.....z. .
+LDA ($20)      (dir)         B2  2   6-m+w       n.....z. .
+LDA ($20),Y    (dir),Y       B1  2   7-m+w-x+x*p n.....z. .
+LDA ($20,X)    (dir,X)       A1  2   7-m+w       n.....z. .
+LDA ($20,S),Y  (stk,S),Y     B3  2   8-m         n.....z. .
+LDA [$20]      [dir]         A7  2   7-m+w       n.....z. .
+LDA [$20],Y    [dir],Y       B7  2   7-m+w       n.....z. .
 ```
 
 Reads a value from memory into .A. This sets **n** and **z** appropriately,
@@ -1011,11 +1011,11 @@ allowing you to use BMI, BPL, BEQ, and BNE to act based on the value being read.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LDX #$54       imm           A2  3-x 3-x         n.....z. .
-LDX $10        dir           A6  2   4-x+w       n.....z. .
-LDX $10,Y      dir,Y         B6  2   5-x+w       n.....z. .
-LDX $9876      abs           AE  3   5-x         n.....z. .
-LDX $9876,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
+LDX #$20       imm           A2  3-x 3-x         n.....z. .
+LDX $20        dir           A6  2   4-x+w       n.....z. .
+LDX $20,Y      dir,Y         B6  2   5-x+w       n.....z. .
+LDX $1234      abs           AE  3   5-x         n.....z. .
+LDX $1234,Y    abs,Y         BE  3   6-2*x+x*p   n.....z. .
 ```
 
 Read a value into .X
@@ -1031,11 +1031,11 @@ Read a value into .X
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-LDY #$54       imm           A0  3-x 3-x         n.....z. .
-LDY $10        dir           A4  2   4-x+w       n.....z. .
-LDY $10,X      dir,X         B4  2   5-x+w       n.....z. .
-LDY $9876      abs           AC  3   5-x         n.....z. .
-LDY $9876,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
+LDY #$20       imm           A0  3-x 3-x         n.....z. .
+LDY $20        dir           A4  2   4-x+w       n.....z. .
+LDY $20,X      dir,X         B4  2   5-x+w       n.....z. .
+LDY $1234      abs           AC  3   5-x         n.....z. .
+LDY $1234,X    abs,X         BC  3   6-2*x+x*p   n.....z. .
 ```
 
 Read a value into .Y
@@ -1052,10 +1052,10 @@ Read a value into .Y
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 LSR            acc           4A  1   2           n.....zc .
-LSR $10        dir           46  2   7-2*m+w     n.....zc .
-LSR $10,X      dir,X         56  2   8-2*m+w     n.....zc .
-LSR $9876      abs           4E  3   8-2*m       n.....zc .
-LSR $9876,X    abs,X         5E  3   9-2*m       n.....zc .
+LSR $20        dir           46  2   7-2*m+w     n.....zc .
+LSR $20,X      dir,X         56  2   8-2*m+w     n.....zc .
+LSR $1234      abs           4E  3   8-2*m       n.....zc .
+LSR $1234,X    abs,X         5E  3   9-2*m       n.....zc .
 ```
 
 Shifts all bits to the right by one position.
@@ -1081,7 +1081,7 @@ Bit 0 is shifted into Carry.;
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-MVN #$12,#$34  src,dest      54  3   7           ........ .
+MVN #$20,#$34  src,dest      54  3   7           ........ .
 ```
 
 This performs a block copy. Use MVN when the source and destination ranges
@@ -1105,7 +1105,7 @@ As this requires 16 bit values in the index registers, set **x** with `rep #$30`
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-MVP #$12,#$34  src,dest      44  3   7           ........ .
+MVP #$20,#$34  src,dest      44  3   7           ........ .
 ```
 
 This performs a block copy. Use MVP when the source and destination ranges
@@ -1146,21 +1146,21 @@ reserving space for later use.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-ORA #$54       imm           09  3-m 3-m         n.....z. .
-ORA $10        dir           05  2   4-m+w       n.....z. .
-ORA $10,X      dir,X         15  2   5-m+w       n.....z. .
-ORA $32,S      stk,S         03  2   5-m         n.....z. .
-ORA $9876      abs           0D  3   5-m         n.....z. .
-ORA $9876,X    abs,X         1D  3   6-m-x+x*p   n.....z. .
-ORA $9876,Y    abs,Y         19  3   6-m-x+x*p   n.....z. .
+ORA #$20       imm           09  3-m 3-m         n.....z. .
+ORA $20        dir           05  2   4-m+w       n.....z. .
+ORA $20,X      dir,X         15  2   5-m+w       n.....z. .
+ORA $20,S      stk,S         03  2   5-m         n.....z. .
+ORA $1234      abs           0D  3   5-m         n.....z. .
+ORA $1234,X    abs,X         1D  3   6-m-x+x*p   n.....z. .
+ORA $1234,Y    abs,Y         19  3   6-m-x+x*p   n.....z. .
 ORA $FEDBCA    long          0F  4   6-m         n.....z. .
 ORA $FEDCBA,X  long,X        1F  4   6-m         n.....z. .
-ORA ($10)      (dir)         12  2   6-m+w       n.....z. .
-ORA ($10),Y    (dir),Y       11  2   7-m+w-x+x*p n.....z. .
-ORA ($10,X)    (dir,X)       01  2   7-m+w       n.....z. .
-ORA ($32,S),Y  (stk,S),Y     13  2   8-m         n.....z. .
-ORA [$10]      [dir]         07  2   7-m+w       n.....z. .
-ORA [$10],Y    [dir],Y       17  2   7-m+w       n.....z. .
+ORA ($20)      (dir)         12  2   6-m+w       n.....z. .
+ORA ($20),Y    (dir),Y       11  2   7-m+w-x+x*p n.....z. .
+ORA ($20,X)    (dir,X)       01  2   7-m+w       n.....z. .
+ORA ($20,S),Y  (stk,S),Y     13  2   8-m         n.....z. .
+ORA [$20]      [dir]         07  2   7-m+w       n.....z. .
+ORA [$20],Y    [dir],Y       17  2   7-m+w       n.....z. .
 ```
 
 Perform a Boolean OR operation with the operand and .A
@@ -1189,7 +1189,7 @@ Result:    1110
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PEA #$1234     imm           F4  3   5           ........ .
+PEA #$2034     imm           F4  3   5           ........ .
 ```
 
 PEA, PEI, and PER push values to the stack *without* affecting registers.
@@ -1209,7 +1209,7 @@ this instance, the actual value pushed onto the stack is $1234.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-PEI $12        dir           D4  2   6+w         ........ .
+PEI $20        dir           D4  2   6+w         ........ .
 ```
 
 PEI takes a _pointer_ as an operand. The value written to the stack is the two
@@ -1523,7 +1523,7 @@ The number of bytes read is based on the value of the **x** flag.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-REP #$12       imm           C2  2   3           nvmxdizc .
+REP #$20       imm           C2  2   3           nvmxdizc .
 ```
 
 This clears (to 0) flags in the Program Status Byte. The 1 bits in the will be
@@ -1541,10 +1541,10 @@ cleard in the flags, so REP #$30 will set the **a** and **x** bits low.
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 ROL            acc           2A  1   2           n.....zc .
-ROL $10        dir           26  2   7-2*m+w     n.....zc .
-ROL $10,X      dir,X         36  2   8-2*m+w     n.....zc .
-ROL $9876      abs           2E  3   8-2*m       n.....zc .
-ROL $9876,X    abs,X         3E  3   9-2*m       n.....zc .
+ROL $20        dir           26  2   7-2*m+w     n.....zc .
+ROL $20,X      dir,X         36  2   8-2*m+w     n.....zc .
+ROL $1234      abs           2E  3   8-2*m       n.....zc .
+ROL $1234,X    abs,X         3E  3   9-2*m       n.....zc .
 ```
 
 Shifts bits in the accumulator or memory left one bit. The Carry bit (**c**) is
@@ -1563,10 +1563,10 @@ effectively a 9 bit shift.
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
 ROR            acc           6A  1   2           n.....zc .
-ROR $10        dir           66  2   7-2*m+w     n.....zc .
-ROR $10,X      dir,X         76  2   8-2*m+w     n.....zc .
-ROR $9876      abs           6E  3   8-2*m       n.....zc .
-ROR $9876,X    abs,X         7E  3   9-2*m       n.....zc .
+ROR $20        dir           66  2   7-2*m+w     n.....zc .
+ROR $20,X      dir,X         76  2   8-2*m+w     n.....zc .
+ROR $1234      abs           6E  3   8-2*m       n.....zc .
+ROR $1234,X    abs,X         7E  3   9-2*m       n.....zc .
 ```
 
 Shifts bits in the accumulator or memory right one bit. The Carry bit (**c**) is
@@ -1647,21 +1647,21 @@ instruction after the JSR that jumped to the subroutine.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-SBC #$54       imm           E9  3-m 3-m         nv....zc .
-SBC $10        dir           E5  2   4-m+w       nv....zc .
-SBC $10,X      dir,X         F5  2   5-m+w       nv....zc .
-SBC $32,S      stk,S         E3  2   5-m         nv....zc .
-SBC $9876      abs           ED  3   5-m         nv....zc .
-SBC $9876,X    abs,X         FD  3   6-m-x+x*p   nv....zc .
-SBC $9876,Y    abs,Y         F9  3   6-m-x+x*p   nv....zc .
+SBC #$20       imm           E9  3-m 3-m         nv....zc .
+SBC $20        dir           E5  2   4-m+w       nv....zc .
+SBC $20,X      dir,X         F5  2   5-m+w       nv....zc .
+SBC $20,S      stk,S         E3  2   5-m         nv....zc .
+SBC $1234      abs           ED  3   5-m         nv....zc .
+SBC $1234,X    abs,X         FD  3   6-m-x+x*p   nv....zc .
+SBC $1234,Y    abs,Y         F9  3   6-m-x+x*p   nv....zc .
 SBC $FEDBCA    long          EF  4   6-m         nv....zc .
 SBC $FEDCBA,X  long,X        FF  4   6-m         nv....zc .
-SBC ($10)      (dir)         F2  2   6-m+w       nv....zc .
-SBC ($10),Y    (dir),Y       F1  2   7-m+w-x+x*p nv....zc .
-SBC ($10,X)    (dir,X)       E1  2   7-m+w       nv....zc .
-SBC ($32,S),Y  (stk,S),Y     F3  2   8-m         nv....zc .
-SBC [$10]      [dir]         E7  2   7-m+w       nv....zc .
-SBC [$10],Y    [dir],Y       F7  2   7-m+w       nv....zc .
+SBC ($20)      (dir)         F2  2   6-m+w       nv....zc .
+SBC ($20),Y    (dir),Y       F1  2   7-m+w-x+x*p nv....zc .
+SBC ($20,X)    (dir,X)       E1  2   7-m+w       nv....zc .
+SBC ($20,S),Y  (stk,S),Y     F3  2   8-m         nv....zc .
+SBC [$20]      [dir]         E7  2   7-m+w       nv....zc .
+SBC [$20],Y    [dir],Y       F7  2   7-m+w       nv....zc .
 ```
 
 Subtract a value from .A. The result is left in .A.
@@ -1754,7 +1754,7 @@ See [BRK](#brk) for a brief description of interrupts.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-SEP #$12       imm           E2  2   3           nvmxdizc .
+SEP #$20       imm           E2  2   3           nvmxdizc .
 ```
 
 Reset Program Status Bit
@@ -1773,20 +1773,20 @@ loaded into the flags, so SEP #$30 will set the **a** and **x** bits high.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-STA $10        dir           85  2   4-m+w       ........ .
-STA $10,X      dir,X         95  2   5-m+w       ........ .
-STA $32,S      stk,S         83  2   5-m         ........ .
-STA $9876      abs           8D  3   5-m         ........ .
-STA $9876,X    abs,X         9D  3   6-m         ........ .
-STA $9876,Y    abs,Y         99  3   6-m         ........ .
+STA $20        dir           85  2   4-m+w       ........ .
+STA $20,X      dir,X         95  2   5-m+w       ........ .
+STA $20,S      stk,S         83  2   5-m         ........ .
+STA $1234      abs           8D  3   5-m         ........ .
+STA $1234,X    abs,X         9D  3   6-m         ........ .
+STA $1234,Y    abs,Y         99  3   6-m         ........ .
 STA $FEDBCA    long          8F  4   6-m         ........ .
 STA $FEDCBA,X  long,X        9F  4   6-m         ........ .
-STA ($10)      (dir)         92  2   6-m+w       ........ .
-STA ($10),Y    (dir),Y       91  2   7-m+w       ........ .
-STA ($10,X)    (dir,X)       81  2   7-m+w       ........ .
-STA ($32,S),Y  (stk,S),Y     93  2   8-m         ........ .
-STA [$10]      [dir]         87  2   7-m+w       ........ .
-STA [$10],Y    [dir],Y       97  2   7-m+w       ........ .
+STA ($20)      (dir)         92  2   6-m+w       ........ .
+STA ($20),Y    (dir),Y       91  2   7-m+w       ........ .
+STA ($20,X)    (dir,X)       81  2   7-m+w       ........ .
+STA ($20,S),Y  (stk,S),Y     93  2   8-m         ........ .
+STA [$20]      [dir]         87  2   7-m+w       ........ .
+STA [$20],Y    [dir],Y       97  2   7-m+w       ........ .
 ```
 
 Stores the value in .A to a memory address.
@@ -1823,9 +1823,9 @@ is asserted.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-STX $10        dir           86  2   4-x+w       ........ .
-STX $10,Y      dir,Y         96  2   5-x+w       ........ .
-STX $9876      abs           8E  3   5-x         ........ .
+STX $20        dir           86  2   4-x+w       ........ .
+STX $20,Y      dir,Y         96  2   5-x+w       ........ .
+STX $1234      abs           8E  3   5-x         ........ .
 ```
 
 Stores the value in .X to a memory address.
@@ -1845,9 +1845,9 @@ byte of RAM.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-STY $10        dir           84  2   4-x+w       ........ .
-STY $10,X      dir,X         94  2   5-x+w       ........ .
-STY $9876      abs           8C  3   5-x         ........ .
+STY $20        dir           84  2   4-x+w       ........ .
+STY $20,X      dir,X         94  2   5-x+w       ........ .
+STY $1234      abs           8C  3   5-x         ........ .
 ```
 
 Stores the value in .Y to a memory address.
@@ -1867,10 +1867,10 @@ byte of RAM.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-STZ $10        dir           64  2   4-m+w       ........ .
-STZ $10,X      dir,X         74  2   5-m+w       ........ .
-STZ $9876      abs           9C  3   5-m         ........ .
-STZ $9876,X    abs,X         9E  3   6-m         ........ .
+STZ $20        dir           64  2   4-m+w       ........ .
+STZ $20,X      dir,X         74  2   5-m+w       ........ .
+STZ $1234      abs           9C  3   5-m         ........ .
+STZ $1234,X    abs,X         9E  3   6-m         ........ .
 ```
 
 Stores a zero to a memory address.
@@ -1982,8 +1982,8 @@ Copies the value of the Direct Register to the Accumulator.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-TRB $10        dir           14  2   7-2*m+w     ......z. .
-TRB $9876      abs           1C  3   8-2*m       ......z. .
+TRB $20        dir           14  2   7-2*m+w     ......z. .
+TRB $1234      abs           1C  3   8-2*m       ......z. .
 ```
 
 Performs a bitwise AND with a memory value and the Accumulator. When the result
@@ -2002,8 +2002,8 @@ After this, the bits that were 1 in the Accumulator are cleared.
 
 ```text
 SYNTAX         MODE          HEX LEN CYCLES      FLAGS   
-TSB $10        dir           04  2   7-2*m+w     ......z. .
-TSB $9876      abs           0C  3   8-2*m       ......z. .
+TSB $20        dir           04  2   7-2*m+w     ......z. .
+TSB $1234      abs           0C  3   8-2*m       ......z. .
 ```
 
 Performs a bitwise AND with a memory value and the Accumulator. When the result

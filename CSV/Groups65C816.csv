@@ -5,14 +5,14 @@ BCC,Branch on Carry Clear
 BCS,Branch on Carry Set
 BEQ,Branch on Equal
 BIT,Test Memory Bits against Accumulator
-BMI,Branch on Minus
-BNE,Branch on Not Equal
-BPL,Branch on Plus
-BRA,
-BRK,
-BRL,
-BVC,
-BVS,
+BMI,Branch
+BNE,Branch
+BPL,Branch
+BRA,Branch
+BRK,Break
+BRL,Branch
+BVC,Branch
+BVS,Branch
 CLC,
 CLD,
 CLI,

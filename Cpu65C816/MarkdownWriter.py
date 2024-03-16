@@ -37,6 +37,8 @@ class markdown_writer:
         self.write_opcodes_by_category()
         self.write_opcode_details()
 
+        self.file.close()
+
     def write_opcodes_by_number(self):
         print("## Instructions By Opcode",file=self.file)
         print("",file=self.file)
