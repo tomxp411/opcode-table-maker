@@ -77,8 +77,6 @@ Flags:
 * **n** is set when the high bit of the result is 1
 * **z** is set when the result is Zero
 
-AND does not set the overflow or carry flags.
-
 See also: [ORA](#ora), [EOR](#eor)
 
 ### ASL
@@ -92,20 +90,32 @@ See also: [LSR](#lsr), [ROL](#rol), [ROR](#ror)
 ### BCC
 Branch on Carry Clear
 
-Jumps to the target address when the Carry flag (**c**) is Zero. This is useful in
-multi-byte math, where you will use the Carry flag to decide whether to add or
-subtract the higher bytes in a 16 or 32-bit number.
-
-### BCS
-Branch on Carry Set
-
-Jumps to the target address when the Carry flag is 1. This is useful in
-multi-byte math, where you will use the Carry flag to decide whether to add or
-subtract the higher bytes in a 16 or 32-bit number.
+Jumps to the target address when the Carry flag (**c**) is Zero.
 
 A branch operation uses an 8 bit signed value internally, starting from the
 instruction after the branch. So the branch destination can be 126 bytes before
 or 128 bytes after the branch instruction.
+
+BCC can be used after add, subtract, or compare operations. After a compare,
+**c** is as follows:
+
+* When A < Operand, **c** is clear.
+* When A >= Operand, **c** is set.
+
+### BCS
+Branch on Carry Set
+
+Jumps to the target address when the Carry flag is 1. 
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
+BCC can be used after add, subtract, or compare operations. After a compare,
+**c** is as follows:
+
+* When A < Operand, **c** is clear.
+* When A >= Operand, **c** is set.
 
 ### BEQ
 Branch on Equal.
@@ -123,8 +133,13 @@ or 128 bytes after the branch instruction.
 Bit Test
 
 Tests the operand against the Accumulator. The ALU does an AND
-operation internally, and The **n**, **v**, and **z** flags are set accordingly.
-The Accumulator is *not* modified after the operation.
+operation internally, setting **z** if the result is 0. 
+
+When **m**=1, **n** and **v** are set based on the value of bits 7 and 6 in
+memory.
+
+When **m**=0, **n** and **v** are set based on the value of bits 15 and 14 in
+memory.
 
 ### BMI
 Branch on Minus
@@ -173,9 +188,11 @@ Break
 Perform a break interrupt. The exact behavior changes slightly, based on whether
 the CPU is in native or emulation mode. (e is 1 in emulation mode.)
 
+Since the Program Counter is incremented 
+
 In emulation mode:
 
-1. .PC (Program Counter) is incremented by 2 bytes.
+1. .PC (Program Counter) is incremented by 1 byte.
 1. If the CPU is in Native mode, the Program Bank is pushed to the stack.
 1. .PC is pushed onto the stack.
 1. .P (flags) is pushed to the stack. (the **b** bit, bit 4, is set to 1.)
@@ -191,7 +208,7 @@ blinks the cursor, and updates the LEDs.
 
 In native mode:
 
-1. .PC is incremented by 2 bytes
+1. .PC is incremented by 1 byte.
 1. .X (Program Bank) is pushed the stack
 1. .PC is pushed to the stack
 1. .P (flags) is pushed to the stack
@@ -200,6 +217,12 @@ In native mode:
 
 Since the Native Mode has a distinct BRK vector, you do not need to query the
 stack to dispatch a BRK vs IRQ interrupt. You can just handle each immediately.
+
+The RTI instruction is used to return from an interrupt. It pulls the values
+back off the stack (this varies, depending on the CPU mode) and returns to the
+pushed PC address.
+
+RTI 
 
 See the [Vectors](#vectors) section for the break vector.
 
@@ -247,10 +270,11 @@ Clearing this flag restores the CPU to binary \(base 16\) operation. See
 ### CLI
 Clear Interrupt Flag
 
-The Interrupt flag (**i**) _stops_ the CPU from servicing IRQ interrupts. When
-**i** is set, the CPU will not respond to to the IRQ pin. When **i** is clear,
-the CPU will respond to the IRQ pin going low by jumping to the address stored
-in the IRQ vector.
+Clears the **i** flag, _allowing interrupts to be handled_. 
+
+The **i** flag operates somewhat non-intuitively: when **i** is set (1), IRQ is
+suppressed. When **i** is clear (0), interrupts are handled. So CLI _allows_
+interrupts to be handled.
 
 See [BRK}(#brk) for more information on interrupt handling.
 
@@ -275,10 +299,7 @@ the result. The Accumulator is not altered.
 * When A <> Operand, **z** is clear.
 * When A >= Operand, **c** is set.
 
-The exception to this rule is when A would be $80 or above as the result of the
-subtraction ($80 - 1). 
-
-You can use teh Branch instructions (BEQ, BNE, BPL, BMI, BCC, BCS) to jump to
+You can use the Branch instructions (BEQ, BNE, BPL, BMI, BCC, BCS) to jump to
 different parts of your program based on the results of CMP. Here are some BASIC
 comparisons and the equivalent assembly language steps.
 
@@ -395,7 +416,8 @@ two bits is 1. If both bits are 1, the result is 0. If both bits are 0, the
 result is 0.
 
 EOR is useful for _inverting_ the bits in a byte. `EOR #$FF` will flip an entire
-byte.
+byte. (This will always flip the low byte in .A. To flip both bytes when **m**
+is 0, you would use `EOR #$FFFF`.)
 
 Truth table for EOR:
 
@@ -414,26 +436,25 @@ Adds 1 to the value in .A or the specified memory address. The **n** and **z**
 flags are set, based on the resultant value.
 
 INC is useful for reading strings and operating on large areas of memory,
-especially ith indirect and indexed addressing modes.
+especially with indirect and indexed addressing modes.
 
-The following routine prints a null-terminated string (**a** should be 1. **x**
-can be 1 or 0):
+### INX
+Increment .X
+
+Increment the X register.
+
+The following routine prints a null-terminated string (**a** should be 1.)
 
 ```asm65816
   LDX #$0
 loop:
-  LDA string_addr
+  LDA string_addr, X
   BEQ done
   JSR CHROUT
   INX
   BRA loop
 done:
 ```
-
-### INX
-Increment .X
-
-Increment the X register.
 
 See [INC}(#inc)
 
@@ -453,6 +474,13 @@ specified address.
 Instructions like `JMP ($1234,X)` make it possible to branch to a selectable
 subroutine by setting X to the indesx into the vector table.
 
+### JML
+Jump Long
+
+Jump to a differnent address in memory, continuing program execution at the
+specified address. JML accepts a 24-bit address, allowing the program to change
+program banks.
+
 ### JSL
 Jmp to Subroutine Long
 
@@ -468,7 +496,7 @@ Jumps to a new operating address in memory. Also pushes the return address to
 the stack, allowing an RTS insruction to pick up at the address following the
 JSR.
 
-The [RTS](#rts) instruction returns to the instruction following RTS.
+The [RTS](#rts) instruction returns to the instruction following JSR.
 
 The actual address pushed to the stack is the _before_ the next instruction.
 This means that the CPU still needs to increment the PC by 1 step during the
@@ -483,12 +511,14 @@ allowing you to use BMI, BPL, BEQ, and BNE to act based on the value being read.
 ### LDX
 Load X Register
 
-Read a value into .X
+Read a value into .X. This sets **n** and **z** appropriately, allowing you to
+use BMI, BPL, BEQ, and BNE to act based on the value being read.
 
 ### LDY
 Load X Register
 
-Read a value into .Y
+Read a value into .Y. This sets **n** and **z** appropriately, allowing you to
+use BMI, BPL, BEQ, and BNE to act based on the value being read.
 
 ### LSR
 Logical Shift Right
@@ -511,8 +541,8 @@ Block Copy/Move Negative
 This performs a block copy. Use MVN when the source and destination ranges
 overlap and dest < source.
 
-As this requires 16 bit values in the index registers, set **x** with `rep #$30`
-
+Copying anything other than page zero requires 16-bit index registers, so it's
+wise to clear **m** and **x** with `REP #$30`. 
 
 * Set .X to the source address
 * Set .Y to the destination address
@@ -525,7 +555,8 @@ Block Copy/Move Positive
 This performs a block copy. Use MVP when the source and destination ranges
 overlap and dest > source.
 
-As this requires 16 bit values in the index registers, set **x** with `rep #$30`
+Copying anything other than page zero requires 16-bit index registers, so it's
+wise to clear **m** and **x** with `REP #$30`. 
 
 * Set .X to the source_address + size - 1
 * Set .Y to the destination_address
@@ -535,7 +566,7 @@ As this requires 16 bit values in the index registers, set **x** with `rep #$30`
 ### NOP
 No Operation
 
-The CPU performs no operation. This is useful when blocking out instructionsor
+The CPU performs no operation. This is useful when blocking out instructions, or
 reserving space for later use. 
 
 ### ORA
@@ -562,8 +593,10 @@ Push Absolute
 PEA, PEI, and PER push values to the stack *without* affecting registers.
 
 PEA pushes the operand value onto the stack. The literal operand is used, rather
-than an address. This will normally be written in teh form `PEA #1234`, and in
-this instance, the actual value pushed onto the stack is $1234.
+than an address. 
+
+This seems inconsistent with the absolute address syntax, as PEA and PEI follow
+their own syntax rules. 
 
 ### PEI
 Push Effecive Indirect Address
@@ -577,6 +610,9 @@ Example:
 PEI ($20)
 ; pushes $1234 onto the stack.
 ```
+
+The written form of PEI is inconsistent with the usual indirect mode syntax, as
+PEI and PEA follow their own syntax rules.
 
 ### PER
 Push Effective PC Relative Indirect Address
@@ -597,7 +633,7 @@ Consider the following ca65 macro:
 ```
 
 This gets the address following the BRL instruction and pushes that to the
-stack. See [JSR}(#jsr) to understand why the -1 is required.
+stack. See [JSR](#jsr) to understand why the -1 is required.
 
 ### PHA
 Push Accumulator
@@ -606,11 +642,14 @@ Pushes the Accumulator to the stack. This will push 1 byte when **m** is 1 and
 two bytes when **m** is 0 (16-bit memory/.A mode.)
 
 An 8-bit stack push writes data at the Stack Pointer address, then moves SP down
-by 1 byte. A 16-bit stack push moves the stack pointer down 2 bytes.
+by 1 byte. 
+
+A 16-bit push writes the high byte first, decrements the PC, then writes the low
+byte, and decrements the PC again.
 
 In Emulation mode, the Stack Pointer will always be an address in the $100-$1FF
 range, so there is only room for 256 bytes on the stack. In native mode, the
-stack can live anywhere in RAM.
+stack can be anywhere in the first 64KB of RAM.
 
 ### PHB
 Push Data Bank register.
@@ -684,8 +723,9 @@ stack and _increments_ the stack pointer by 1 byte.
 ### PLD
 Pull Direct Page Register
 
-This sets the Direct Page address based on the value on the stack. You will
-commonly set the Direct Page through a PEA/PLD or PHX/PLX combo.
+This pulls a word from the stack and loads it into the Direct Page register. 
+
+That value can be placed on the stack in several ways, such as PHA, PHX, or PEA.
 
 ### PLP
 Pull Prgram Status Byte (flags)
@@ -718,21 +758,19 @@ The number of bytes read is based on the value of the **x** flag.
 Reset Program Status Bit
 
 This clears (to 0) flags in the Program Status Byte. The 1 bits in the will be
-cleard in the flags, so REP #$30 will set the **a** and **x** bits low.
+cleared in the flags, so REP #$30 will set the **a** and **x** bits low.
 
 ### ROL
 Rotate Left
 
 Shifts bits in the accumulator or memory left one bit. The Carry bit (**c**) is
-shifted in to bit 0. The high bit (7 or 15) is copied to **c**. So this is
-effectively a 9 bit shift.
+shifted into bit 0. The high bit (7 or 15) is shifted into **c**.
 
 ### ROR
 Rotate Right
 
 Shifts bits in the accumulator or memory right one bit. The Carry bit (**c**) is
-shifted into the high bit (15 or 7). The low bit (0) is copied to **c**. So this
-is effectively a 9 bit shift.
+shifted into the high bit (15 or 7). The low bit (0) is shifted into **c**.
 
 ### RTI
 Return From Interrupt
@@ -769,9 +807,9 @@ Subtract With Carry
 
 Subtract a value from .A. The result is left in .A.
 
-When perming subtraction, the Carry bit indicates a Borrow and operates in
-reverse. When **c** is 0, SBC subtracts one from the final result, to account for
-the borrow.
+When performing subtraction, the Carry bit indicates a Borrow and operates in
+reverse from addition: when **c** is 0, SBC subtracts one from the final result,
+to account for the borrow.
 
 After the operation, **c** will be set to 0 if a borrow took place and 1 if it
 did not.
@@ -800,9 +838,9 @@ Using BCD allows for easier conversion of binary numbers to decimal. BCD also
 allows for storing decimal numbers without loss of precision due to power-of-2
 rounding.
 
-Also, a math operation is required to actually trigger BCD conversion. So if you
-have a number like $1A on the accumulator and you SED, you will need to ADC #$00
-to actually convert .A to $20.
+Also, a math operation (ADC or SBC) is required to actually trigger BCD
+conversion. So if you have a number like $1A on the accumulator and you SED, you
+will need to ADC #$00 to actually convert .A to $20.
 
 ### SEI
 Set IRQ Disable
@@ -810,6 +848,10 @@ Set IRQ Disable
 Sets **i**, which inhibits IRQ handling. When **i** is set, the CPU will not
 respond to the IRQ pin. When **i** is clear, the CPU will perform an interrupt
 when the IRQ pin is asserted.
+
+The **i** flag operates somewhat non-intuitively: when **i** is set (1), IRQ is
+suppressed. When **i** is clear (0), interrupts are handled. So CLI _allows_
+interrupts to be handled and SEI _blocks_ interrupt handling.
 
 See [BRK](#brk) for a brief description of interrupts.
 
@@ -866,60 +908,85 @@ RAM.
 ### TAX
 Transfer Accumulator to Index X
 
-Copies the contents of .A to .X.
-
-The transfer (copy) is 16 bits only if **m** and **x** are both 0.
-
-If **m** or **x** is 1, the copy will only be 8 bits, and the upper byte of .X
-will nt be affected.
+Copies the contents of .A to .X. 
 
 ### TAY
-Transfer Accumulator to Index X
+Transfer Accumulator to Index Y
 
 Copies the contents of .A to .Y.
-
-The transfer (copy) is 16 bits only if **m** and **x** are both 0.
-
-If **m** or **x** is 1, the copy will only be 8 bits, and the upper byte of .Y
-will nt be affected.
 
 ### TCD
 Transfer C Accumulator to Direct Register
 
-This is one of the times that the 16-bit Accumulator is called .C. This copies
-the 16-bit value from the 16-bit Accumulator to the Stack Pointer
+This copies the 16-bit value from the 16-bit Accumulator to the Direct Register,
+allowing you to relocate Direct Page anywhere in the first 64K of RAM.
+
+This is one of the times that the 16-bit Accumulator is called .C, as it always
+operates on a 16-bit value, regardless of the state of the **m** flag.
 
 ### TCS
 Transfer C Accumulator to Stack Pointer
 
-This is one of the times that the 16-bit Accumulator is called .C. This copies
-the 16-bit value from the 16-bit Accumulator to the Stack Pointer
+This copies the 16-bit value from the 16-bit Accumulator to the Stack Pointer,
+allowing you to relocate the stack anywhere in the first 64K of RAM.
+
+This is one of the times that the 16-bit Accumulator is called .C, as it always
+operates on a 16-bit value, regardless of the state of the **m** flag.
 
 ### TDC
 Transfer Direct Register to C Accumulator
 
 Copies the value of the Direct Register to the Accumulator.
 
+This is one of the times that the 16-bit Accumulator is called .C, as it always
+operates on a 16-bit value, regardless of the state of the **m** flag.
+
 ### TRB
 Test and Reset Bit
 
-Performs a bitwise AND with a memory value and the Accumulator. When the result
-of the AND operation is Zero, **z** is set.
+TRB does two things with one operation: it tests specified bits in a memory
+location, and it clears (resets) those bits after the test.
 
-After this, the bits that were 1 in the Accumulator are cleared.
+First, TRB performs a logical AND between the memory address specified and the
+Accmulator. If the result of the AND is zero, the **z** flag will be set. 
+
+Second, TRB clears bits in the memory value based on the bit mask in the
+accmulator. Any bit that is 1 in .A will be changed to 0 in memory.
+
+So to _clear_ a bit in a memory value, set that value to 1 in .A, like this:
+
+```
+; memory at $2000 contains $84
+LDA #$80
+TRB $2000
+; memory at $2000 now contains $04, and z flag is clear
+
+; memory at $1234 contains $20
+LDA #$01
+TRB $1234
+; memory at $1234 contains $20 and z flag is set
+; because $20 AND $01 == 0.
+```
 
 ### TSB
 Test and Set Bit
 
-Performs a bitwise AND with a memory value and the Accumulator. When the result
-of the AND operation is Zero, **z** is set.
+TSB does two things with one operation: it tests specified bits in a memory
+location, and it clears (resets) those bits after the test.
 
-After this, the bits that were 1 in the Accumulator are set to 1.
+First, TSB performs a logical AND between the memory address specified and the
+Accmulator. If the result of the AND is zero, the **z** flag will be set. 
+
+TSB also _sets_ the bits that are 1 in the accumulator, similar to an OR
+operation.
 
 ### TSC
 Transfer Stack Pointer to C accumulator
 
 Copies the Stack Pointer to the 16-bit Accumulator.
+
+This is one of the times that the 16-bit Accumulator is called .C, as it always
+operates on a 16-bit value, regardless of the state of the **m** flag.
 
 ### TSX
 Transfer Stack Pointer X Register
@@ -972,7 +1039,7 @@ programs.
 Exchange B and A Accumulator
 
 Swaps the values in .A and .B. This exchanges the high and low bytes of the
-Accumulator.
+Accumulator. XBA functions the same in both 8 and 16 bit modes.
 
 ### XCE
 Exchange Carry and Emulation Flags

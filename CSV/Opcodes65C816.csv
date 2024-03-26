@@ -1,5 +1,5 @@
 Category,Name,Mode,nvmxdizc e,Oc,Len,Cycles,Syntax
-Arithmetic,ADC,imm,nv....zc .,69,3-m,3-m,ADC #$20
+Arithmetic,ADC,imm,nv....zc .,69,3-m,3-m,ADC #$20/#$1234
 Arithmetic,ADC,dir,nv....zc .,65,2,4-m+w,ADC $20
 Arithmetic,ADC,"dir,X",nv....zc .,75,2,5-m+w,"ADC $20,X"
 Arithmetic,ADC,"stk,S",nv....zc .,63,2,5-m,"ADC $20,S"
@@ -14,7 +14,7 @@ Arithmetic,ADC,"(dir,X)",nv....zc .,61,2,7-m+w,"ADC ($20,X)"
 Arithmetic,ADC,"(stk,S),Y",nv....zc .,73,2,8-m,"ADC ($20,S),Y"
 Arithmetic,ADC,[dir],nv....zc .,67,2,7-m+w,ADC [$20]
 Arithmetic,ADC,"[dir],Y",nv....zc .,77,2,7-m+w,"ADC [$20],Y"
-Boolean,AND,imm,n.....z. .,29,3-m,3-m,AND #$20
+Boolean,AND,imm,n.....z. .,29,3-m,3-m,AND #$20/#$1234
 Boolean,AND,dir,n.....z. .,25,2,4-m+w,AND $20
 Boolean,AND,"dir,X",n.....z. .,35,2,5-m+w,"AND $20,X"
 Boolean,AND,"stk,S",n.....z. .,23,2,5-m,"AND $20,S"
@@ -37,7 +37,7 @@ Shift,ASL,"abs,X",n.....zc .,1E,3,9-2*m,"ASL $1234,X"
 Branch,BCC,rel8,........ .,90,2,2+t+t*e*p,BCC LABEL
 Branch,BCS,rel8,........ .,B0,2,2+t+t*e*p,BCS LABEL
 Branch,BEQ,rel8,........ .,F0,2,2+t+t*e*p,BEQ LABEL
-Test,BIT,imm,......z. .,89,3-m,3-m,BIT #$20
+Test,BIT,imm,......z. .,89,3-m,3-m,BIT #$20/#$1234
 Test,BIT,dir,nv....z. .,24,2,4-m+w,BIT $20
 Test,BIT,"dir,X",nv....z. .,34,2,5-m+w,"BIT $20,X"
 Test,BIT,abs,nv....z. .,2C,3,5-m,BIT $1234
@@ -46,7 +46,7 @@ Branch,BMI,rel8,........ .,30,2,2+t+t*e*p,BMI LABEL
 Branch,BNE,rel8,........ .,D0,2,2+t+t*e*p,BNE LABEL
 Branch,BPL,rel8,........ .,10,2,2+t+t*e*p,BPL LABEL
 Branch,BRA,rel8,........ .,80,2,3+e*p,BRA LABEL
-Branch,BRK,imp,....di.. .,00,1,8-e,BRK
+Branch,BRK,imm,....di.. .,00,1,8-e,BRK #$20
 Branch,BRL,rel16,........ .,82,3,4,BRL LABEL
 Branch,BVC,rel8,........ .,50,2,2+t+t*e*p,BVC LABEL
 Branch,BVS,rel8,........ .,70,2,2+t+t*e*p,BVS LABEL
@@ -54,7 +54,7 @@ Flags,CLC,imp,.......c .,18,1,2,CLC
 Flags,CLD,imp,....d... .,D8,1,2,CLD
 Flags,CLI,imp,.....i.. .,58,1,2,CLI
 Flags,CLV,imp,.v...... .,B8,1,2,CLV
-Compare,CMP,imm,n.....zc .,C9,3-m,3-m,CMP #$20
+Compare,CMP,imm,n.....zc .,C9,3-m,3-m,CMP #$20/#$1234
 Compare,CMP,dir,n.....zc .,C5,2,4-m+w,CMP $20
 Compare,CMP,"dir,X",n.....zc .,D5,2,5-m+w,"CMP $20,X"
 Compare,CMP,"stk,S",n.....zc .,C3,2,5-m,"CMP $20,S"
@@ -70,10 +70,10 @@ Compare,CMP,"(stk,S),Y",n.....zc .,D3,2,8-m,"CMP ($20,S),Y"
 Compare,CMP,[dir],n.....zc .,C7,2,7-m+w,CMP [$20]
 Compare,CMP,"[dir],Y",n.....zc .,D7,2,7-m+w,"CMP [$20],Y"
 Interrupt,COP,imm,....di.. .,02,2,8-e,COP #$20
-Compare,CPX,imm,n.....zc .,E0,3-x,3-x,CPX #$20
+Compare,CPX,imm,n.....zc .,E0,3-x,3-x,CPX #$20/#$1234
 Compare,CPX,dir,n.....zc .,E4,2,4-x+w,CPX $20
 Compare,CPX,abs,n.....zc .,EC,3,5-x,CPX $1234
-Compare,CPY,imm,n.....zc .,C0,3-x,3-x,CPY #$20
+Compare,CPY,imm,n.....zc .,C0,3-x,3-x,CPY #$20/#$1234
 Compare,CPY,dir,n.....zc .,C4,2,4-x+w,CPY $20
 Compare,CPY,abs,n.....zc .,CC,3,5-x,CPY $1234
 Inc/Dec,DEC,acc,n.....z. .,3A,1,2,DEC
@@ -83,7 +83,7 @@ Inc/Dec,DEC,abs,n.....z. .,CE,3,8-2*m,DEC $1234
 Inc/Dec,DEC,"abs,X",n.....z. .,DE,3,9-2*m,"DEC $1234,X"
 Inc/Dec,DEX,imp,n.....z. .,CA,1,2,DEX
 Inc/Dec,DEY,imp,n.....z. .,88,1,2,DEY
-Boolean,EOR,imm,n.....z. .,49,3-m,3-m,EOR #$20
+Boolean,EOR,imm,n.....z. .,49,3-m,3-m,EOR #$20/#$1234
 Boolean,EOR,dir,n.....z. .,45,2,4-m+w,EOR $20
 Boolean,EOR,"dir,X",n.....z. .,55,2,5-m+w,"EOR $20,X"
 Boolean,EOR,"stk,S",n.....z. .,43,2,5-m,"EOR $20,S"
@@ -106,14 +106,14 @@ Inc/Dec,INC,"abs,X",n.....z. .,FE,3,9-2*m,"INC $1234,X"
 Inc/Dec,INX,imp,n.....z. .,E8,1,2,INX
 Inc/Dec,INY,imp,n.....z. .,C8,1,2,INY
 Flow,JMP,abs,........ .,4C,3,3,JMP $2034
-Flow,JMP,long,........ .,5C,4,4,JMP $FEDCBA
+Flow,JML,long,........ .,5C,4,4,JML $FEDCBA
 Flow,JMP,(abs),........ .,6C,3,5,JMP ($2034)
 Flow,JMP,"(abs,X)",........ .,7C,3,6,"JMP ($2034,X)"
-Flow,JMP,[abs],........ .,DC,3,6,JMP [$2034]
+Flow,JML,[abs],........ .,DC,3,6,JMP [$2034]
 Flow,JSL,long,........ .,22,4,8,JSL $203456
 Flow,JSR,abs,........ .,20,3,6,JSR $2034
 Flow,JSR,"(abs,X)",........ .,FC,3,8,"JSR ($2034,X)"
-Load,LDA,imm,n.....z. .,A9,3-m,3-m,LDA #$20
+Load,LDA,imm,n.....z. .,A9,3-m,3-m,LDA #$20/#$1234
 Load,LDA,dir,n.....z. .,A5,2,4-m+w,LDA $20
 Load,LDA,"dir,X",n.....z. .,B5,2,5-m+w,"LDA $20,X"
 Load,LDA,"stk,S",n.....z. .,A3,2,5-m,"LDA $20,S"
@@ -128,12 +128,12 @@ Load,LDA,"(dir,X)",n.....z. .,A1,2,7-m+w,"LDA ($20,X)"
 Load,LDA,"(stk,S),Y",n.....z. .,B3,2,8-m,"LDA ($20,S),Y"
 Load,LDA,[dir],n.....z. .,A7,2,7-m+w,LDA [$20]
 Load,LDA,"[dir],Y",n.....z. .,B7,2,7-m+w,"LDA [$20],Y"
-Load,LDX,imm,n.....z. .,A2,3-x,3-x,LDX #$20
+Load,LDX,imm,n.....z. .,A2,3-x,3-x,LDX #$20/#$1234
 Load,LDX,dir,n.....z. .,A6,2,4-x+w,LDX $20
 Load,LDX,"dir,Y",n.....z. .,B6,2,5-x+w,"LDX $20,Y"
 Load,LDX,abs,n.....z. .,AE,3,5-x,LDX $1234
 Load,LDX,"abs,Y",n.....z. .,BE,3,6-2*x+x*p,"LDX $1234,Y"
-Load,LDY,imm,n.....z. .,A0,3-x,3-x,LDY #$20
+Load,LDY,imm,n.....z. .,A0,3-x,3-x,LDY #$20/#$1234
 Load,LDY,dir,n.....z. .,A4,2,4-x+w,LDY $20
 Load,LDY,"dir,X",n.....z. .,B4,2,5-x+w,"LDY $20,X"
 Load,LDY,abs,n.....z. .,AC,3,5-x,LDY $1234
@@ -146,7 +146,7 @@ Shift,LSR,"abs,X",n.....zc .,5E,3,9-2*m,"LSR $1234,X"
 Block Move,MVN,"src,dest",........ .,54,3,7,"MVN #$20,#$34"
 Block Move,MVP,"src,dest",........ .,44,3,7,"MVP #$20,#$34"
 Flow,NOP,imp,........ .,EA,1,2,NOP
-Boolean,ORA,imm,n.....z. .,09,3-m,3-m,ORA #$20
+Boolean,ORA,imm,n.....z. .,09,3-m,3-m,ORA #$20/#$1234
 Boolean,ORA,dir,n.....z. .,05,2,4-m+w,ORA $20
 Boolean,ORA,"dir,X",n.....z. .,15,2,5-m+w,"ORA $20,X"
 Boolean,ORA,"stk,S",n.....z. .,03,2,5-m,"ORA $20,S"
@@ -161,8 +161,8 @@ Boolean,ORA,"(dir,X)",n.....z. .,01,2,7-m+w,"ORA ($20,X)"
 Boolean,ORA,"(stk,S),Y",n.....z. .,13,2,8-m,"ORA ($20,S),Y"
 Boolean,ORA,[dir],n.....z. .,07,2,7-m+w,ORA [$20]
 Boolean,ORA,"[dir],Y",n.....z. .,17,2,7-m+w,"ORA [$20],Y"
-Stack,PEA,imm,........ .,F4,3,5,PEA #$2034
-Stack,PEI,dir,........ .,D4,2,6+w,PEI $20
+Stack,PEA,imm,........ .,F4,3,5,PEA $2034
+Stack,PEI,dir,........ .,D4,2,6+w,PEI ($20)
 Stack,PER,imm,........ .,62,3,6,PER LABEL
 Stack,PHA,imp,........ .,48,1,4-m,PHA
 Stack,PHB,imp,........ .,8B,1,3,PHB
@@ -177,7 +177,7 @@ Stack,PLD,imp,n.....z. .,2B,1,5,PLD
 Stack,PLP,imp,nvmxdizc .,28,1,4,PLP
 Stack,PLX,imp,n.....z. .,FA,1,5-x,PLX
 Stack,PLY,imp,n.....z. .,7A,1,5-x,PLY
-Flags,REP,imm,nvmxdizc .,C2,2,3,REP #$20
+Flags,REP,imm,nvmxdizc .,C2,2,3,REP #$20/#$1234
 Shift,ROL,acc,n.....zc .,2A,1,2,ROL
 Shift,ROL,dir,n.....zc .,26,2,7-2*m+w,ROL $20
 Shift,ROL,"dir,X",n.....zc .,36,2,8-2*m+w,"ROL $20,X"
@@ -191,7 +191,7 @@ Shift,ROR,"abs,X",n.....zc .,7E,3,9-2*m,"ROR $1234,X"
 Flow,RTI,imp,nvmxdizc .,40,1,7-e,RTI
 Flow,RTL,imp,........ .,6B,1,6,RTL
 Flow,RTS,imp,........ .,60,1,6,RTS
-Arithmetic,SBC,imm,nv....zc .,E9,3-m,3-m,SBC #$20
+Arithmetic,SBC,imm,nv....zc .,E9,3-m,3-m,SBC #$20/#$1234
 Arithmetic,SBC,dir,nv....zc .,E5,2,4-m+w,SBC $20
 Arithmetic,SBC,"dir,X",nv....zc .,F5,2,5-m+w,"SBC $20,X"
 Arithmetic,SBC,"stk,S",nv....zc .,E3,2,5-m,"SBC $20,S"
@@ -209,7 +209,7 @@ Arithmetic,SBC,"[dir],Y",nv....zc .,F7,2,7-m+w,"SBC [$20],Y"
 Flags,SEC,imp,.......c .,38,1,2,SEC
 Flags,SED,imp,....d... .,F8,1,2,SED
 Flags,SEI,imp,.....i.. .,78,1,2,SEI
-Flags,SEP,imm,nvmxdizc .,E2,2,3,SEP #$20
+Flags,SEP,imm,nvmxdizc .,E2,2,3,SEP #$20/#$1234
 Store,STA,dir,........ .,85,2,4-m+w,STA $20
 Store,STA,"dir,X",........ .,95,2,5-m+w,"STA $20,X"
 Store,STA,"stk,S",........ .,83,2,5-m,"STA $20,S"

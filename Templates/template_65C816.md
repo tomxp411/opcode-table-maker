@@ -14,35 +14,26 @@
 
 ## Overview
 
-This document is a brief introduction and quick reference for the 65816 and
-65C816 Microprocessor. For more details, see the [65C816 data
+This document is a brief introduction and quick reference for the 65C816
+Microprocessor. For more details, see the [65C816 data
 sheet](https://www.westerndesigncenter.com/wdc/documentation/w65c816s.pdf) or
-[Programming the
-6565816](https://www.amazon.com/Programming-65816-Including-65C02-65802-ebook/dp/B01855HL7Q).
+[Programming the 65816: Including the 6502, 65C02, and 65802](https://www.amazon.com/Programming-65816-Including-65C02-65802-ebook/dp/B01855HL7Q).
 
-The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 6502 processor. All
-of the familiar 6502 instructions and address modes are retained, and some new
-ones are added.
+The WDC65C816 CPU is an 8/16 bit CPU and a follow-up to the 65C02 processor. The
+familiar 65C02 instructions and address modes are retained, and some new ones
+are added.
 
-The CPU now also operates in 16-bit mode when required. This allows the Accumulator
-to hold 16-bit values, and the CPU reads and writes 2 bytes at a time in this mode.
-
-The .X and .Y registers, also known as the Index registers, can also be separately
-set to 16-bit mode, which allows for indexed operations up to 64KB.
+The CPU can optionally operate in 16-bit mode, extending the utility of math
+instruction (16-bit adds!) and the coverage of .X and .Y indexed modes to 64KB.
 
 Zero Page has been renamed to Direct Page, and Direct Page can now be relocated
 anywhere in the first 64K of RAM. As a result, all of the Zero Page instructions
-are now "Direct" instructions and can operate anywhere in the X16's address range.
+are now "Direct" instructions and can operate anywhere in the X16's address
+range.
 
 Likewise, the Stack can also be relocated, and the stack pointer is now 16 bits.
-This allows for a much larger stack, and the combination of stack and DP relocation
-offer interesting multitasking opportunities.
-
-The 65C816 also extends the address bus to 24 bits, but the X16 is not equipped to
-decode the bask address; as a result, the 65C816 is still limited to the same 16-bit
-address space as the 65C02.
-
-In the X16 community, we are currently
+This allows for a much larger stack, and the combination of stack and DP
+relocation offer interesting multitasking opportunities.
 
 ## Compatibility with the 65C02
 
@@ -93,7 +84,7 @@ In emulation mode, the **m** and **x** flags are always set to 1.
 
 Here are the 6502 and 65C02 registers, for comparison:
 
-`nv1b dizc e`
+`nv1b dizc`
 
   n = Negative  
   v = oVerflow  
@@ -103,9 +94,11 @@ Here are the 6502 and 65C02 registers, for comparison:
   i = Interupts Disabled  
   z = Zero  
   c = Carry  
-  e = Emulation Mode (0=65C02 mode, 1=65C816 mode)
 
-**e** can only accessed via the XCE instruction, which swaps Carry and
+Note the missing **b** flag on the 65C816. This is no longer needed in native
+mode, since the BRK instruction now has its own vector. 
+
+The **e** flag can only accessed via the XCE instruction, which swaps Carry and
 the Emulation flag.
 
 The other flags can all be manipulated with SEP and REP, and the various
@@ -152,10 +145,10 @@ Likewise, whenn **x** is clear, the .X and .Y index registers are 16 bits wide.
 INX and INY will now count up to 65535, and indexed instructions like `LDA addr,X`
 can now cover 64K.
 
-You can use `REP #$10` to enable 16-bit index registers, and `REP #$20` to enable
-16-bit memory and Accumulator. `SEP #$20` or `SEP #$40` will switch back to 8-bit
-operation. You can also combine the operand and use `SEP #$30` to flip both bits
-at once.
+You can use `REP #$10` to enable 16-bit index registers, and `REP #$20` to
+enable 16-bit memory and Accumulator. `SEP #$10` or `SEP #$20` will switch back
+to 8-bit operation. You can also combine the operand and use `SEP #$30` or 
+`REP #$30` to flip both bits at once.
 
 And now we reach the 16-bit assembly trap: the actual assembly opcodes are the
 same, regardless of the **x** and **m** flags. This means the assembler needs
@@ -212,7 +205,7 @@ addresses (although they would be the same if .DP is set to $00.
 | Accumulator (implied)           |           | Operation acts on .A                                               |
 | Implied                         |           | Target is part of the opcode name.                                 |
 | Relative Address (8 bit signed) | $1234     | Branches can only jump by -128 to 127 bytes.                       |
-| 16 bit relative address         | 1234      | BRL can jump by 32K bytes.                                         |
+| 16 bit relative address         | $1234     | BRL can jump by 32K bytes.                                         |
 | Block Move                      | #$12,#$34 | Operands are the bank numbers for block move/copy.                 |
 
 ## Vectors
@@ -234,19 +227,19 @@ The vectors are:
 | BRK   | FFFE  | 00FFE6 |
 | ABORT | FFF8  | 00FFE8 |
 | NMI   | FFFA  | 00FFEA |
-| RESET | FFFC  | 00FFFC |
+| RESET | FFFC  |        |
 | IRQ   | FFFE  | 00FFEE |
 
-The 65C02 shares the same interrupt for BRK and IRQ, so the 65C816 mirrors this
-behavior. The .b flag will be set when a BRK instruction is executed, allowing
-the IRQ handler to decide how to handle the interrupt.
+The 65C02 shares the same interrupt for BRK and IRQ, and the **b** flag tells
+the interrupt handler whether to execute a break or interrupt.
 
-On the 65C816, BRK has its own vector (00FFE6), so the .b flag is not used.
-Instead, the .b flag is swapped out for the 16-bit index register flag (.x).
+In emulation mode, the 65C816 pushes a modified version of the flags to the
+stack. The BRK instruction actually pushes a 1 in bit 4, which can then be
+tested in the Interrupt Service Routine. In native mode, however, the flags are
+pushed verbatim, since BRK has its own handler.
 
-Also, note that the CPU starts up in emulation mode, so after a RESET, the CPU
-will always execute the FFFC vector, no matter what state the CPU was in when
-RESET was asserted.
+There is also no native RESET vector, since the CPU always boots to emulation
+mode. The CPU always starts at the address stored in $FFFC.
 
 ## Instruction Tables
 

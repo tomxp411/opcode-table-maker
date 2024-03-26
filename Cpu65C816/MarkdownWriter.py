@@ -107,7 +107,7 @@ class markdown_writer:
 
     def write_opcode_details(self):
         column_names = ["SYNTAX","MODE","HEX","LEN","CYCLES","FLAGS"]
-        column_width = [15,      14,     4,    4,    12,       8]
+        column_width = [17,      11,     4,    4,    12,       8]
 
         for name,grp in self.cpu.groups.items():
             if name in self.cpu.details:
@@ -146,5 +146,5 @@ class markdown_writer:
             print("```",file=self.file)
 
             print(detail_text,file=self.file)
-            print("[top](#instructions-by-opcode)",end="\n\n",file=self.file)
+            print("[[Opcodes](#instructions-by-opcode)] [[By Name](#instructions-by-name)] [[By Category](#instructions-by-category)]",end="\n\n",file=self.file)
             print("---\n",file=self.file)
