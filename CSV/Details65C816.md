@@ -92,30 +92,30 @@ Branch on Carry Clear
 
 Jumps to the target address when the Carry flag (**c**) is Zero.
 
-A branch operation uses an 8 bit signed value internally, starting from the
-instruction after the branch. So the branch destination can be 126 bytes before
-or 128 bytes after the branch instruction.
-
 BCC can be used after add, subtract, or compare operations. After a compare,
 **c** is as follows:
 
 * When A < Operand, **c** is clear.
 * When A >= Operand, **c** is set.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
 
 ### BCS
 Branch on Carry Set
 
 Jumps to the target address when the Carry flag is 1. 
 
-A branch operation uses an 8 bit signed value internally, starting from the
-instruction after the branch. So the branch destination can be 126 bytes before
-or 128 bytes after the branch instruction.
-
 BCC can be used after add, subtract, or compare operations. After a compare,
 **c** is as follows:
 
 * When A < Operand, **c** is clear.
 * When A >= Operand, **c** is set.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
 
 ### BEQ
 Branch on Equal.
@@ -172,6 +172,10 @@ Jumps to the specified address when the Negative flag (**n**) is clear.
 
 **n** is clear when ALU operations result in a positive number, or when the high bit
 of an ALU operation is 0.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
 
 ### BRA
 Branch Always
@@ -246,10 +250,18 @@ Branch on Overflow Clear
 
 Branches to the specified address when the Overflow bit is 0.
 
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
+
 ### BVS
 Branch on Overflow Set
 
-Branches to the specified address when the Overflow bit is 0.
+Branches to the specified address when the Overflow bit is 1.
+
+A branch operation uses an 8 bit signed value internally, starting from the
+instruction after the branch. So the branch destination can be 126 bytes before
+or 128 bytes after the branch instruction.
 
 ### CLC
 Clear Carry
@@ -264,7 +276,7 @@ Clear Decimal
 Clears the Decimal flag, returning the CPU to 8-bit or 16-bit binary operation.
 
 When Decimal is set, the CPU will store numbers in Binary Coded Decimal format.
-Clearing this flag restores the CPU to binary \(base 16\) operation. See
+Clearing this flag restores the CPU to binary operation. See
 [Decimal Mode](#decimal-mode) for more information.
 
 ### CLI
@@ -831,6 +843,10 @@ Set Decimal
 
 Sets the Decimal bit to 1, setting the CPU to BCD mode.
 
+When Decimal is set, the CPU will store numbers in Binary Coded Decimal format.
+Clearing this flag restores the CPU to binary operation. See
+[Decimal Mode](#decimal-mode) for more information.
+
 In binary mode, adding 1 to $09 will set the Accumulator to $0A. In BCD mode,
 adding 1 to $09 will set the Accumulator to $10.
 
@@ -838,9 +854,9 @@ Using BCD allows for easier conversion of binary numbers to decimal. BCD also
 allows for storing decimal numbers without loss of precision due to power-of-2
 rounding.
 
-Also, a math operation (ADC or SBC) is required to actually trigger BCD
-conversion. So if you have a number like $1A on the accumulator and you SED, you
-will need to ADC #$00 to actually convert .A to $20.
+An add or subtract (ADC or SBC) is required to actually trigger BCD conversion.
+So if you have a number like $1A on the accumulator and you SED, you can convert
+.A to $20 with the instruction `ADC #$00`.
 
 ### SEI
 Set IRQ Disable

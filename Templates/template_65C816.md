@@ -1,7 +1,7 @@
 
 # Appendix F: The 65C816 Processor
 
-**Table of Contents**
+## Table Of Contents
 
 1. [Overview](#overview)
 2. [Compatibility with the 65C02](#compatibility-with-the-65c02)
@@ -240,6 +240,55 @@ pushed verbatim, since BRK has its own handler.
 
 There is also no native RESET vector, since the CPU always boots to emulation
 mode. The CPU always starts at the address stored in $FFFC.
+
+## Decimal Mode
+
+When the **d** flag is set, the CPU operates in Decimal mode. In this mode, a
+byte is treated as two decimal digits, rather than a binary number. As a result,
+you can easily add, subtract, and display decimal numbers.
+
+While in Decimal mode, the lower nibble of a byte contains the 1s digit, and the
+upper nibble contains the 10s digit. Each nibble can only contain value from
+0-9, and addition will wrap from 9 to 0. Subtraction works similarly, wrapping
+down from 0 to 9.
+
+[SED](#sed) enables Decimal mode. At that point, ADC and SBC will perform base-10
+addition and subtraction. [CLD](#cld) clears Decimal mode and returns to binary
+mode.
+
+When adding, the Carry bit will be set if the result is 100 or greater. The
+total result can never exceed 199, so two digits plus Carry is all that is
+needed to represent values from 0 to 199.
+
+If you perform an ADC with the Carry bit set, this will add an extra 1 to the
+result. 
+
+Examples
+
+| Operation | .A   | Result | Notes                         |
+|-----------|------|--------|-------------------------------|
+| ADC #$01  | $09  | $10    |                               |
+| ADC #$01  | $99  | $00    | Carry is set, indicating 100. |
+
+When subtracting, the Carry bit operates as a _borrow_ bit, and the sense is
+inverted: 0 indicates a borrow took place, and 1 means it did not.
+
+| Operation | .A   | Result | Notes                               |
+|-----------|------|--------|-------------------------------------|
+| SBC #$01  | $10  | $09    | Carry is set, indicating no borrow. |
+| SBC #$01  | $00  | $99    | Carry is clear, indicating a borrow.|
+
+In the second example ($00 - $01), the final result was $99 with a borrow. 
+
+Note that the **n** flag tracks the high bit, but two's complement doesn't work
+as expected in Decimal mode. Instead, we have to use _Ten's complement_. 
+
+Simply put, $00 - $01 gives you $99. So when working in signed BCD, any value
+where the high digit is 5-9 is actually a negative value. To convert negative
+values to positive values for printing, you would subtract from 99 and add 1.
+
+For example: the integer -49 is $51 in BCD. `99 - 51 + 1 = 49`. You'd print that
+as `-49`.
 
 ## Instruction Tables
 

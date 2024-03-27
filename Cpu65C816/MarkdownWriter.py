@@ -40,7 +40,7 @@ class markdown_writer:
         self.file.close()
 
     def write_opcodes_by_number(self):
-        print("## Instructions By Opcode",file=self.file)
+        print("### Instructions By Opcode",file=self.file)
         print("",file=self.file)
 
         hex_header = ["", "x0","x1","x2","x3","x4","x5","x6","x7",
@@ -60,7 +60,7 @@ class markdown_writer:
         print("",file=self.file)
 
     def write_opcodes_by_name(self):
-        print("## Instructions By Name",file=self.file)
+        print("### Instructions By Name",file=self.file)
         print("",file=self.file)
 
         header = ["","","","","","","","","",""]
@@ -77,7 +77,7 @@ class markdown_writer:
         print("|\n",file=self.file)
 
     def write_opcodes_by_category(self):
-        print("## Instructions By Category",file=self.file)
+        print("### Instructions By Category",file=self.file)
         print("",file=self.file)
 
         header = ["Category","Instructions"]
@@ -121,7 +121,7 @@ class markdown_writer:
                     detail_text = t[subpos+1:]
             detail_text = detail_text.replace("\n\n\n","\n\n")
 
-            print("###",name, end="\n\n", file=self.file)
+            print("####",name, end="\n\n", file=self.file)
             if subtitle:
                 print("**" + subtitle + "**",end="\n\n",file=self.file)
             print("```text",file=self.file)

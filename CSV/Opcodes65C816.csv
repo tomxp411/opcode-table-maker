@@ -161,9 +161,9 @@ Boolean,ORA,"(dir,X)",n.....z. .,01,2,7-m+w,"ORA ($20,X)"
 Boolean,ORA,"(stk,S),Y",n.....z. .,13,2,8-m,"ORA ($20,S),Y"
 Boolean,ORA,[dir],n.....z. .,07,2,7-m+w,ORA [$20]
 Boolean,ORA,"[dir],Y",n.....z. .,17,2,7-m+w,"ORA [$20],Y"
-Stack,PEA,imm,........ .,F4,3,5,PEA $2034
-Stack,PEI,dir,........ .,D4,2,6+w,PEI ($20)
-Stack,PER,imm,........ .,62,3,6,PER LABEL
+Stack,PEA,abs,........ .,F4,3,5,PEA $2034
+Stack,PEI,(dir),........ .,D4,2,6+w,PEI ($20)
+Stack,PER,rel16,........ .,62,3,6,PER LABEL
 Stack,PHA,imp,........ .,48,1,4-m,PHA
 Stack,PHB,imp,........ .,8B,1,3,PHB
 Stack,PHD,imp,........ .,0B,1,4,PHD
